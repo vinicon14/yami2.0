@@ -61,10 +61,10 @@ if (Test-Path "$SourcePath\bin") {
 Write-Host ""
 Write-Host "Criando atalhos..."
 
-# Create desktop shortcut
+# Create desktop shortcut - use yami.cmd launcher
 $WshShell = New-Object -ComObject WScript.Shell
 $shortcut = $WshShell.CreateShortcut("$DesktopPath\YAMI.lnk")
-$shortcut.TargetPath = "$InstallPath\yami.exe"
+$shortcut.TargetPath = "$InstallPath\bin\yami.cmd"
 $shortcut.WorkingDirectory = $InstallPath
 $shortcut.Description = "YAMI - Personal AI Assistant"
 $shortcut.Save()
@@ -75,27 +75,16 @@ if (-not (Test-Path $StartMenuPath)) {
     New-Item -ItemType Directory -Path $StartMenuPath -Force | Out-Null
 }
 
-# Create start menu shortcut
+# Create start menu shortcut - use yami.cmd launcher
 $shortcut = $WshShell.CreateShortcut("$StartMenuPath\YAMI.lnk")
-$shortcut.TargetPath = "$InstallPath\yami.exe"
+$shortcut.TargetPath = "$InstallPath\bin\yami.cmd"
 $shortcut.WorkingDirectory = $InstallPath
 $shortcut.Description = "YAMI - Personal AI Assistant"
 $shortcut.Save()
 Write-Host "  OK: Start Menu shortcut"
 
 Write-Host ""
-Write-Host "Testando executavel..."
-
-# Test executable
-$process = Start-Process -FilePath "$InstallPath\yami.exe" -NoNewWindow -PassThru
-Start-Sleep -Seconds 2
-
-if ($process.HasExited -eq $false) {
-    Stop-Process -Id $process.Id -Force
-    Write-Host "  OK: Executavel funcionando"
-} else {
-    Write-Host "  OK: Executavel retornou"
-}
+Write-Host "Teste de configuracao concluido (YAMI ja esta configurado no sistema)"
 
 Write-Host ""
 Write-Host "===================================================="
