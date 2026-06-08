@@ -136,16 +136,14 @@ export class SyncEngine {
     const changes = result.changes || [];
     if (changes.length === 0) return;
 
-    const tx = this.db.db.transaction(() => {
-      for (const change of changes) {
-        try {
-          this._applyChange(change);
-        } catch (err) {
-          this._handleConflict(change, err);
-        }
+    // Apply changes sequentially (sql.js doesn't support transactions like better-sqlite3)
+    for (const change of changes) {
+      try {
+        this._applyChange(change);
+      } catch (err) {
+        this._handleConflict(change, err);
       }
-    });
-    tx();
+    }
   }
 
   _applyChange(change) {
