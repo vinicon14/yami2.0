@@ -1,0 +1,30 @@
+{
+  "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+  "lastSyncAt": "2026-06-08T19:00:50.735Z",
+  "lastHostName": "pcvini",
+  "lastHostPlatform": "win32",
+  "lastHostUser": "vinim",
+  "syncVersion": "1.0",
+  "dirtyFlags": {
+    "profile": true,
+    "appearance": true,
+    "evolution": true,
+    "modules": false,
+    "voice": false,
+    "social": true,
+    "memory": false
+  },
+  "syncHistory": [
+    {
+      "at": "2026-06-08T19:00:50.715Z",
+      "host": "pcvini",
+      "platform": "win32"
+    },
+    {
+      "at": "2026-06-08T19:00:50.735Z",
+      "host": "pcvini",
+      "platform": "win32"
+    }
+  ],
+  "updatedAt": "2026-06-08T19:01:23.996Z"
+}

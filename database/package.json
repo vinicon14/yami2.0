@@ -1,0 +1,16 @@
+{
+  "name": "yami-database",
+  "version": "1.0.0",
+  "description": "YAMI Central Database Module - Single source of truth with universal sync",
+  "type": "module",
+  "main": "yami-db.mjs",
+  "exports": {
+    ".": "./yami-db.mjs",
+    "./sync-engine": "./sync-engine.mjs",
+    "./sync-api": "./sync-api.mjs",
+    "./migrate": "./migrate.mjs"
+  },
+  "dependencies": {
+    "sql.js": "^1.14.1"
+  }
+}

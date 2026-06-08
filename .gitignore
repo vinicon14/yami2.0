@@ -1,0 +1,67 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+*.exe
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Chrome user data (auto-panel)
+auto-panel/chrome-user-data/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+
+# Credentials and secrets
+credentials/
+auth/
+**/tokens/
+**/*.key
+**/*.pem
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Package lock files (optional - keep if you want exact versions)
+# package-lock.json
+# pnpm-lock.yaml
+# yarn.lock
+
+# Test coverage
+coverage/
+
+# Build config
+pkg-build-config.json
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Pendrive installer build outputs
+pendrive-installer/build/
+pendrive-installer/dist/

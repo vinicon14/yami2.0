@@ -1,0 +1,69 @@
+{
+  "gateway": {
+    "auth": { "mode": "token" },
+    "mode": "local",
+    "port": 18789,
+    "bind": "loopback",
+    "controlUi": { "allowedOrigins": [] }
+  },
+  "yami": {
+    "name": "Yami",
+    "runtimeHome": "%USERPROFILE%\\.yami",
+    "publicBrand": "Yami",
+    "product": "Yami",
+    "identity": "yami-native-runtime",
+    "role": "assistant-runtime",
+    "mode": "own-runtime-with-upstream-adapters",
+    "configVersion": "2026-06-08-yami-pendrive-1",
+    "upstreamCompatibility": ["openclaw-runtime-core", "hermes-agent-adapters"],
+    "rules": {
+      "notVisualCopy": true,
+      "textDefault": true,
+      "explicitFileShareOnly": true,
+      "voiceWake": "acorda",
+      "voiceRest": "descansa"
+    },
+    "nativeCapabilities": {
+      "version": "1.0.0",
+      "modules": ["comunicacao", "agenda-inteligente", "gerenciamento-arquivos", "gerenciamento-fotos", "compartilhamento-assistido"],
+      "storage": {
+        "comunicacao": "~/.yami/comunicacao/",
+        "agenda": "~/.yami/agenda/",
+        "arquivos": "~/.yami/arquivos/",
+        "fotos": "~/.yami/fotos/",
+        "media": "~/.yami/media/"
+      },
+      "compartilhamento": {
+        "exigirConfirmacao": true,
+        "diretorioSaida": "~/.yami/media/outgoing/"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "bootstrapMaxChars": 10000,
+      "bootstrapTotalMaxChars": 80000,
+      "contextInjection": "continuation-skip",
+      "workspace": "%USERPROFILE%\\.yami\\workspace"
+    }
+  },
+  "auth": {
+    "accounts": {
+      "homePath": "%USERPROFILE%\\.yami\\auth",
+      "autoSync": true,
+      "syncIntervalMinutes": 15
+    }
+  },
+  "browser": {
+    "profiles": {
+      "chrome": {
+        "cdpUrl": "http://127.0.0.1:9222",
+        "color": "#00AA00"
+      }
+    },
+    "defaultProfile": "chrome"
+  },
+  "plugins": {
+    "allow": ["whatsapp", "codex", "browser", "device-pair", "file-transfer", "openai"]
+  }
+}

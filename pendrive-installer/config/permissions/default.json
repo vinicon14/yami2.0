@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "permissions": {
+    "microphone": {
+      "required": false,
+      "default": true,
+      "description": "Permite que o Yami ouça comandos de voz"
+    },
+    "autoStart": {
+      "required": false,
+      "default": true,
+      "description": "Inicia o Yami automaticamente com o Windows"
+    },
+    "dashboard": {
+      "required": false,
+      "default": true,
+      "description": "Mostra o Tamagotchi do Yami na tela"
+    },
+    "notifications": {
+      "required": false,
+      "default": true,
+      "description": "Permite notificacoes do sistema"
+    },
+    "whatsapp": {
+      "required": false,
+      "default": false,
+      "description": "Permite acesso ao WhatsApp"
+    },
+    "fileAccess": {
+      "required": false,
+      "default": false,
+      "description": "Permite acesso a arquivos locais"
+    },
+    "camera": {
+      "required": false,
+      "default": false,
+      "description": "Permite acesso a camera"
+    },
+    "location": {
+      "required": false,
+      "default": false,
+      "description": "Permite acesso a localizacao"
+    }
+  },
+  "updatedAt": ""
+}

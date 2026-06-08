@@ -1,0 +1,4215 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yami</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #03070b;
+      --bg-2: #071018;
+      --glass: rgba(9, 22, 31, 0.78);
+      --glass-2: rgba(13, 32, 42, 0.88);
+      --line: rgba(116, 229, 255, 0.24);
+      --line-strong: rgba(116, 229, 255, 0.58);
+      --text: #eefbff;
+      --muted: #91aeb8;
+      --cyan: #55e6ff;
+      --cyan-soft: rgba(85, 230, 255, 0.18);
+      --green: #7df7aa;
+      --amber: #ffd166;
+      --red: #ff6b7a;
+      --violet: #b18cff;
+      --shadow: rgba(0, 0, 0, 0.45);
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    /* ===== ONBOARDING ===== */
+    .onboarding {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(85, 230, 255, 0.15), transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(255, 209, 102, 0.08), transparent 40%),
+        var(--bg);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      padding: 20px;
+    }
+    .onboarding.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .onboarding-card {
+      background: linear-gradient(145deg, rgba(9, 22, 31, 0.95), rgba(5, 12, 18, 0.95));
+      border: 1px solid var(--line-strong);
+      border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+      max-width: 640px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 36px 32px 28px;
+      position: relative;
+    }
+    .onboarding-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--amber), transparent);
+      opacity: 0.8;
+    }
+    .onboarding-logo {
+      width: 72px;
+      height: 72px;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--cyan);
+      text-shadow: 0 0 20px rgba(85, 230, 255, 0.8);
+      box-shadow: 0 0 30px rgba(85, 230, 255, 0.18), inset 0 0 24px rgba(85, 230, 255, 0.1);
+      margin: 0 auto 12px;
+      position: relative;
+    }
+    .onboarding-logo::before,
+    .onboarding-logo::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(85, 230, 255, 0.15);
+    }
+    .onboarding-logo::after {
+      inset: 10px;
+      border-color: rgba(255, 209, 102, 0.25);
+    }
+    .onboarding-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 750;
+      margin: 0 0 4px;
+      letter-spacing: -0.3px;
+    }
+    .onboarding-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 0 24px;
+    }
+    .onboarding-perms {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .onboarding-perm {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(85, 230, 255, 0.04);
+      border: 1px solid rgba(116, 229, 255, 0.1);
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .onboarding-perm:hover {
+      background: rgba(85, 230, 255, 0.08);
+      border-color: rgba(116, 229, 255, 0.2);
+    }
+    .onboarding-perm-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 32px;
+      text-align: center;
+    }
+    .onboarding-perm-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .onboarding-perm-label {
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .onboarding-perm-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.3;
+      margin-top: 1px;
+    }
+    .onboarding-perm-check {
+      color: var(--cyan);
+      font-size: 16px;
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .onboarding-perm.checked .onboarding-perm-check {
+      opacity: 1;
+    }
+    .onboarding-btn {
+      display: block;
+      width: 100%;
+      padding: 14px 24px;
+      border: 1px solid var(--cyan);
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan-soft), rgba(255, 209, 102, 0.08));
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.3px;
+      position: relative;
+      overflow: hidden;
+    }
+    .onboarding-btn:hover {
+      background: linear-gradient(135deg, rgba(85, 230, 255, 0.28), rgba(255, 209, 102, 0.14));
+      box-shadow: 0 0 28px rgba(85, 230, 255, 0.16), inset 0 0 20px rgba(85, 230, 255, 0.05);
+      transform: translateY(-1px);
+    }
+    .onboarding-btn:active {
+      transform: translateY(0);
+    }
+    .onboarding-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .onboarding-btn-progress {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .onboarding-btn.loading .onboarding-btn-text { display: none; }
+    .onboarding-btn.loading .onboarding-btn-progress { display: flex; }
+    .onboarding-footer {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+    @keyframes ob-spin {
+      to { transform: rotate(360deg); }
+    }
+    .ob-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(85, 230, 255, 0.2);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: ob-spin 0.6s linear infinite;
+    }
+    @keyframes ob-fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .onboarding-perm {
+      animation: ob-fade-up 0.4s ease both;
+    }
+    .onboarding-perm:nth-child(1) { animation-delay: 0.05s; }
+    .onboarding-perm:nth-child(2) { animation-delay: 0.1s; }
+    .onboarding-perm:nth-child(3) { animation-delay: 0.15s; }
+    .onboarding-perm:nth-child(4) { animation-delay: 0.2s; }
+    .onboarding-perm:nth-child(5) { animation-delay: 0.25s; }
+    .onboarding-perm:nth-child(6) { animation-delay: 0.3s; }
+    .onboarding-perm:nth-child(7) { animation-delay: 0.35s; }
+    .onboarding-perm:nth-child(8) { animation-delay: 0.4s; }
+    .onboarding-perm:nth-child(9) { animation-delay: 0.45s; }
+    .onboarding-perm:nth-child(10) { animation-delay: 0.5s; }
+    .onboarding-perm:nth-child(11) { animation-delay: 0.55s; }
+    @keyframes ob-pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(85, 230, 255, 0.1); }
+      50% { box-shadow: 0 0 40px rgba(85, 230, 255, 0.25); }
+    }
+    .onboarding-card.success .onboarding-logo {
+      animation: ob-pulse 1.2s ease-in-out infinite;
+    }
+    .onboarding-success-icon {
+      font-size: 48px;
+      text-align: center;
+      margin: 8px 0 4px;
+    }
+    .onboarding-success-text {
+      text-align: center;
+      color: var(--green);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(85, 230, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(85, 230, 255, 0.035) 1px, transparent 1px),
+        radial-gradient(circle at 18% 12%, rgba(85, 230, 255, 0.18), transparent 32%),
+        radial-gradient(circle at 82% 8%, rgba(255, 209, 102, 0.12), transparent 27%),
+        linear-gradient(135deg, #03070b 0%, #081018 46%, #100b17 100%);
+      background-size: 44px 44px, 44px 44px, auto, auto, auto;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.035) 0,
+        rgba(255, 255, 255, 0.035) 1px,
+        transparent 1px,
+        transparent 6px
+      );
+      mix-blend-mode: screen;
+      opacity: 0.28;
+    }
+
+    .shell {
+      width: 100%;
+      min-height: 100dvh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    .stage-topbar {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 20;
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px clamp(16px, 4vw, 44px);
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(3, 7, 11, 0.82), rgba(3, 7, 11, 0));
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      pointer-events: auto;
+    }
+
+    .mark {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      color: var(--cyan);
+      font-weight: 800;
+      text-shadow: 0 0 16px rgba(85, 230, 255, 0.9);
+      box-shadow: 0 0 24px rgba(85, 230, 255, 0.16), inset 0 0 22px rgba(85, 230, 255, 0.12);
+    }
+
+    .mark::before,
+    .mark::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(85, 230, 255, 0.2);
+    }
+
+    .mark::after {
+      inset: 8px;
+      border-color: rgba(255, 209, 102, 0.32);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.1;
+      letter-spacing: 0;
+      font-weight: 750;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-top: 5px;
+      font-size: 13px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: stretch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.95fr) minmax(340px, 1.05fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      background: linear-gradient(145deg, var(--glass), rgba(5, 12, 18, 0.88));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 42px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--amber), transparent);
+      opacity: 0.72;
+    }
+
+    .panel.full { grid-column: 1 / -1; }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .label {
+      font-size: 13px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #dff9ff;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: 4px;
+    }
+
+    .menu-toggle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      padding: 0;
+      position: fixed;
+      top: 16px;
+      right: clamp(16px, 4vw, 44px);
+      z-index: 120;
+      font-size: 28px;
+      line-height: 1;
+      pointer-events: auto;
+      touch-action: manipulation;
+      background: rgba(3, 9, 13, 0.88);
+      backdrop-filter: blur(16px);
+      border-color: rgba(116, 229, 255, 0.58);
+      box-shadow: 0 0 28px rgba(85, 230, 255, 0.22), inset 0 0 16px rgba(85, 230, 255, 0.08);
+    }
+
+    .yami-stage {
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(85, 230, 255, 0.1), transparent 34%),
+        radial-gradient(circle at 74% 20%, rgba(255, 209, 102, 0.06), transparent 24%),
+        radial-gradient(circle at 20% 86%, rgba(177, 140, 255, 0.05), transparent 28%),
+        linear-gradient(145deg, #000 0%, #03070b 46%, #05080c 100%);
+    }
+
+    .yami-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 52%, transparent 0 34%, rgba(0, 0, 0, 0.36) 70%, rgba(0, 0, 0, 0.72));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .yami-avatar {
+      --mouth-open: 0;
+      --mouth-line-height: 6px;
+      --mouth-offset: 0px;
+      --mouth-core-width: 10%;
+      --mouth-core-height: 3%;
+      --mouth-core-opacity: 0;
+      --mouth-core-y: 58%;
+      --mouth-left-rotate: 32deg;
+      --mouth-right-rotate: -32deg;
+      --mouth-scale-y: 1;
+      --eye-y: 0px;
+      --pupil-x: 0px;
+      --pupil-y: 0px;
+      --eyelid-closed: 0;
+      --blush-opacity: 0.6;
+      --avatar-glow-color: 85, 230, 255;
+      --avatar-glow-alpha: 0.14;
+      --avatar-brightness: 1;
+      --avatar-opacity: 1;
+      --indicator-icon: "";
+      --indicator-opacity: 0;
+      --head-glow-alpha: 0.06;
+      --float-cycle: 6200ms;
+      --breathe-cycle: 5200ms;
+      width: clamp(340px, 92vmin, 860px);
+      aspect-ratio: 1;
+      justify-self: center;
+      position: relative;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+      transform-origin: 50% 62%;
+      animation: yamiFloat var(--float-cycle) ease-in-out infinite;
+      filter: brightness(var(--avatar-brightness)) drop-shadow(0 0 28px rgba(var(--avatar-glow-color), var(--avatar-glow-alpha)));
+      opacity: var(--avatar-opacity);
+      z-index: 1;
+      transition: filter 500ms ease, opacity 500ms ease;
+    }
+
+    .yami-avatar::before {
+      content: "";
+      position: absolute;
+      inset: 2%;
+      border-radius: 44% 46% 48% 45%;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(28, 48, 54, 0.65), transparent 36%),
+        radial-gradient(circle at 50% 58%, rgba(var(--avatar-glow-color), var(--head-glow-alpha)), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(8, 16, 20, 0.92), rgba(0, 0, 0, 0.96) 66%),
+        #000;
+      box-shadow:
+        inset 0 0 80px rgba(255, 255, 255, 0.06),
+        inset 0 -24px 64px rgba(var(--avatar-glow-color), var(--head-glow-alpha)),
+        0 22px 70px rgba(0, 0, 0, 0.66),
+        0 0 60px rgba(var(--avatar-glow-color), var(--avatar-glow-alpha));
+      z-index: -1;
+      transition: box-shadow 500ms ease, background 500ms ease;
+    }
+
+    .yami-face {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-origin: 50% 60%;
+      animation: yamiBreathe var(--breathe-cycle) ease-in-out infinite;
+    }
+
+    .yami-eye {
+      position: absolute;
+      top: calc(34% + var(--eye-y));
+      width: 17%;
+      height: 22%;
+      border-radius: 48% 48% 46% 46%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(28, 46, 54, 0.92), rgba(8, 16, 22, 0.98));
+      overflow: hidden;
+      transition: height 400ms ease, top 400ms ease, border-radius 400ms ease;
+    }
+
+    .yami-eye-left { left: 27%; }
+    .yami-eye-right { right: 27%; }
+
+    .yami-pupil {
+      position: absolute;
+      width: 44%;
+      height: 44%;
+      background: radial-gradient(circle at 38% 32%, #6ab, #1a4a6a 42%, #0a2030);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(calc(-50% + var(--pupil-x)), calc(-50% + var(--pupil-y)));
+      transition: transform 400ms ease;
+      box-shadow: 0 0 10px rgba(80, 180, 255, 0.12);
+    }
+
+    .yami-pupil::after {
+      content: "";
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent);
+      border-radius: 50%;
+      top: 16%;
+      left: 20%;
+    }
+
+    .yami-eyelid {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(3, 7, 11, 0.95) 60%);
+      border-radius: inherit;
+      transform-origin: 50% 100%;
+      transform: scaleY(var(--eyelid-closed));
+      transition: transform 350ms ease;
+      pointer-events: none;
+    }
+
+    .yami-cheek {
+      position: absolute;
+      top: 57%;
+      width: 14%;
+      height: 4%;
+      border-radius: 999px;
+      opacity: var(--blush-opacity);
+      transition: opacity 400ms ease;
+    }
+
+    .yami-cheek-left { left: 22%; background: radial-gradient(ellipse, rgba(255, 120, 160, 0.22), transparent); }
+    .yami-cheek-right { right: 22%; background: radial-gradient(ellipse, rgba(255, 120, 160, 0.22), transparent); }
+
+    .yami-mouth {
+      position: absolute;
+      left: 50%;
+      top: 57%;
+      width: 22%;
+      height: 16%;
+      transform: translate(-50%, -50%);
+    }
+
+    .yami-mouth::before,
+    .yami-mouth::after {
+      content: "";
+      position: absolute;
+      top: 48%;
+      width: 50%;
+      height: var(--mouth-line-height);
+      border-radius: 999px;
+      opacity: 0.8;
+      transform-origin: center;
+      transition: height 80ms linear, transform 80ms linear, opacity 80ms linear;
+      background: linear-gradient(to right, rgba(85, 230, 255, 0.15), rgba(200, 240, 255, 0.55), rgba(85, 230, 255, 0.15));
+    }
+
+    .yami-mouth::before {
+      left: 2%;
+      transform: rotate(var(--mouth-left-rotate)) translateY(var(--mouth-offset)) scaleY(var(--mouth-scale-y));
+    }
+
+    .yami-mouth::after {
+      right: 2%;
+      transform: rotate(var(--mouth-right-rotate)) translateY(var(--mouth-offset)) scaleY(var(--mouth-scale-y));
+    }
+
+    .yami-mouth i {
+      position: absolute;
+      left: 50%;
+      top: var(--mouth-core-y);
+      width: var(--mouth-core-width);
+      height: var(--mouth-core-height);
+      border-radius: 48% 48% 54% 54%;
+      opacity: var(--mouth-core-opacity);
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(5, 9, 11, 0.95), rgba(0, 0, 0, 0.98));
+      border: 1px solid rgba(85, 230, 255, 0.15);
+      transition: width 70ms linear, height 70ms linear, opacity 70ms linear, top 70ms linear;
+    }
+
+    .yami-shadow {
+      position: absolute;
+      width: 50%;
+      height: 6%;
+      left: 25%;
+      bottom: 6%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(85, 230, 255, 0.1), transparent 68%);
+      filter: blur(6px);
+      opacity: 0.3;
+      z-index: -2;
+      animation: yamiShadow 6200ms ease-in-out infinite;
+    }
+
+    .yami-indicator {
+      position: absolute;
+      top: -6%;
+      right: -4%;
+      width: 24%;
+      height: 24%;
+      pointer-events: none;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(18px, 3.5vmin, 36px);
+      opacity: var(--indicator-opacity);
+      transition: opacity 500ms ease;
+      line-height: 1;
+      filter: drop-shadow(0 0 10px currentColor);
+      color: var(--cyan);
+    }
+
+    .yami-indicator::before {
+      content: var(--indicator-icon);
+    }
+
+    .yami-avatar[data-mood="passive"] {
+      --avatar-glow-color: 85, 230, 255;
+      --avatar-glow-alpha: 0.2;
+      --avatar-brightness: 1.18;
+      --head-glow-alpha: 0.08;
+    }
+
+    .yami-avatar[data-mood="passive"] .yami-eye {
+      animation: yamiBlink 7600ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="sleeping"] {
+      --avatar-glow-color: 145, 174, 184;
+      --avatar-glow-alpha: 0.08;
+      --avatar-brightness: 0.76;
+      --avatar-opacity: 0.7;
+      --head-glow-alpha: 0.02;
+      --float-cycle: 9200ms;
+      --breathe-cycle: 7200ms;
+      --eyelid-closed: 1;
+      --blush-opacity: 0;
+      --indicator-icon: "💤";
+      --indicator-opacity: 0.9;
+    }
+
+    .yami-avatar[data-mood="sleeping"] .yami-pupil {
+      opacity: 0;
+    }
+
+    .yami-avatar[data-mood="listening"],
+    .yami-avatar[data-mood="talk"] {
+      --avatar-glow-color: 85, 230, 255;
+      --avatar-glow-alpha: 0.2;
+      --eye-y: -2px;
+      --head-glow-alpha: 0.1;
+      --pupil-y: -2px;
+      animation: yamiFloat var(--float-cycle) ease-in-out infinite, yamiHeartBeat 1500ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="listening"] {
+      --indicator-icon: "🎧";
+      --indicator-opacity: 0.7;
+    }
+
+    .yami-avatar[data-mood="listening"] .yami-face {
+      animation: yamiNod 2500ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="processing"] {
+      --avatar-glow-color: 255, 209, 102;
+      --avatar-glow-alpha: 0.22;
+      --eye-y: -4px;
+      --pupil-y: -5px;
+      --pupil-x: 0px;
+      --head-glow-alpha: 0.12;
+      --indicator-icon: "⚙";
+      --indicator-opacity: 0.9;
+      animation: yamiFloat 4200ms ease-in-out infinite, yamiFocus 1100ms ease-in-out infinite, yamiPulseGlow 2000ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="processing"] .yami-face {
+      animation: yamiBreathe 3200ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="processing"] .yami-indicator {
+      animation: yamiSpin 1800ms linear infinite;
+      filter: drop-shadow(0 0 8px rgba(255, 209, 102, 0.6));
+    }
+
+    .yami-avatar[data-mood="processing"] .yami-eye {
+      animation: yamiBlink 12000ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="speaking"] {
+      --avatar-glow-color: 125, 247, 170;
+      --avatar-glow-alpha: 0.2;
+      --avatar-brightness: 1.08;
+      --head-glow-alpha: 0.1;
+    }
+
+    .yami-avatar[data-mood="speaking"] .yami-face {
+      animation: yamiBreathe 3200ms ease-in-out infinite, yamiTalkGesture 900ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="speaking"] .yami-mouth::before,
+    .yami-avatar[data-mood="speaking"] .yami-mouth::after {
+      opacity: 0;
+      transform: translateY(8px) scaleX(0.25) scaleY(0.2);
+    }
+
+    .yami-avatar[data-mood="speaking"] .yami-mouth i {
+      border-radius: 48% 48% 58% 58%;
+    }
+
+    .yami-avatar[data-mood="happy"] {
+      --avatar-glow-color: 255, 180, 200;
+      --avatar-glow-alpha: 0.24;
+      --avatar-brightness: 1.2;
+      --blush-opacity: 1;
+      --head-glow-alpha: 0.14;
+      --eyelid-closed: 0.55;
+      animation: yamiFloat 4800ms ease-in-out infinite, yamiHeartBeat 800ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="happy"] .yami-eye {
+      height: 16%;
+      top: 36%;
+      border-radius: 999px 999px 45% 45%;
+      animation: none;
+    }
+
+    .yami-avatar[data-mood="happy"] .yami-pupil {
+      opacity: 0.4;
+    }
+
+    .yami-avatar[data-mood="happy"] .yami-face {
+      animation: yamiBreathe 4200ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="error"] {
+      --avatar-glow-color: 255, 107, 122;
+      --avatar-glow-alpha: 0.18;
+      --head-glow-alpha: 0.08;
+    }
+
+    .yami-avatar[data-mood="error"] .yami-eye,
+    .yami-avatar[data-mood="error"] .yami-cheek,
+    .yami-avatar[data-mood="error"] .yami-mouth::before,
+    .yami-avatar[data-mood="error"] .yami-mouth::after,
+    .yami-avatar[data-mood="error"] .yami-mouth i {
+      box-shadow: inset 0 0 18px rgba(255, 107, 122, 0.04), 0 0 18px rgba(255, 107, 122, 0.1);
+    }
+
+    .yami-avatar[data-mood="curious"] {
+      --avatar-glow-color: 177, 140, 255;
+      --avatar-glow-alpha: 0.18;
+      --eye-y: -1px;
+      --pupil-y: -1px;
+      --head-glow-alpha: 0.08;
+      --indicator-icon: "?";
+      --indicator-opacity: 0.8;
+    }
+
+    .yami-avatar[data-mood="curious"] .yami-eye-left {
+      height: 20%;
+      top: 35%;
+      border-radius: 48% 48% 46% 46%;
+    }
+
+    .yami-avatar[data-mood="busy"] {
+      --avatar-glow-color: 85, 230, 255;
+      --avatar-glow-alpha: 0.12;
+      --eye-y: -1px;
+      --eyelid-closed: 0.12;
+      --head-glow-alpha: 0.05;
+      --blush-opacity: 0.2;
+      --indicator-icon: "⋯";
+      --indicator-opacity: 0.7;
+    }
+
+    .yami-avatar[data-mood="updating"] {
+      --avatar-glow-color: 255, 209, 102;
+      --avatar-glow-alpha: 0.22;
+      --head-glow-alpha: 0.12;
+      --indicator-icon: "⟳";
+      --indicator-opacity: 0.9;
+    }
+
+    .yami-avatar[data-mood="updating"] .yami-indicator {
+      animation: yamiSpin 1500ms linear infinite;
+    }
+
+    @keyframes yamiFloat {
+      0%, 100% { transform: translateY(0) rotate(-0.4deg); }
+      50% { transform: translateY(-8px) rotate(0.6deg); }
+    }
+
+    @keyframes yamiBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.016); }
+    }
+
+    @keyframes yamiBlink {
+      0%, 91%, 100% { transform: scaleY(1); }
+      94%, 96% { transform: scaleY(0.08); }
+    }
+
+    @keyframes yamiFocus {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.15); }
+    }
+
+    @keyframes yamiTalkGesture {
+      0%, 100% { transform: rotate(-0.55deg) translateY(0) scale(1); }
+      50% { transform: rotate(0.65deg) translateY(-2px) scale(1.01); }
+    }
+
+    @keyframes yamiShadow {
+      0%, 100% { transform: scaleX(1); opacity: 0.24; }
+      50% { transform: scaleX(0.78); opacity: 0.38; }
+    }
+
+    @keyframes yamiSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes yamiZzz {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-18px) scale(1.3); opacity: 0; }
+    }
+
+    @keyframes yamiNod {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-2deg); }
+      75% { transform: rotate(2deg); }
+    }
+
+    @keyframes yamiPulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 28px var(--avatar-glow-color)); }
+      50% { filter: drop-shadow(0 0 40px var(--avatar-glow-color)); }
+    }
+
+    @keyframes yamiHeartBeat {
+      0%, 100% { transform: scale(1); }
+      10%, 30% { transform: scale(1.05); }
+      20% { transform: scale(1.02); }
+    }
+
+    .voice-copy {
+      min-width: 0;
+      width: 100%;
+    }
+
+    .voice-copy h2 {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 4vw, 44px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .voice-copy p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .voice-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button,
+    a.button-link {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 0 14px;
+      background: rgba(13, 32, 42, 0.92);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 720;
+      font-size: 13px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, rgba(20, 164, 185, 0.95), rgba(29, 108, 164, 0.92));
+      border-color: rgba(85, 230, 255, 0.72);
+      color: #f3fdff;
+    }
+
+    button.danger {
+      color: #ffe7ea;
+      border-color: rgba(255, 107, 122, 0.62);
+      background: rgba(88, 24, 38, 0.82);
+    }
+
+    button.ghost {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+
+    .voice-readout {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .readout {
+      border: 1px solid rgba(116, 229, 255, 0.2);
+      border-radius: 7px;
+      background: rgba(0, 0, 0, 0.22);
+      padding: 12px;
+      min-height: 72px;
+    }
+
+    .readout span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+
+    .readout div {
+      overflow-wrap: anywhere;
+      line-height: 1.42;
+      font-size: 14px;
+    }
+
+    .eq {
+      display: flex;
+      align-items: end;
+      gap: 5px;
+      height: 42px;
+      width: 92px;
+    }
+
+    .eq i {
+      display: block;
+      width: 8px;
+      min-height: 9px;
+      border-radius: 2px;
+      background: linear-gradient(to top, var(--cyan), var(--amber));
+      opacity: 0.34;
+    }
+
+    .listening .eq i {
+      animation: bar 860ms ease-in-out infinite;
+      opacity: 0.9;
+    }
+
+    .listening .eq i:nth-child(2) { animation-delay: 90ms; }
+    .listening .eq i:nth-child(3) { animation-delay: 180ms; }
+    .listening .eq i:nth-child(4) { animation-delay: 270ms; }
+    .listening .eq i:nth-child(5) { animation-delay: 360ms; }
+    .listening .eq i:nth-child(6) { animation-delay: 450ms; }
+
+    @keyframes bar {
+      0%, 100% { height: 10px; }
+      50% { height: 38px; }
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 48px;
+    }
+
+    .row + .row {
+      border-top: 1px solid rgba(116, 229, 255, 0.16);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-flex;
+      width: 58px;
+      height: 32px;
+      flex: 0 0 auto;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: rgba(255, 107, 122, 0.2);
+      border: 1px solid rgba(255, 107, 122, 0.52);
+      border-radius: 999px;
+      transition: 160ms ease;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 24px;
+      width: 24px;
+      left: 3px;
+      top: 3px;
+      background: #effcff;
+      border-radius: 50%;
+      transition: 160ms ease;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+    }
+
+    .switch input:checked + .slider {
+      background: rgba(85, 230, 255, 0.22);
+      border-color: rgba(85, 230, 255, 0.78);
+    }
+
+    .switch input:checked + .slider::before { transform: translateX(26px); }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(116, 229, 255, 0.18);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .ok .dot { background: var(--green); color: var(--green); }
+    .warn .dot { background: var(--amber); color: var(--amber); }
+    .bad .dot { background: var(--red); color: var(--red); }
+
+    .form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      min-width: 0;
+      width: 100%;
+      min-height: 40px;
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(116, 229, 255, 0.2);
+      border-radius: 7px;
+      padding: 0 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 82px;
+      padding-top: 10px;
+      resize: vertical;
+      font-family: inherit;
+      line-height: 1.4;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--cyan);
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(85, 230, 255, 0.14);
+    }
+
+    .voice-form label {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .voice-form .wide {
+      grid-column: 1 / -1;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .contact,
+    .chat-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 44px;
+      border: 1px solid rgba(116, 229, 255, 0.16);
+      background: rgba(0, 0, 0, 0.24);
+      border-radius: 7px;
+      padding: 7px 8px 7px 12px;
+    }
+
+    .chat-main {
+      min-width: 0;
+      display: grid;
+      gap: 3px;
+    }
+
+    .chat-number {
+      font-weight: 750;
+      overflow-wrap: anywhere;
+    }
+
+    .chat-meta {
+      color: var(--muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .empty {
+      color: var(--muted);
+      border: 1px dashed rgba(116, 229, 255, 0.22);
+      border-radius: 7px;
+      padding: 12px;
+      font-size: 13px;
+      margin-top: 14px;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .log {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      min-height: 104px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(116, 229, 255, 0.18);
+      border-radius: 7px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .status-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .metric {
+      border: 1px solid rgba(116, 229, 255, 0.16);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 7px;
+      padding: 10px;
+      min-height: 66px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    .menu-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(0, 0, 0, 0.52);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease;
+    }
+
+    .menu-drawer {
+      position: fixed;
+      inset: 0 0 0 auto;
+      z-index: 100;
+      width: min(920px, 100vw);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(145deg, rgba(6, 14, 20, 0.98), rgba(1, 5, 8, 0.98)),
+        #020609;
+      border-left: 1px solid var(--line);
+      box-shadow: -26px 0 60px rgba(0, 0, 0, 0.46);
+      transform: translateX(102%);
+      transition: transform 220ms ease;
+    }
+
+    body.menu-open .menu-backdrop {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.menu-open .menu-drawer {
+      transform: translateX(0);
+    }
+
+    .menu-head {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(116, 229, 255, 0.18);
+      flex: 0 0 auto;
+    }
+
+    .menu-close {
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      border-radius: 50%;
+      font-size: 20px;
+    }
+
+    .menu-content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      overscroll-behavior: contain;
+      display: grid;
+      grid-template-columns: 196px minmax(0, 1fr);
+    }
+
+    .menu-nav {
+      min-height: 0;
+      overflow-y: auto;
+      padding: 14px;
+      border-right: 1px solid rgba(116, 229, 255, 0.14);
+      background: rgba(255, 255, 255, 0.018);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .menu-nav button {
+      width: 100%;
+      min-height: 54px;
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid rgba(116, 229, 255, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.035);
+      text-align: left;
+      color: var(--text);
+    }
+
+    .menu-nav button.active {
+      border-color: rgba(116, 229, 255, 0.58);
+      background: linear-gradient(135deg, rgba(29, 179, 211, 0.24), rgba(255, 217, 102, 0.08));
+      box-shadow: inset 3px 0 0 rgba(116, 229, 255, 0.72);
+    }
+
+    .menu-nav button span {
+      font-size: 12px;
+      font-weight: 860;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .menu-nav button small {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.25;
+    }
+
+    .menu-pages {
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+    }
+
+    .menu-page {
+      min-height: 0;
+      overflow-y: auto;
+      padding: 16px;
+      display: none;
+      gap: 14px;
+      align-content: start;
+      scrollbar-width: thin;
+    }
+
+    .menu-page.active {
+      display: grid;
+    }
+
+    .menu-page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 4px 2px 0;
+    }
+
+    .menu-content .panel {
+      box-shadow: none;
+    }
+
+    .menu-content .panel.full {
+      grid-column: auto;
+    }
+
+    .menu-content .top-actions button {
+      flex: 1 1 0;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .feature-card {
+      min-height: 104px;
+      border: 1px solid rgba(116, 229, 255, 0.18);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.026);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .feature-card strong {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    /* ===== SETTINGS PANEL ===== */
+    .settings-toggle {
+      position: fixed;
+      bottom: clamp(20px, 4vh, 40px);
+      right: clamp(20px, 4vw, 40px);
+      z-index: 130;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      padding: 0;
+      font-size: 24px;
+      line-height: 1;
+      pointer-events: auto;
+      touch-action: manipulation;
+      background: rgba(3, 9, 13, 0.82);
+      backdrop-filter: blur(14px);
+      border-color: rgba(116, 229, 255, 0.32);
+      box-shadow: 0 0 20px rgba(85, 230, 255, 0.1);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .settings-toggle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 32px rgba(85, 230, 255, 0.2);
+    }
+    .settings-toggle.open {
+      transform: rotate(60deg);
+      box-shadow: 0 0 28px rgba(255, 107, 122, 0.16);
+      border-color: rgba(255, 107, 122, 0.42);
+    }
+
+    .settings-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms ease;
+    }
+    body.settings-open .settings-backdrop {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .settings-drawer {
+      position: fixed;
+      inset: 0 0 0 auto;
+      z-index: 110;
+      width: min(480px, 94vw);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(165deg, rgba(6, 14, 20, 0.99), rgba(2, 6, 10, 0.99)), #020609;
+      border-left: 1px solid var(--line);
+      box-shadow: -20px 0 50px rgba(0, 0, 0, 0.5);
+      transform: translateX(105%);
+      transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    body.settings-open .settings-drawer {
+      transform: translateX(0);
+    }
+
+    .settings-head {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(116, 229, 255, 0.12);
+      min-height: 68px;
+    }
+    .settings-head h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 750;
+      letter-spacing: 0;
+      color: var(--text);
+    }
+    .settings-head .hint {
+      margin: 0;
+      font-size: 12px;
+    }
+    .settings-close {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: 50%;
+      font-size: 20px;
+      flex: 0 0 auto;
+    }
+
+    .settings-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 6px 0 20px;
+      scrollbar-width: thin;
+    }
+
+    .settings-category {
+      border-bottom: 1px solid rgba(116, 229, 255, 0.07);
+    }
+    .settings-category:last-child {
+      border-bottom: none;
+    }
+
+    .settings-category-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cyan);
+      opacity: 0.72;
+    }
+    .settings-category-title .cat-icon {
+      font-size: 16px;
+      opacity: 0.8;
+      width: 22px;
+      text-align: center;
+    }
+
+    .settings-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      min-height: 54px;
+      cursor: pointer;
+      transition: background 120ms ease;
+      border-radius: 0;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      color: var(--text);
+      font: inherit;
+    }
+    .settings-item:hover {
+      background: rgba(255, 255, 255, 0.035);
+    }
+    .settings-item:active {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .settings-item-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      flex: 0 0 auto;
+      background: rgba(85, 230, 255, 0.1);
+      border: 1px solid rgba(85, 230, 255, 0.12);
+    }
+    .settings-item-icon.wa { background: rgba(37, 211, 102, 0.12); border-color: rgba(37, 211, 102, 0.2); }
+    .settings-item-icon.g { background: rgba(66, 133, 244, 0.12); border-color: rgba(66, 133, 244, 0.2); }
+    .settings-item-icon.m { background: rgba(251, 188, 4, 0.12); border-color: rgba(251, 188, 4, 0.2); }
+    .settings-item-icon.s { background: rgba(255, 107, 122, 0.12); border-color: rgba(255, 107, 122, 0.2); }
+    .settings-item-icon.p { background: rgba(177, 140, 255, 0.12); border-color: rgba(177, 140, 255, 0.2); }
+    .settings-item-icon.a { background: rgba(255, 209, 102, 0.12); border-color: rgba(255, 209, 102, 0.2); }
+
+    .settings-item-info {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+    .settings-item-label {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .settings-item-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .settings-item-action {
+      flex: 0 0 auto;
+      font-size: 18px;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    .settings-badge {
+      flex: 0 0 auto;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(116, 229, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .settings-badge.connected {
+      color: var(--green);
+      border-color: rgba(125, 247, 170, 0.3);
+      background: rgba(125, 247, 170, 0.08);
+    }
+    .settings-badge.action {
+      color: var(--cyan);
+      border-color: rgba(85, 230, 255, 0.3);
+      background: rgba(85, 230, 255, 0.08);
+    }
+
+    .account-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 72px;
+      border: 1px solid rgba(116, 229, 255, 0.16);
+      background: rgba(0, 0, 0, 0.24);
+      border-radius: 8px;
+      padding: 14px 16px;
+      transition: border-color 150ms ease;
+    }
+    .account-card + .account-card { margin-top: 8px; }
+    .account-card.connected { border-color: rgba(125, 247, 170, 0.25); }
+    .account-card-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: grid; place-items: center;
+      font-size: 18px; font-weight: 800;
+      flex: 0 0 auto;
+      border: 1px solid rgba(85, 230, 255, 0.14);
+      background: rgba(85, 230, 255, 0.06);
+    }
+    .account-card-icon.g { background: rgba(66,133,244,0.12); border-color: rgba(66,133,244,0.2); }
+    .account-card-icon.m { background: rgba(251,188,4,0.12); border-color: rgba(251,188,4,0.2); }
+    .account-card-icon.wa { background: rgba(37,211,102,0.12); border-color: rgba(37,211,102,0.2); }
+    .account-card-icon.s { background: rgba(255,107,122,0.12); border-color: rgba(255,107,122,0.2); }
+    .account-card-icon.p { background: rgba(177,140,255,0.12); border-color: rgba(177,140,255,0.2); }
+    .account-card-icon.a { background: rgba(255,209,102,0.12); border-color: rgba(255,209,102,0.2); }
+    .account-card-body { flex: 1; min-width: 0; display: grid; gap: 3px; }
+    .account-card-name { font-weight: 750; font-size: 14px; }
+    .account-card-desc { color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .account-card-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .account-card-perm {
+      font-size: 11px; padding: 2px 8px; border-radius: 999px;
+      border: 1px solid rgba(116, 229, 255, 0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+    }
+    .account-card-perm.granted {
+      border-color: rgba(125, 247, 170, 0.2);
+      background: rgba(125, 247, 170, 0.06);
+      color: var(--green);
+    }
+    .account-card-actions { display: flex; gap: 8px; flex: 0 0 auto; }
+    .account-card-actions button { min-height: 34px; font-size: 12px; white-space: nowrap; }
+    .provider-icon-lg {
+      width: 32px; height: 32px; border-radius: 8px; font-size: 15px; font-weight: 800;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex: 0 0 auto; border: 1px solid rgba(85,230,255,0.14); background: rgba(85,230,255,0.06);
+    }
+    .provider-icon-lg.g { background: rgba(66,133,244,0.12); border-color: rgba(66,133,244,0.2); }
+    .provider-icon-lg.m { background: rgba(251,188,4,0.12); border-color: rgba(251,188,4,0.2); }
+    .provider-icon-lg.wa { background: rgba(37,211,102,0.12); border-color: rgba(37,211,102,0.2); }
+    .provider-icon-lg.s { background: rgba(255,107,122,0.12); border-color: rgba(255,107,122,0.2); }
+    .provider-icon-lg.p { background: rgba(177,140,255,0.12); border-color: rgba(177,140,255,0.2); }
+    .provider-icon-lg.a { background: rgba(255,209,102,0.12); border-color: rgba(255,209,102,0.2); }
+    .provider-card {
+      border: 1px solid rgba(116, 229, 255, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.026);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .provider-card-head {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .provider-card-head strong { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .provider-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.45; flex: 1; }
+    .provider-card .badge { align-self: flex-start; }
+
+    .settings-suggestion {
+      margin: 12px 16px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 209, 102, 0.25);
+      background: linear-gradient(135deg, rgba(255, 209, 102, 0.08), rgba(255, 209, 102, 0.02));
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .settings-suggestion .sugg-icon {
+      font-size: 20px;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+    .settings-suggestion .sugg-body {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .settings-suggestion .sugg-body strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+      color: var(--amber);
+    }
+    .settings-suggestion .sugg-body p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    .settings-suggestion .sugg-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .settings-suggestion .sugg-actions button {
+      min-height: 34px;
+      font-size: 12px;
+      padding: 0 14px;
+    }
+
+    .settings-separator {
+      height: 1px;
+      background: rgba(116, 229, 255, 0.06);
+      margin: 0 20px;
+    }
+
+    @media (max-width: 640px) {
+      .settings-toggle {
+        bottom: 16px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+      }
+      .settings-drawer { width: 100vw; }
+      .settings-item { padding: 10px 16px; min-height: 48px; }
+      .settings-category-title { padding: 14px 16px 6px; }
+      .settings-suggestion { margin: 8px 12px; }
+    }
+
+      @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .yami-stage { min-height: 100dvh; }
+      .voice-copy h2 { font-size: 30px; }
+      .yami-avatar { width: min(86vmin, 520px); transform: translateY(-8vh); }
+      .menu-drawer { width: min(720px, 100vw); }
+      .menu-content { grid-template-columns: 168px minmax(0, 1fr); }
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .shell { width: 100%; padding: 0; }
+      .stage-topbar { min-height: 70px; padding: 12px 14px; }
+      .menu-toggle { top: 12px; right: 14px; width: 52px; height: 52px; }
+      .top-actions, .voice-actions, .footer-actions { width: 100%; }
+      button, a.button-link { width: 100%; }
+      .contact button, .chat-item a.button-link { width: auto; }
+      .form { grid-template-columns: 1fr; }
+      .status-strip { grid-template-columns: 1fr; }
+      .chat-item { align-items: flex-start; flex-direction: column; }
+      .brand { gap: 10px; }
+      .mark { width: 40px; height: 40px; }
+      h1 { font-size: 22px; }
+      .sub { font-size: 12px; }
+      .yami-avatar { width: min(104vmin, 470px); transform: translateY(-10vh); }
+      .menu-content {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto minmax(0, 1fr);
+      }
+      .menu-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-right: 0;
+        border-bottom: 1px solid rgba(116, 229, 255, 0.14);
+        padding: 10px 12px;
+      }
+      .menu-nav button {
+        width: min(44vw, 162px);
+        flex: 0 0 auto;
+      }
+      .menu-page { padding: 12px; }
+      .voice-copy { width: 100%; padding: 14px; }
+      .voice-copy h2 { font-size: 28px; }
+      .voice-copy p { font-size: 13px; }
+      .panel-title { align-items: flex-start; }
+      .eq { width: 62px; flex: 0 0 62px; overflow: hidden; }
+    }
+  </style>
+</head>
+<body>
+  <div class="onboarding" id="onboardingOverlay" aria-hidden="true">
+    <div class="onboarding-card" id="onboardingCard">
+      <div class="onboarding-logo">Y</div>
+      <h2 class="onboarding-title">Bem-vindo ao Yami</h2>
+      <p class="onboarding-sub">
+        Para funcionar direitinho, o Yami precisa de algumas permissões.
+        Você pode autorizar tudo de uma vez agora — sem precisar confirmar várias vezes.
+      </p>
+      <div class="onboarding-perms" id="onboardingPerms"></div>
+      
+      <div id="onboardingProgress" style="display:none; margin-bottom:16px;">
+        <div style="font-size:12px; color:var(--muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Configurando...</div>
+        <div style="background:rgba(85,230,255,0.05); border:1px solid rgba(116,229,255,0.1); border-radius:6px; padding:12px; font-size:13px; line-height:1.6;">
+          <div id="onboardingProgressText">Inicializando...</div>
+          <div id="onboardingProgressBar" style="margin-top:10px; height:4px; background:rgba(85,230,255,0.1); border-radius:2px; overflow:hidden;">
+            <div style="height:100%; background:linear-gradient(90deg, var(--cyan), var(--amber)); width:0%; transition:width 0.3s; border-radius:2px;" id="onboardingProgressBarInner"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="onboarding-btn" id="onboardingBtn">
+        <span class="onboarding-btn-text">Autorizar tudo e continuar</span>
+        <span class="onboarding-btn-progress">
+          <span class="ob-spinner"></span>
+          <span>Configurando...</span>
+        </span>
+      </button>
+      <div class="onboarding-footer">Yami v0.1.0 · Suas permissões ficam salvas no seu computador</div>
+    </div>
+  </div>
+  <main class="shell">
+    <section class="yami-stage" id="voicePanel">
+      <div class="stage-topbar">
+        <button id="menuToggle" class="menu-toggle" title="Abrir menu" aria-label="Abrir menu" aria-controls="menuDrawer" aria-expanded="false">☰</button>
+      </div>
+
+      <div class="yami-avatar" id="yamiAvatar" data-mood="passive" data-gaze="center" aria-label="Yami em espera">
+        <div class="yami-face" id="yamiFace" aria-hidden="true">
+          <div class="yami-eye yami-eye-left">
+            <div class="yami-pupil"></div>
+            <div class="yami-eyelid"></div>
+          </div>
+          <div class="yami-eye yami-eye-right">
+            <div class="yami-pupil"></div>
+            <div class="yami-eyelid"></div>
+          </div>
+          <div class="yami-cheek yami-cheek-left"></div>
+          <div class="yami-cheek yami-cheek-right"></div>
+          <div class="yami-mouth" id="yamiMouth"><i></i></div>
+        </div>
+        <div class="yami-indicator" id="yamiIndicator"></div>
+        <div class="yami-shadow" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <div class="menu-backdrop" id="menuBackdrop" hidden></div>
+    <aside class="menu-drawer" id="menuDrawer" aria-hidden="true">
+      <div class="menu-head">
+        <div>
+          <div class="label">Dashboard Yami</div>
+          <div class="hint">Centro de controle, voz, gateway e chats.</div>
+        </div>
+        <button id="menuClose" class="menu-close ghost" title="Fechar menu" aria-label="Fechar menu">×</button>
+      </div>
+      <div class="menu-content">
+        <nav class="menu-nav" aria-label="Funcoes do dashboard">
+          <button type="button" class="active" data-menu-page="dashboard"><span>Dashboard</span><small>Visao geral</small></button>
+          <button type="button" data-menu-page="voice"><span>Voz Yami</span><small>Talk e escuta</small></button>
+          <button type="button" data-menu-page="whatsapp"><span>WhatsApp</span><small>Auto resposta</small></button>
+          <button type="button" data-menu-page="gateway"><span>Gateway Yami</span><small>Status e controle</small></button>
+          <button type="button" data-menu-page="chats"><span>Chats Yami</span><small>Sessoes por numero</small></button>
+          <button type="button" data-menu-page="security"><span>Seguranca</span><small>Bloqueios</small></button>
+          <button type="button" data-menu-page="integrations"><span>Integracoes</span><small>Contas e apps</small></button>
+          <button type="button" data-menu-page="automations"><span>Automacoes</span><small>Tarefas futuras</small></button>
+          <button type="button" data-menu-page="pendrive"><span>Pendrive</span><small>Identidade e social</small></button>
+          <button type="button" data-menu-page="system"><span>Sistema</span><small>EXE e runtime</small></button>
+        </nav>
+
+        <div class="menu-pages">
+          <section class="menu-page active" data-page="dashboard" id="menu-dashboard">
+            <div class="menu-page-head">
+              <div>
+                <div class="label">Yami Command Center</div>
+                <div class="hint">Tudo aparece aqui como Yami. O motor interno fica transparente.</div>
+              </div>
+            </div>
+            <div class="status-strip">
+              <div class="metric"><span>WhatsApp</span><strong id="metricWhatsApp">...</strong></div>
+              <div class="metric"><span>Gateway Yami</span><strong id="metricGateway">...</strong></div>
+              <div class="metric"><span>IA</span><strong id="metricAi">Yami</strong></div>
+            </div>
+            <div class="feature-grid">
+              <div class="feature-card">
+                <strong>Voz ativa</strong>
+                <p>Escuta passiva sempre ligada. Responde so depois de acorda e para com descansa.</p>
+                <button type="button" class="ghost" data-menu-jump="voice">Abrir voz</button>
+              </div>
+              <div class="feature-card">
+                <strong>Gateway Yami</strong>
+                <p>Status do gateway sem reinicios automaticos. Reinicia apenas se voce pedir.</p>
+                <button type="button" class="ghost" data-menu-jump="gateway">Ver gateway</button>
+              </div>
+              <div class="feature-card">
+                <strong>Chats Yami</strong>
+                <p>Cada numero direto fica organizado como uma sessao propria.</p>
+                <button type="button" class="ghost" data-menu-jump="chats">Ver chats</button>
+              </div>
+              <div class="feature-card">
+                <strong>Integracoes</strong>
+                <p>Espaco preparado para Google Fotos, agenda, arquivos, browser e futuras contas.</p>
+                <button type="button" class="ghost" data-menu-jump="integrations">Abrir integracoes</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="voice" id="menu-voice-page">
+            <div class="panel voice-copy" id="menu-voz">
+              <div class="panel-title">
+                <div>
+                  <div class="label">Nucleo de voz Yami</div>
+                  <div class="hint" id="voiceStatus">Microfone em espera.</div>
+                </div>
+                <div class="eq" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+              <h2>Acorde o Yami por voz.</h2>
+              <p>Diga acorda para iniciar. A Yami envia para o motor local e le a resposta curta em voz alta. Diga descansa ou descança para parar.</p>
+              <div class="voice-actions">
+                <button id="voiceBtn" class="primary" title="Ligar escuta por microfone">Ligar escuta</button>
+                <button id="stopVoiceBtn" class="ghost" title="Parar modo Talk">Descansar agora</button>
+                <button id="testVoiceBtn" title="Testar audio da Yami">Testar voz</button>
+              </div>
+              <div class="voice-readout">
+                <div class="readout">
+                  <span>Ultimo audio captado</span>
+                  <div id="transcriptLog">Aguardando comando de despertar.</div>
+                </div>
+                <div class="readout">
+                  <span>Resposta do Yami</span>
+                  <div id="yamiReply">Yami em standby.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" id="menu-voz-config">
+              <div class="panel-title">
+                <div>
+                  <div class="label">Voz unica</div>
+                  <div class="hint">Somente a voz local do Windows toca. Speak/WebRTC nativo fica desligado.</div>
+                </div>
+              </div>
+              <div class="form voice-form">
+                <label>
+                  <span>Backend</span>
+                  <select id="voiceBackend">
+                    <option value="powershell">Windows padrao</option>
+                    <option value="pyttsx3">pyttsx3 local</option>
+                    <option value="piper">Piper local</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Nome da voz</span>
+                  <input id="voiceName" type="text" placeholder="Microsoft Maria Desktop">
+                </label>
+                <label>
+                  <span>Velocidade</span>
+                  <input id="voiceRate" type="range" min="-4" max="4" step="1">
+                </label>
+                <label>
+                  <span>Volume</span>
+                  <input id="voiceVolume" type="range" min="40" max="100" step="5">
+                </label>
+                <label class="wide">
+                  <span>Referencia</span>
+                  <input id="voiceReference" type="text" placeholder="https://github.com/Aniket-Roy22/AI-Voice-Assistant">
+                </label>
+                <label class="wide">
+                  <span>Observacao</span>
+                  <textarea id="voiceReferenceNote" rows="3" placeholder="Referencia usada para estilo; a fala ativa continua local."></textarea>
+                </label>
+              </div>
+              <div class="hint" id="voiceSummary">Voz local padrao ativa.</div>
+              <div class="footer-actions">
+                <button id="voiceSaveBtn" class="primary" title="Salvar voz">Salvar voz</button>
+                <button id="voicePresetBtn" class="ghost" title="Usar referencia enviada">Referencia enviada</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="whatsapp" id="menu-whatsapp-page">
+            <div class="panel" id="menu-automatico">
+              <div class="row">
+                <div>
+                  <div class="label">Modo automatico</div>
+                  <div class="hint">Controla respostas automaticas do WhatsApp. O numero principal continua protegido pela configuracao atual.</div>
+                </div>
+                <label class="switch" title="Ligar ou desligar modo automatico">
+                  <input id="enabledToggle" type="checkbox">
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="row">
+                <div>
+                  <div class="label">Grupos</div>
+                  <div class="hint">Respostas em grupos ficam desligadas.</div>
+                </div>
+                <span class="badge bad"><span class="dot"></span>Off</span>
+              </div>
+              <div class="badges" id="badges"></div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="gateway" id="menu-gateway-page">
+            <div class="top-actions">
+              <button id="refreshBtn" class="ghost" title="Atualizar status">Atualizar</button>
+              <button id="restartBtn" title="Reiniciar gateway Yami">Reiniciar gateway Yami</button>
+            </div>
+            <div class="panel" id="menu-status">
+              <div class="panel-title">
+                <div>
+                  <div class="label">Telemetria Yami</div>
+                  <div class="hint">Gateway Yami, WhatsApp e configuracao ativa.</div>
+                </div>
+              </div>
+              <div class="log" id="statusLog">Carregando...</div>
+              <div class="footer-actions">
+                <button id="saveBtn" class="primary" title="Salvar configuracao">Salvar configuracao</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="chats" id="menu-chats-page">
+            <div class="panel full" id="menu-chats">
+              <div class="panel-title">
+                <div>
+                  <div class="label">Chats Yami por numero</div>
+                  <div class="hint">Cada numero direto ganha uma sessao propria no dashboard Yami.</div>
+                </div>
+              </div>
+              <div id="chatList" class="contact-list"></div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="security" id="menu-security-page">
+            <div class="panel full" id="menu-bloqueios">
+              <div class="panel-title">
+                <div>
+                  <div class="label">Bloqueios locais</div>
+                  <div class="hint">Use telefone com DDI, por exemplo +5535999999999.</div>
+                </div>
+              </div>
+              <div class="form">
+                <input id="contactInput" type="text" placeholder="+55..." autocomplete="off">
+                <button id="addBtn" title="Adicionar contato bloqueado">Adicionar</button>
+              </div>
+              <div id="contactList" class="contact-list"></div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="integrations" id="menu-integrations-page">
+            <div class="menu-page-head">
+              <div>
+                <div class="label">Integracoes Yami</div>
+                <div class="hint">Gerencie todas as suas contas conectadas em um so lugar.</div>
+              </div>
+              <div class="top-actions">
+                <button id="integrationsRefreshBtn" class="ghost" title="Atualizar status das contas">Atualizar</button>
+              </div>
+            </div>
+            <div id="integrationsSummary" class="status-strip" style="margin-top:0">
+              <div class="metric"><span>Contas conectadas</span><strong id="metricConnectedAccounts">0</strong></div>
+              <div class="metric"><span>Ultima sincronizacao</span><strong id="metricLastSync">Nunca</strong></div>
+              <div class="metric"><span>Provedores disponiveis</span><strong id="metricTotalProviders">15+</strong></div>
+            </div>
+            <div id="connectedAccountsList"></div>
+            <div id="availableProvidersList">
+              <div class="panel full" style="margin-top:8px">
+                <div class="panel-title">
+                  <div>
+                    <div class="label">Provedores disponiveis</div>
+                    <div class="hint">Conecte sua conta uma unica vez e o Yami reutiliza para todas as funcoes compativeis.</div>
+                  </div>
+                </div>
+                <div id="providersGrid" class="feature-grid"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="automations" id="menu-automations-page">
+            <div class="menu-page-head">
+              <div>
+                <div class="label">Automacoes Yami</div>
+                <div class="hint">Base para rotinas, comandos locais e tarefas recorrentes.</div>
+              </div>
+            </div>
+            <div class="feature-grid">
+              <div class="feature-card"><strong>Apps e sites</strong><p>Abrir Spotify, navegador, WhatsApp, pastas e ferramentas locais rapidamente.</p><span class="badge good"><span class="dot"></span>Ativo</span></div>
+              <div class="feature-card"><strong>Feedback continuo</strong><p>Reservado para progresso falado e textual em tarefas longas.</p><span class="badge"><span class="dot"></span>Fila</span></div>
+              <div class="feature-card"><strong>Habitos</strong><p>Perfil de preferencias e estilo de resposta para personalizacao futura.</p><span class="badge"><span class="dot"></span>Fila</span></div>
+              <div class="feature-card"><strong>Codex</strong><p>Especificacoes e tarefas de evolucao assistida para novas funcoes.</p><span class="badge"><span class="dot"></span>Fila</span></div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="pendrive" id="menu-pendrive-page">
+            <div class="menu-page-head">
+              <div>
+                <div class="label">Pendrive YAMI — Nucleo de Identidade</div>
+                <div class="hint">Identidade unica, evolucao, personalizacao e rede social.</div>
+              </div>
+              <div class="top-actions">
+                <button id="pendriveInitBtn" class="primary">Inicializar</button>
+                <button id="pendriveRefreshBtn" class="ghost">Atualizar</button>
+              </div>
+            </div>
+            <div class="status-strip" id="pendriveStatus">
+              <div class="metric"><span>ID YAMI</span><strong id="metricPendriveId">---</strong></div>
+              <div class="metric"><span>Identidade</span><strong id="metricPendriveInit">Nao iniciado</strong></div>
+              <div class="metric"><span>Estagio</span><strong id="metricPendriveStage">---</strong></div>
+            </div>
+            <div class="feature-grid">
+              <div class="feature-card">
+                <strong>🎨 Aparencia</strong>
+                <p>Personalize o visual do seu Tamagotchi YAMI.</p>
+                <div class="customize-row" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+                  <select id="pendriveTheme" style="flex:1;min-width:80px;min-height:34px;font-size:12px;background:rgba(0,0,0,0.28);color:var(--text);border:1px solid rgba(116,229,255,0.2);border-radius:6px;padding:0 8px">
+                    <option value="dark-neon">Dark Neon</option>
+                    <option value="cyber-blue">Cyber Blue</option>
+                    <option value="sunset-amber">Sunset Amber</option>
+                    <option value="violet-haze">Violet Haze</option>
+                    <option value="forest-green">Forest Green</option>
+                    <option value="midnight-ocean">Midnight Ocean</option>
+                  </select>
+                  <select id="pendriveEyes" style="flex:1;min-width:80px;min-height:34px;font-size:12px;background:rgba(0,0,0,0.28);color:var(--text);border:1px solid rgba(116,229,255,0.2);border-radius:6px;padding:0 8px">
+                    <option value="default">Olhos Padrao</option>
+                    <option value="happy">Felizes</option>
+                    <option value="sleepy">Sonolentos</option>
+                    <option value="cyborg">Cyborg</option>
+                    <option value="starry">Estrelados</option>
+                    <option value="fire">Fogo</option>
+                  </select>
+                  <select id="pendriveGlow" style="flex:1;min-width:80px;min-height:34px;font-size:12px;background:rgba(0,0,0,0.28);color:var(--text);border:1px solid rgba(116,229,255,0.2);border-radius:6px;padding:0 8px">
+                    <option value="cyan">Ciano</option>
+                    <option value="amber">Ambar</option>
+                    <option value="green">Verde</option>
+                    <option value="red">Vermelho</option>
+                    <option value="violet">Violeta</option>
+                    <option value="pink">Rosa</option>
+                    <option value="blue">Azul</option>
+                  </select>
+                </div>
+                <button id="pendriveAppearanceSave" class="ghost" style="margin-top:8px">Aplicar personalizacao</button>
+              </div>
+              <div class="feature-card">
+                <strong>🧬 Evolucao</strong>
+                <p>Registre marcos da evolucao do YAMI.</p>
+                <div style="display:flex;gap:6px;margin-top:6px">
+                  <input id="pendriveEvolDesc" type="text" placeholder="Descricao da evolucao..." style="flex:1;min-height:34px;font-size:12px">
+                  <button id="pendriveEvolBtn" class="ghost" style="white-space:nowrap">Registrar</button>
+                </div>
+                <div id="pendriveEvolList" class="hint" style="margin-top:6px;font-size:11px">Nenhuma evolucao registrada.</div>
+              </div>
+              <div class="feature-card">
+                <strong>👥 Amigos YAMI</strong>
+                <p>Rede social entre instancias YAMI.</p>
+                <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+                  <input id="pendriveFriendId" type="text" placeholder="ID do amigo YAMI..." style="flex:1;min-width:120px;min-height:34px;font-size:12px">
+                  <input id="pendriveFriendName" type="text" placeholder="Nome (opcional)" style="flex:1;min-width:80px;min-height:34px;font-size:12px">
+                  <button id="pendriveFriendAdd" class="ghost">Adicionar</button>
+                </div>
+                <div id="pendriveFriendList" class="hint" style="margin-top:6px;font-size:11px">Nenhum amigo adicionado.</div>
+              </div>
+              <div class="feature-card">
+                <strong>💬 Mensagens</strong>
+                <p>Troque mensagens entre YAMIs.</p>
+                <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+                  <select id="pendriveMsgFriend" style="flex:1;min-width:100px;min-height:34px;font-size:12px;background:rgba(0,0,0,0.28);color:var(--text);border:1px solid rgba(116,229,255,0.2);border-radius:6px;padding:0 8px">
+                    <option value="">Selecione um amigo</option>
+                  </select>
+                  <input id="pendriveMsgText" type="text" placeholder="Mensagem..." style="flex:1;min-width:100px;min-height:34px;font-size:12px">
+                  <button id="pendriveMsgSend" class="ghost">Enviar</button>
+                </div>
+                <div id="pendriveMsgLog" class="hint" style="margin-top:6px;font-size:11px"></div>
+              </div>
+              <div class="feature-card">
+                <strong>🧠 Memoria Local</strong>
+                <p>Banco de memorias do YAMI.</p>
+                <div style="display:flex;gap:6px;margin-top:6px">
+                  <input id="pendriveMemoryInput" type="text" placeholder="Nova memoria..." style="flex:1;min-height:34px;font-size:12px">
+                  <button id="pendriveMemoryAdd" class="ghost">Salvar</button>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:6px">
+                  <input id="pendriveMemorySearch" type="text" placeholder="Buscar na memoria..." style="flex:1;min-height:34px;font-size:12px">
+                  <button id="pendriveMemorySearchBtn" class="ghost">Buscar</button>
+                </div>
+                <div id="pendriveMemoryList" class="hint" style="margin-top:6px;font-size:11px"></div>
+              </div>
+              <div class="feature-card">
+                <strong>📤 Exportar Identidade</strong>
+                <p>Exporte o bundle completo de identidade.</p>
+                <button id="pendriveExportBtn" class="ghost" style="margin-top:6px">Exportar JSON</button>
+                <button id="pendriveSyncBtn" class="ghost" style="margin-top:6px">Registrar sincronizacao</button>
+                <div id="pendriveExportOut" class="hint" style="margin-top:6px;font-size:11px"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="menu-page" data-page="system" id="menu-system-page">
+            <div class="menu-page-head">
+              <div>
+                <div class="label">Sistema Yami</div>
+                <div class="hint">Runtime local, empacotamento EXE e identidade do app.</div>
+              </div>
+            </div>
+            <div class="feature-grid">
+              <div class="feature-card"><strong>Nome do app</strong><p>Interface e janela configuradas para Yami.</p><span class="badge good"><span class="dot"></span>Ativo</span></div>
+              <div class="feature-card"><strong>Motor interno</strong><p>O motor de automacao fica embutido por baixo; a experiencia publica e Yami.</p><span class="badge good"><span class="dot"></span>Integrado</span></div>
+              <div class="feature-card"><strong>EXE completo</strong><p>Preparado para empacotar Yami com gateway, chats e painel em um instalador.</p><span class="badge"><span class="dot"></span>Proxima etapa</span></div>
+              <div class="feature-card"><strong>Always on</strong><p>Painel e gateway permanecem separados de reinicios automaticos.</p><span class="badge good"><span class="dot"></span>Ativo</span></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </aside>
+
+    <button id="settingsToggle" class="settings-toggle" title="Configurações" aria-label="Abrir configurações">⚙</button>
+
+    <div class="settings-backdrop" id="settingsBackdrop" hidden></div>
+    <aside class="settings-drawer" id="settingsDrawer" aria-hidden="true">
+      <div class="settings-head">
+        <div>
+          <h2>Configurações</h2>
+          <div class="hint">Tudo que o Yami precisa saber sobre você</div>
+        </div>
+        <button id="settingsClose" class="settings-close ghost" title="Fechar configurações" aria-label="Fechar configurações">×</button>
+      </div>
+      <div class="settings-body" id="settingsBody">
+
+        <!-- Sugestão inteligente -->
+        <div class="settings-suggestion" id="suggestionGoogle">
+          <div class="sugg-icon">💡</div>
+          <div class="sugg-body">
+            <strong>Sugestão do Yami</strong>
+            <p>Percebi que você utiliza frequentemente o Google Agenda. Deseja conectá-lo para melhorar sua experiência?</p>
+            <div class="sugg-actions">
+              <button class="primary" id="suggConnectGoogle">Conectar</button>
+              <button class="ghost" id="suggDismiss">Agora não</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contas Conectadas -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">🔗</span> Contas Conectadas</div>
+
+          <button class="settings-item" data-setting="whatsapp">
+            <span class="settings-item-icon wa">💬</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">WhatsApp</div>
+              <div class="settings-item-desc">Conectado — gerenciar conta</div>
+            </div>
+            <span class="settings-badge connected">Conectado</span>
+          </button>
+
+          <button class="settings-item" data-setting="google">
+            <span class="settings-item-icon g">G</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Google</div>
+              <div class="settings-item-desc">Fotos, Agenda e mais serviços</div>
+            </div>
+            <span class="settings-badge action">Conectar</span>
+          </button>
+
+          <button class="settings-item" data-setting="email">
+            <span class="settings-item-icon m">✉</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">E-mail</div>
+              <div class="settings-item-desc">Configurar conta de e-mail</div>
+            </div>
+            <span class="settings-badge action">Configurar</span>
+          </button>
+
+          <button class="settings-item" data-setting="calendar">
+            <span class="settings-item-icon g">📅</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Agenda</div>
+              <div class="settings-item-desc">Sincronizar compromissos e lembretes</div>
+            </div>
+            <span class="settings-badge action">Conectar</span>
+          </button>
+        </div>
+
+        <!-- Armazenamento -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">💾</span> Armazenamento</div>
+
+          <button class="settings-item" data-setting="storage-local">
+            <span class="settings-item-icon s">📁</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Local</div>
+              <div class="settings-item-desc">Arquivos e dados salvos no computador</div>
+            </div>
+            <span class="settings-badge">1.2 GB</span>
+          </button>
+
+          <button class="settings-item" data-setting="storage-photos">
+            <span class="settings-item-icon g">📷</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Google Fotos</div>
+              <div class="settings-item-desc">Backup automático de fotos</div>
+            </div>
+            <span class="settings-badge action">Conectar</span>
+          </button>
+        </div>
+
+        <!-- Dispositivos -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">📱</span> Dispositivos</div>
+
+          <button class="settings-item" data-setting="devices">
+            <span class="settings-item-icon wa">📟</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Dispositivos pareados</div>
+              <div class="settings-item-desc">5 dispositivos conectados</div>
+            </div>
+            <span class="settings-item-action">›</span>
+          </button>
+        </div>
+
+        <!-- Voz -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">🎤</span> Voz</div>
+
+          <button class="settings-item" data-setting="voice">
+            <span class="settings-item-icon p">🎙</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Voz do Yami</div>
+              <div class="settings-item-desc">Backend, velocidade, volume e voz</div>
+            </div>
+            <span class="settings-item-action">›</span>
+          </button>
+        </div>
+
+        <!-- Aparência -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">🎨</span> Aparência</div>
+
+          <button class="settings-item" data-setting="theme">
+            <span class="settings-item-icon a">🌙</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Tema escuro</div>
+              <div class="settings-item-desc">Modo noturno ativado</div>
+            </div>
+            <label class="switch" onclick="event.stopPropagation()">
+              <input type="checkbox" checked disabled>
+              <span class="slider"></span>
+            </label>
+          </button>
+
+          <button class="settings-item" data-setting="language">
+            <span class="settings-item-icon a">🌐</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Idioma</div>
+              <div class="settings-item-desc">Português (Brasil)</div>
+            </div>
+            <span class="settings-item-action">›</span>
+          </button>
+        </div>
+
+        <!-- Integrações -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">🔌</span> Integrações</div>
+
+          <button class="settings-item" data-setting="browser">
+            <span class="settings-item-icon g">🌐</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Navegador</div>
+              <div class="settings-item-desc">Chrome conectado e pronto</div>
+            </div>
+            <span class="settings-badge connected">Ativo</span>
+          </button>
+
+          <button class="settings-item" data-setting="spotify">
+            <span class="settings-item-icon a">🎵</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Spotify</div>
+              <div class="settings-item-desc">Controle por voz disponível</div>
+            </div>
+            <span class="settings-badge action">Conectar</span>
+          </button>
+        </div>
+
+        <!-- Segurança -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">🔒</span> Segurança</div>
+
+          <button class="settings-item" data-setting="security">
+            <span class="settings-item-icon s">🛡</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Contatos bloqueados</div>
+              <div class="settings-item-desc">Gerenciar bloqueios de números</div>
+            </div>
+            <span class="settings-item-action">›</span>
+          </button>
+
+          <button class="settings-item" data-setting="permissions">
+            <span class="settings-item-icon p">🔐</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Permissões</div>
+              <div class="settings-item-desc">Microfone, notificações e acesso</div>
+            </div>
+            <span class="settings-item-action">›</span>
+          </button>
+        </div>
+
+        <!-- Amigos YAMI / Pendrive -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">👥</span> Rede Social YAMI</div>
+
+          <button class="settings-item" data-setting="pendrive">
+            <span class="settings-item-icon p">💾</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Pendrive — Nucleo de Identidade</div>
+              <div class="settings-item-desc">Identidade unica, evolucao e rede social entre YAMIs</div>
+            </div>
+            <span class="settings-badge" id="pendriveBadge">Iniciar</span>
+          </button>
+        </div>
+
+        <!-- Backup e Sincronização -->
+        <div class="settings-category">
+          <div class="settings-category-title"><span class="cat-icon">☁</span> Backup e Sincronização</div>
+
+          <button class="settings-item" data-setting="pendrive-export">
+            <span class="settings-item-icon p">💾</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Exportar identidade YAMI</div>
+              <div class="settings-item-desc">Bundle completo: perfil, aparencia, evolucao e social</div>
+            </div>
+            <span class="settings-badge action">Exportar</span>
+          </button>
+
+          <button class="settings-item" data-setting="backup">
+            <span class="settings-item-icon s">📤</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Exportar configurações</div>
+              <div class="settings-item-desc">Salvar backup das suas preferências</div>
+            </div>
+            <span class="settings-badge action">Exportar</span>
+          </button>
+
+          <button class="settings-item" data-setting="restore">
+            <span class="settings-item-icon s">📥</span>
+            <div class="settings-item-info">
+              <div class="settings-item-label">Restaurar configurações</div>
+              <div class="settings-item-desc">Recuperar backup anterior</div>
+            </div>
+            <span class="settings-badge action">Importar</span>
+          </button>
+        </div>
+
+        <div style="padding: 16px 20px; text-align: center;">
+          <div style="font-size: 11px; color: var(--muted); opacity: 0.5;">
+            Yami v0.1.0 · Configuração simplificada
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    /* ===== ONBOARDING ===== */
+    const onboardingOverlay = document.getElementById("onboardingOverlay");
+    const onboardingPerms = document.getElementById("onboardingPerms");
+    const onboardingBtn = document.getElementById("onboardingBtn");
+    const onboardingCard = document.getElementById("onboardingCard");
+
+    function showOnboarding(setup) {
+      let html = "";
+      let animDelay = 0;
+
+      // Critical permissions
+      if (setup.critical && setup.critical.length > 0) {
+        html += '<div style="margin-bottom:18px;"><div style="font-size:11px; color:var(--red); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:8px; opacity:0.9;">🔴 Essencial para funcionar</div>';
+        html += setup.critical.map((p) => {
+          animDelay += 0.05;
+          return `<div class="onboarding-perm" data-perm="${p.id}" style="animation-delay:${animDelay}s; border-color:rgba(255,107,122,0.3); background:rgba(255,107,122,0.03);">
+            <span class="onboarding-perm-icon">${p.icon}</span>
+            <div class="onboarding-perm-text">
+              <div class="onboarding-perm-label">${p.label}</div>
+              <div class="onboarding-perm-desc">${p.desc}</div>
+            </div>
+            <span class="onboarding-perm-check">✓</span>
+          </div>`;
+        }).join("");
+        html += '</div>';
+      }
+
+      // Recommended permissions
+      if (setup.recommended && setup.recommended.length > 0) {
+        html += '<div style="margin-bottom:18px;"><div style="font-size:11px; color:var(--amber); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:8px; opacity:0.9;">⭐ Muito recomendado</div>';
+        html += setup.recommended.map((p) => {
+          animDelay += 0.05;
+          return `<div class="onboarding-perm" data-perm="${p.id}" style="animation-delay:${animDelay}s; border-color:rgba(255,209,102,0.2); background:rgba(255,209,102,0.02);">
+            <span class="onboarding-perm-icon">${p.icon}</span>
+            <div class="onboarding-perm-text">
+              <div class="onboarding-perm-label">${p.label}</div>
+              <div class="onboarding-perm-desc">${p.desc}</div>
+            </div>
+            <span class="onboarding-perm-check">✓</span>
+          </div>`;
+        }).join("");
+        html += '</div>';
+      }
+
+      // Optional permissions
+      if (setup.optional && setup.optional.length > 0) {
+        html += '<div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:8px; opacity:0.7;">💡 Opcional</div>';
+        html += setup.optional.map((p) => {
+          animDelay += 0.05;
+          return `<div class="onboarding-perm" data-perm="${p.id}" style="animation-delay:${animDelay}s; opacity:0.75;">
+            <span class="onboarding-perm-icon">${p.icon}</span>
+            <div class="onboarding-perm-text">
+              <div class="onboarding-perm-label">${p.label}</div>
+              <div class="onboarding-perm-desc">${p.desc}</div>
+            </div>
+            <span class="onboarding-perm-check">✓</span>
+          </div>`;
+        }).join("");
+        html += '</div>';
+      }
+
+      onboardingPerms.innerHTML = html;
+      onboardingOverlay.setAttribute("aria-hidden", "false");
+      onboardingOverlay.classList.add("show");
+    }
+
+    async function checkOnboarding() {
+      try {
+        const resp = await fetch("/api/setup/status", { cache: "no-store" });
+        const data = await resp.json();
+        if (!data.ok || data.completed) return;
+        showOnboarding(data.setup);
+      } catch {}
+    }
+
+    async function requestBrowserPermissions() {
+      const results = {
+        microphone: null,
+        notifications: null,
+        camera: null
+      };
+      
+      // Request microphone
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(track => track.stop());
+        results.microphone = true;
+      } catch (e) {
+        results.microphone = false;
+      }
+
+      // Request notification permission
+      if ("Notification" in window && Notification.permission === "default") {
+        try {
+          const perm = await Notification.requestPermission();
+          results.notifications = perm === "granted";
+        } catch {
+          results.notifications = false;
+        }
+      } else if ("Notification" in window) {
+        results.notifications = Notification.permission === "granted";
+      }
+
+      // Request camera (optional, don't fail on this)
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream.getTracks().forEach(track => track.stop());
+        results.camera = true;
+      } catch {
+        results.camera = false;
+      }
+
+      return results;
+    }
+
+    function updateProgress(step, total, message) {
+      const progressText = document.getElementById("onboardingProgressText");
+      const progressBar = document.getElementById("onboardingProgressBarInner");
+      if (progressText) progressText.textContent = message;
+      if (progressBar) {
+        const percent = Math.round((step / total) * 100);
+        progressBar.style.width = percent + "%";
+      }
+    }
+
+    onboardingBtn.addEventListener("click", async () => {
+      onboardingBtn.disabled = true;
+      onboardingBtn.classList.add("loading");
+      
+      const progressDiv = document.getElementById("onboardingProgress");
+      const items = onboardingPerms.querySelectorAll(".onboarding-perm");
+      
+      try {
+        // Step 1: Animate checkmarks on permissions
+        let idx = 0;
+        const tick = () => {
+          if (idx < items.length) {
+            items[idx].classList.add("checked");
+            idx += 1;
+            setTimeout(tick, 60);
+          }
+        };
+        tick();
+        await new Promise((r) => setTimeout(r, items.length * 60 + 200));
+
+        // Step 2: Show progress and request browser permissions
+        progressDiv.style.display = "block";
+        onboardingBtn.style.display = "none";
+        
+        updateProgress(1, 5, "Solicitando permissões do navegador...");
+        const browserPerms = await requestBrowserPermissions();
+        await new Promise((r) => setTimeout(r, 400));
+
+        updateProgress(2, 5, "Criando estrutura de pastas...");
+        await new Promise((r) => setTimeout(r, 400));
+
+        updateProgress(3, 5, "Configurando integrações...");
+        await new Promise((r) => setTimeout(r, 400));
+
+        updateProgress(4, 5, "Salvando configurações...");
+        const resp = await fetch("/api/setup/complete", { 
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ permissions: browserPerms })
+        });
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.message || "Falha na configuração");
+
+        updateProgress(5, 5, "Finalizando...");
+        await new Promise((r) => setTimeout(r, 600));
+
+        // Step 3: Show success screen
+        onboardingCard.classList.add("success");
+        progressDiv.style.display = "none";
+        onboardingCard.innerHTML = `
+          <div class="onboarding-logo" style="animation: ob-pulse 1.2s ease-in-out infinite;">Y</div>
+          <div class="onboarding-success-icon">✨</div>
+          <h2 class="onboarding-title">Configuração concluída!</h2>
+          <p class="onboarding-sub" style="margin-bottom:12px; color:var(--green);">
+            🎤 Microfone: ${browserPerms.microphone ? "✓ Autorizado" : "✗ Não autorizado"}<br>
+            🔔 Notificações: ${browserPerms.notifications ? "✓ Autorizado" : "✗ Não autorizado"}<br>
+            📷 Câmera: ${browserPerms.camera ? "✓ Autorizado" : "✗ Não autorizado"}
+          </p>
+          <div class="onboarding-success-text">Seu Tamagotchi digital está pronto para acordar!</div>
+          <button class="onboarding-btn" id="onboardingFinishBtn" style="margin-top:20px">
+            <span class="onboarding-btn-text">✨ Começar a usar o Yami</span>
+          </button>
+        `;
+        
+        document.getElementById("onboardingFinishBtn").addEventListener("click", () => {
+          onboardingOverlay.classList.remove("show");
+          onboardingOverlay.setAttribute("aria-hidden", "true");
+          setTimeout(() => { onboardingOverlay.style.display = "none"; }, 500);
+          if (window.startVoice) setTimeout(() => startVoice({ silent: true }), 600);
+        });
+      } catch (error) {
+        progressDiv.style.display = "none";
+        onboardingBtn.style.display = "block";
+        onboardingBtn.classList.remove("loading");
+        onboardingBtn.disabled = false;
+        
+        let errorMsg = error.message || "Erro desconhecido";
+        if (errorMsg.includes("Permission denied")) {
+          errorMsg = "Permissão negada pelo navegador";
+        } else if (errorMsg.includes("NotAllowedError")) {
+          errorMsg = "Você bloqueou o acesso ao microfone/câmera";
+        }
+        
+        onboardingBtn.innerHTML = `
+          <span class="onboarding-btn-text" style="display:flex; align-items:center; gap:8px; justify-content:center;">
+            ⚠️ ${errorMsg.substring(0, 40)}...
+          </span>
+        `;
+        
+        // Retry after 3 seconds
+        setTimeout(() => {
+          onboardingBtn.innerHTML = `
+            <span class="onboarding-btn-text">Autorizar tudo e continuar</span>
+            <span class="onboarding-btn-progress">
+              <span class="ob-spinner"></span>
+              <span>Configurando...</span>
+            </span>
+          `;
+          onboardingBtn.disabled = false;
+        }, 3000);
+      }
+    });
+
+    const enabledToggle = document.getElementById("enabledToggle");
+    const contactInput = document.getElementById("contactInput");
+    const contactList = document.getElementById("contactList");
+    const chatList = document.getElementById("chatList");
+    const statusLog = document.getElementById("statusLog");
+    const badges = document.getElementById("badges");
+    const saveBtn = document.getElementById("saveBtn");
+    const addBtn = document.getElementById("addBtn");
+    const menuToggle = document.getElementById("menuToggle");
+    const menuBackdrop = document.getElementById("menuBackdrop");
+    const menuDrawer = document.getElementById("menuDrawer");
+    const menuClose = document.getElementById("menuClose");
+    const menuNavButtons = Array.from(document.querySelectorAll("[data-menu-page]"));
+    const menuPages = Array.from(document.querySelectorAll("[data-page]"));
+    const refreshBtn = document.getElementById("refreshBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const voicePanel = document.getElementById("voicePanel");
+    const voiceBtn = document.getElementById("voiceBtn");
+    const stopVoiceBtn = document.getElementById("stopVoiceBtn");
+    const testVoiceBtn = document.getElementById("testVoiceBtn");
+    const voiceStatus = document.getElementById("voiceStatus");
+    const transcriptLog = document.getElementById("transcriptLog");
+    const yamiReply = document.getElementById("yamiReply");
+    const yamiAvatar = document.getElementById("yamiAvatar");
+    const yamiMouth = document.getElementById("yamiMouth");
+    const metricWhatsApp = document.getElementById("metricWhatsApp");
+    const metricGateway = document.getElementById("metricGateway");
+    const metricAi = document.getElementById("metricAi");
+    const voiceBackend = document.getElementById("voiceBackend");
+    const voiceName = document.getElementById("voiceName");
+    const voiceRate = document.getElementById("voiceRate");
+    const voiceVolume = document.getElementById("voiceVolume");
+    const voiceReference = document.getElementById("voiceReference");
+    const voiceReferenceNote = document.getElementById("voiceReferenceNote");
+    const voiceSummary = document.getElementById("voiceSummary");
+    const voiceSaveBtn = document.getElementById("voiceSaveBtn");
+    const voicePresetBtn = document.getElementById("voicePresetBtn");
+
+    let blockedContacts = [];
+    let recognition = null;
+    let voiceActive = false;
+    let recognitionRunning = false;
+    let microphoneBlocked = false;
+    let askingYami = false;
+    let queuedVoiceMessage = null;
+    let voiceModeUntil = 0;
+    let isSpeaking = false;
+    let speechRunId = 0;
+    let speechFrame = 0;
+    let speechVisual = null;
+    let talkStopToken = 0;
+    const voiceParam = new URLSearchParams(window.location.search).get("voice");
+    const autoStartVoice = voiceParam !== "0" && voiceParam !== "off";
+    let talkMode = localStorage.getItem("yamiTalkMode") === "on";
+    const tabId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    let tabIsPrimary = false;
+    let lastSpokenNormalized = "";
+    let lastSpokenAt = 0;
+    const TALK_KEEPALIVE_MS = 15000;
+    const ACTIVE_TAB_KEY = "yamiActiveVoiceTab";
+    const ACTIVE_TAB_TTL_MS = 6500;
+    const APP_VERSION = "yami-native-runtime-20260608-4";
+
+    const wakePatterns = [
+      /\bacord\w*\s*(yami|claw|clau)?\b/i,
+      /\b(yami|claw|clau)\s+acord\w*\b/i
+    ];
+
+    function escapeHtml(value) {
+      return String(value == null ? "" : value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function normalizeContact(raw) {
+      let value = String(raw || "").trim().replace(/^whatsapp:/i, "");
+      const jid = value.match(/^(\d+)(?::\d+)?@(s\.whatsapp\.net|c\.us|lid)$/i);
+      if (jid) value = jid[1];
+      const digits = value.replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "");
+      if (!digits) return "";
+      return digits.startsWith("+") ? digits : `+${digits}`;
+    }
+
+    function normalizeSpeech(raw) {
+      return String(raw || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+    }
+
+    function isLikelySelfSpeech(transcript) {
+      const normalized = normalizeSpeech(transcript).replace(/[^\w\s]/g, "").replace(/\s+/g, " ").trim();
+      if (!normalized || !lastSpokenNormalized) return false;
+      if (Date.now() - lastSpokenAt > 25000) return false;
+      return normalized === lastSpokenNormalized
+        || normalized.startsWith(lastSpokenNormalized)
+        || lastSpokenNormalized.startsWith(normalized);
+    }
+
+    function deriveAvatarMood(voice = {}) {
+      if (voice.avatarMood) return voice.avatarMood;
+      if (voice.mode === "processing" || voice.processing) return "processing";
+      if (voice.mode === "speaking" || voice.speaking || voice.queueLength > 0) return "speaking";
+      if (voice.mode === "awake" || voice.awake || talkMode) return "talk";
+      if (voice.mode === "asleep") return "passive";
+      return voiceActive ? "listening" : "passive";
+    }
+
+    function setAvatarMood(mood) {
+      if (!yamiAvatar) return;
+      const next = mood || "passive";
+      yamiAvatar.dataset.mood = next;
+      const labels = {
+        passive: "Yami em espera",
+        sleeping: "Yami descansando",
+        listening: "Yami escutando",
+        talk: "Yami acordada",
+        processing: "Yami pensando",
+        speaking: "Yami falando",
+        happy: "Yami feliz",
+        curious: "Yami curiosa",
+        busy: "Yami ocupada",
+        updating: "Yami atualizando",
+        error: "Yami com erro"
+      };
+      yamiAvatar.setAttribute("aria-label", labels[next] || "Yami");
+      updateIndicator(next);
+    }
+
+    const gazeTargets = [
+      { x: 0, y: 0, label: "center" },
+      { x: 3, y: -2, label: "up-left" },
+      { x: -3, y: -2, label: "up-right" },
+      { x: 4, y: 0, label: "right" },
+      { x: -4, y: 0, label: "left" },
+      { x: 1, y: 2, label: "down" }
+    ];
+    let gazeTimer = null;
+    let currentGaze = 0;
+
+    function setGaze(index) {
+      if (!yamiAvatar) return;
+      const target = gazeTargets[index] || gazeTargets[0];
+      yamiAvatar.style.setProperty("--pupil-x", `${target.x}px`);
+      yamiAvatar.style.setProperty("--pupil-y", `${target.y}px`);
+      yamiAvatar.dataset.gaze = target.label;
+      currentGaze = index;
+    }
+
+    function scheduleNextGaze() {
+      if (gazeTimer) clearTimeout(gazeTimer);
+      const delay = 2000 + Math.random() * 5000;
+      gazeTimer = setTimeout(() => {
+        if (!yamiAvatar) return;
+        const mood = yamiAvatar.dataset.mood;
+        if (mood === "sleeping" || mood === "processing" || mood === "speaking") return;
+        let next;
+        if (mood === "curious" || mood === "listening") {
+          next = Math.random() < 0.5 ? 3 : 4;
+        } else {
+          next = Math.floor(Math.random() * gazeTargets.length);
+          if (next === currentGaze) next = (next + 1) % gazeTargets.length;
+        }
+        setGaze(next);
+        const hold = 800 + Math.random() * 2000;
+        gazeTimer = setTimeout(() => {
+          setGaze(0);
+          scheduleNextGaze();
+        }, hold);
+      }, delay);
+    }
+
+    function startGazeCycle() {
+      stopGazeCycle();
+      setGaze(0);
+      scheduleNextGaze();
+    }
+
+    function stopGazeCycle() {
+      if (gazeTimer) { clearTimeout(gazeTimer); gazeTimer = null; }
+    }
+
+    function updateIndicator(mood) {
+      const indicator = document.getElementById("yamiIndicator");
+      if (!indicator) return;
+      const icons = {
+        sleeping: "💤",
+        listening: "🎧",
+        processing: "⚙",
+        curious: "?",
+        busy: "⋯",
+        updating: "⟳"
+      };
+      const icon = icons[mood] || "";
+      indicator.style.setProperty("--indicator-icon", `"${icon}"`);
+    }
+
+    function stopSpeechAnimation() {
+      speechRunId += 1;
+      speechVisual = null;
+      if (speechFrame) cancelAnimationFrame(speechFrame);
+      speechFrame = 0;
+      if (yamiAvatar) {
+        yamiAvatar.style.setProperty("--mouth-open", "0");
+        yamiAvatar.style.setProperty("--mouth-line-height", "6px");
+        yamiAvatar.style.setProperty("--mouth-offset", "0px");
+        yamiAvatar.style.setProperty("--mouth-core-width", "10%");
+        yamiAvatar.style.setProperty("--mouth-core-height", "3%");
+        yamiAvatar.style.setProperty("--mouth-core-opacity", "0");
+        yamiAvatar.style.setProperty("--mouth-core-y", "58%");
+        yamiAvatar.style.setProperty("--mouth-left-rotate", "32deg");
+        yamiAvatar.style.setProperty("--mouth-right-rotate", "-32deg");
+        yamiAvatar.style.setProperty("--mouth-scale-y", "1");
+      }
+    }
+
+    function startSpeechAnimation(voice = {}) {
+      if (!yamiAvatar || !yamiMouth) return;
+      const speech = voice.speech || {};
+      const utteranceId = speech.utteranceId || voice.lastUtteranceId || voice.utteranceId || Date.now();
+      const startedAtMs = Date.parse(speech.startedAt || "") || Date.now();
+      const estimatedDurationMs = Math.max(
+        900,
+        Math.min(16000, Number(speech.estimatedDurationMs || voice.estimatedDurationMs || 2600))
+      );
+      const speechId = `${utteranceId}:${speech.startedAt || ""}`;
+      if (speechVisual && speechVisual.id === speechId) return;
+
+      const runId = ++speechRunId;
+      if (speechFrame) cancelAnimationFrame(speechFrame);
+      speechVisual = {
+        id: speechId,
+        runId,
+        startAt: performance.now() - Math.max(0, Date.now() - startedAtMs),
+        duration: estimatedDurationMs
+      };
+
+      const tick = (now) => {
+        if (!speechVisual || speechVisual.runId !== runId) return;
+        const elapsed = Math.max(0, now - speechVisual.startAt);
+        const progress = Math.max(0, Math.min(1, elapsed / speechVisual.duration));
+        const fadeIn = Math.min(1, elapsed / 260);
+        const fadeOut = progress > 0.82 ? Math.max(0.2, (1 - progress) / 0.18) : 1;
+        const syllable = Math.abs(Math.sin(elapsed / 86));
+        const jaw = Math.abs(Math.sin((elapsed + 40) / 143));
+        const rhythm = syllable * 0.68 + jaw * 0.28 + Math.abs(Math.sin(elapsed / 41)) * 0.12;
+        const open = Math.max(0.08, Math.min(1, rhythm * fadeIn * fadeOut));
+        const jawDrop = open * 13;
+        const lineAngle = 38 - open * 27;
+        yamiAvatar.style.setProperty("--mouth-open", open.toFixed(3));
+        yamiAvatar.style.setProperty("--mouth-line-height", `${(7 + open * 3).toFixed(1)}px`);
+        yamiAvatar.style.setProperty("--mouth-offset", `${jawDrop.toFixed(1)}px`);
+        yamiAvatar.style.setProperty("--mouth-core-width", `${(18 + open * 42).toFixed(1)}%`);
+        yamiAvatar.style.setProperty("--mouth-core-height", `${(8 + open * 54).toFixed(1)}%`);
+        yamiAvatar.style.setProperty("--mouth-core-opacity", Math.min(0.9, 0.2 + open * 0.78).toFixed(3));
+        yamiAvatar.style.setProperty("--mouth-core-y", `${(58 + open * 4).toFixed(1)}%`);
+        yamiAvatar.style.setProperty("--mouth-left-rotate", `${lineAngle.toFixed(1)}deg`);
+        yamiAvatar.style.setProperty("--mouth-right-rotate", `${(-lineAngle).toFixed(1)}deg`);
+        yamiAvatar.style.setProperty("--mouth-scale-y", (1 + open * 0.38).toFixed(3));
+        if (progress < 1.08 || isSpeaking) {
+          speechFrame = requestAnimationFrame(tick);
+        } else {
+          stopSpeechAnimation();
+        }
+      };
+      speechFrame = requestAnimationFrame(tick);
+    }
+
+    function updateAvatarFromVoice(voice = {}) {
+      const mood = deriveAvatarMood(voice);
+      setAvatarMood(mood);
+      const speaking = Boolean(voice.speaking || voice.queueLength > 0 || voice.mode === "speaking" || (voice.speech && voice.speech.active));
+      if (speaking) {
+        startSpeechAnimation(voice);
+      } else if (voice.speech && voice.speech.event === "speech.end") {
+        const currentSpeechId = speechVisual && speechVisual.id;
+        setTimeout(() => {
+          if (!isSpeaking && (!currentSpeechId || (speechVisual && speechVisual.id === currentSpeechId))) {
+            stopSpeechAnimation();
+          }
+        }, 220);
+      } else {
+        stopSpeechAnimation();
+      }
+    }
+
+    function setBusy(busy) {
+      [saveBtn, addBtn, refreshBtn, restartBtn, voiceSaveBtn].forEach((button) => {
+        if (button) button.disabled = busy;
+      });
+    }
+
+    function setVoiceBusy(busy) {
+      askingYami = busy;
+      metricAi.textContent = busy ? "Processando" : "Yami";
+      if (busy) setAvatarMood("processing");
+      testVoiceBtn.disabled = busy;
+      if (!busy) syncVoiceState({ quiet: true });
+    }
+
+    function readActiveTab() {
+      try {
+        return JSON.parse(localStorage.getItem(ACTIVE_TAB_KEY) || "null");
+      } catch {
+        return null;
+      }
+    }
+
+    function claimPrimaryTab() {
+      const active = readActiveTab();
+      const now = Date.now();
+      if (!active || active.id === tabId || Number(active.expiresAt || 0) < now) {
+        localStorage.setItem(ACTIVE_TAB_KEY, JSON.stringify({
+          id: tabId,
+          expiresAt: now + ACTIVE_TAB_TTL_MS
+        }));
+        tabIsPrimary = true;
+      } else {
+        tabIsPrimary = false;
+      }
+      return tabIsPrimary;
+    }
+
+    function releasePrimaryTab() {
+      const active = readActiveTab();
+      if (active && active.id === tabId) {
+        localStorage.removeItem(ACTIVE_TAB_KEY);
+      }
+    }
+
+    function ensurePrimaryVoiceTab() {
+      const primary = claimPrimaryTab();
+      if (!primary) {
+        voiceStatus.textContent = "Standby: outra aba Yami esta com a voz ativa.";
+      }
+      return primary;
+    }
+
+    function badge(label, kind) {
+      return `<span class="badge ${kind || ""}"><span class="dot"></span>${label}</span>`;
+    }
+
+    function setMenuOpen(open) {
+      document.body.classList.toggle("menu-open", Boolean(open));
+      if (menuDrawer) menuDrawer.setAttribute("aria-hidden", open ? "false" : "true");
+      if (menuToggle) menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (menuBackdrop) {
+        if (open) menuBackdrop.hidden = false;
+        else setTimeout(() => {
+          if (!document.body.classList.contains("menu-open")) menuBackdrop.hidden = true;
+        }, 200);
+      }
+    }
+
+    function setMenuPage(page) {
+      const nextPage = page || "dashboard";
+      menuNavButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.menuPage === nextPage);
+      });
+      menuPages.forEach((section) => {
+        section.classList.toggle("active", section.dataset.page === nextPage);
+        if (section.dataset.page === nextPage) section.scrollTop = 0;
+      });
+      if (nextPage === "pendrive") {
+        loadPendriveStatus();
+        refreshFriendSelect();
+      }
+    }
+
+    function getVoiceSettingsFromForm() {
+      return {
+        backend: voiceBackend ? voiceBackend.value : "powershell",
+        voice: voiceName ? voiceName.value.trim() : "",
+        rate: voiceRate ? Number(voiceRate.value || 0) : 0,
+        volume: voiceVolume ? Number(voiceVolume.value || 100) : 100,
+        referenceUrl: voiceReference ? voiceReference.value.trim() : "",
+        referenceNote: voiceReferenceNote ? voiceReferenceNote.value.trim() : "",
+        nativeSpeak: false
+      };
+    }
+
+    function renderVoiceSettings(settings = {}) {
+      if (voiceBackend) voiceBackend.value = settings.backend || "powershell";
+      if (voiceName) voiceName.value = settings.voice || "Microsoft Maria Desktop";
+      if (voiceRate) voiceRate.value = Number(settings.rate || 0);
+      if (voiceVolume) voiceVolume.value = Number(settings.volume || 100);
+      if (voiceReference) voiceReference.value = settings.referenceUrl || "https://github.com/isair/jarvis";
+      if (voiceReferenceNote) voiceReferenceNote.value = settings.referenceNote || "Referencia salva. A fala ativa continua local e unica.";
+      if (voiceSummary) {
+        const backendLabel = voiceBackend && voiceBackend.selectedOptions[0] ? voiceBackend.selectedOptions[0].textContent : "Windows padrao";
+        voiceSummary.textContent = `${backendLabel}. Voz: ${voiceName && voiceName.value ? voiceName.value : "padrao"}. Speak nativo desligado.`;
+      }
+    }
+
+    function renderContacts() {
+      if (blockedContacts.length === 0) {
+        contactList.innerHTML = `<div class="empty">Nenhum contato bloqueado.</div>`;
+        return;
+      }
+      contactList.innerHTML = blockedContacts.map((contact) => `
+        <div class="contact">
+          <span>${escapeHtml(contact)}</span>
+          <button class="danger" data-remove="${escapeHtml(contact)}" title="Remover bloqueio">Remover</button>
+        </div>
+      `).join("");
+    }
+
+    function renderChats(chats) {
+      if (!Array.isArray(chats) || chats.length === 0) {
+        chatList.innerHTML = `<div class="empty">Nenhum chat direto por numero ainda. Quando um numero mandar mensagem, ele aparece aqui separado.</div>`;
+        return;
+      }
+      chatList.innerHTML = chats.map((chat) => {
+        const updated = chat.updatedAt ? new Date(chat.updatedAt).toLocaleString("pt-BR") : "sem data";
+        return `
+          <div class="chat-item">
+            <div class="chat-main">
+              <div class="chat-number">${escapeHtml(chat.number || chat.displayName || "Numero desconhecido")}</div>
+              <div class="chat-meta">Conta ${escapeHtml(chat.accountId || "default")} - ${escapeHtml(updated)}</div>
+              <div class="chat-meta">${escapeHtml(chat.sessionKey || "")}</div>
+            </div>
+            <a class="button-link" href="${escapeHtml(chat.dashboardUrl || "http://127.0.0.1:18789/")}" target="_blank" rel="noreferrer">Abrir</a>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderStatus(payload) {
+      const state = payload.state || {};
+      const config = payload.config || {};
+      const status = payload.status || {};
+      const wa = status.whatsapp || {};
+      const restart = payload.restart || {};
+      const voice = payload.voice || {};
+      enabledToggle.checked = state.enabled !== false;
+      blockedContacts = Array.isArray(state.blockedContacts) ? state.blockedContacts : [];
+      renderVoiceSettings(state.voice || voice.voiceSettings || {});
+      renderContacts();
+      renderChats(payload.chats || []);
+
+      metricWhatsApp.textContent = wa.connected ? "Conectado" : "Desconectado";
+      metricGateway.textContent = restart.running ? "Reiniciando" : "Ativo";
+      applyVoiceState(voice, { quiet: true });
+
+      badges.innerHTML = [
+        badge(state.enabled !== false ? "Auto ligado" : "Auto pausado", state.enabled !== false ? "ok" : "warn"),
+        badge(wa.connected ? "WhatsApp conectado" : "WhatsApp desconectado", wa.connected ? "ok" : "bad"),
+        badge(config.groupPolicy === "disabled" ? "Grupos off" : "Conferir grupos", config.groupPolicy === "disabled" ? "ok" : "warn"),
+        badge("Voz unica", "ok"),
+        badge("Nucleo Yami conectado", "ok")
+      ].join("");
+
+      const lines = [
+        `WhatsApp: ${wa.healthState || "desconhecido"}`,
+        `Chat scope: ${config.dmScope || "n/d"}`,
+        `DM policy: ${config.dmPolicy || "n/d"}`,
+        `Reply mode: ${config.replyToMode || "n/d"}`,
+        `AllowFrom: ${(config.allowFrom || []).join(", ") || "n/d"}`,
+        wa.self && wa.self.e164 ? `Numero: ${wa.self.e164}` : "",
+        wa.lastError ? `Erro: ${wa.lastError}` : "",
+        restart.running ? "Gateway: reiniciando..." : "",
+        restart.lastMessage ? `Ultimo gateway: ${restart.lastMessage}` : "",
+        voice.mode ? `Voz: ${voice.mode}` : "",
+        voice.ttsBackend ? `Backend voz: ${voice.ttsBackend}` : "",
+        voice.queueLength ? `Fila de voz: ${voice.queueLength}` : ""
+      ].filter(Boolean);
+      statusLog.textContent = lines.join("\n");
+    }
+
+    async function loadState() {
+      setBusy(true);
+      try {
+        const response = await fetch("/api/state", { cache: "no-store" });
+        renderStatus(await response.json());
+        await loadPendriveStatus();
+        const badge = document.getElementById("pendriveBadge");
+        if (badge) {
+          try {
+            const pr = await fetch("/api/pendrive", { cache: "no-store" });
+            const pd = await pr.json();
+            badge.textContent = pd.initialized ? "Ativo" : "Iniciar";
+            badge.className = "settings-badge " + (pd.initialized ? "connected" : "action");
+          } catch {}
+        }
+      } catch (error) {
+        statusLog.textContent = `Falha ao carregar painel: ${error.message || error}`;
+        metricGateway.textContent = "Erro";
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    async function saveState() {
+      setBusy(true);
+      try {
+        const response = await fetch("/api/state", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            enabled: enabledToggle.checked,
+            blockedContacts,
+            voice: getVoiceSettingsFromForm()
+          })
+        });
+        const payload = await response.json();
+        if (!response.ok || payload.ok === false) throw new Error(payload.message || "Falha ao salvar");
+        renderStatus(payload);
+        setTimeout(loadState, 2000);
+      } catch (error) {
+        statusLog.textContent = `Falha ao salvar: ${error.message || error}`;
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    async function restartGateway() {
+      setBusy(true);
+      try {
+        await fetch("/api/restart", { method: "POST" });
+        statusLog.textContent = "Gateway reiniciando...";
+        metricGateway.textContent = "Reiniciando";
+        setTimeout(loadState, 3000);
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    function markSpokenText(text, voice = {}) {
+      const cleanText = String(text || "").trim() || "Yami respondeu.";
+      yamiReply.textContent = cleanText;
+      const spokenSource = voice.text || cleanText;
+      lastSpokenNormalized = normalizeSpeech(spokenSource).replace(/[^\w\s]/g, "").replace(/\s+/g, " ").trim();
+      lastSpokenAt = Date.now();
+      applyVoiceState(voice, { quiet: true });
+      voiceStatus.textContent = isSpeaking ? "Yami falando pela voz unica." : "Resposta enviada para a voz unica.";
+    }
+
+    function applyVoiceState(voice, options = {}) {
+      if (!voice) return;
+      const speaking = Boolean(voice.speaking || voice.queueLength > 0 || voice.mode === "speaking");
+      const processing = Boolean(voice.processing || voice.mode === "processing");
+      isSpeaking = speaking;
+      updateAvatarFromVoice(voice);
+      if (processing) {
+        metricAi.textContent = "Processando";
+      } else if (speaking) {
+        metricAi.textContent = "Falando";
+      } else {
+        metricAi.textContent = voice.awake ? "Ouvindo" : "Yami";
+      }
+      if (!options.quiet) {
+        if (processing) voiceStatus.textContent = "Yami processando.";
+        else if (speaking) voiceStatus.textContent = "Yami falando pela voz unica.";
+        else if (voice.awake) voiceStatus.textContent = "Yami ouvindo. Diga descansa para parar.";
+        else voiceStatus.textContent = "Descansando. Diga acorda para iniciar.";
+      }
+    }
+
+    async function syncVoiceState(options = {}) {
+      try {
+        const response = await fetch("/api/yami/voice/state", { cache: "no-store" });
+        const payload = await response.json();
+        if (payload && payload.voice) applyVoiceState(payload.voice, options);
+      } catch {}
+    }
+
+    async function speakWithLocalTts(text) {
+      const cleanText = String(text || "").trim() || "Yami respondeu.";
+      try {
+        const response = await fetch("/api/yami/speak", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: cleanText })
+        });
+        const payload = await response.json();
+        if (!response.ok || payload.ok === false) throw new Error(payload.message || "Audio local falhou.");
+        markSpokenText(cleanText, payload.voice || (payload.tts || {}));
+      } catch (error) {
+        yamiReply.textContent = cleanText;
+        voiceStatus.textContent = `Audio local indisponivel: ${error.message || error}`;
+      }
+    }
+
+    function extractCommand(transcript) {
+      const normalized = normalizeSpeech(transcript);
+      const woke = wakePatterns.some((pattern) => pattern.test(normalized));
+      if (!woke) return null;
+      let command = normalized
+        .replace(/\b(yami|claw|clau)\s*acord[aeiou]*\b/gi, "")
+        .replace(/\bacorde\s*(yami|claw|clau)\b/gi, "")
+        .replace(/\bacord[aeiou]*\s*(yami|claw|clau)?\b/gi, "")
+        .replace(/\boi\s*yami\b/gi, "")
+        .replace(/\boi\s*claw\b/gi, "")
+        .replace(/\boi\s*clau\b/gi, "")
+        .replace(/\bola\s*yami\b/gi, "")
+        .replace(/\bola\s*claw\b/gi, "")
+        .replace(/\bola\s*clau\b/gi, "")
+        .replace(/\be\s*ai\s*yami\b/gi, "")
+        .replace(/\be\s*ai\s*claw\b/gi, "")
+        .replace(/\be\s*ai\s*clau\b/gi, "")
+        .replace(/\byami\b/gi, "")
+        .replace(/\bclaw\b/gi, "")
+        .replace(/\bclau\b/gi, "")
+        .replace(/[,.!?;:]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      return command || "Estou ouvindo.";
+    }
+
+    function armVoiceMode() {
+      voiceModeUntil = Number.POSITIVE_INFINITY;
+    }
+
+    function isVoiceModeActive() {
+      return talkMode || voiceModeUntil === Number.POSITIVE_INFINITY || Date.now() < voiceModeUntil;
+    }
+
+    function setTalkMode(enabled) {
+      talkMode = Boolean(enabled);
+      localStorage.setItem("yamiTalkMode", talkMode ? "on" : "off");
+      if (talkMode) {
+        armVoiceMode();
+        setAvatarMood("talk");
+      } else {
+        voiceModeUntil = 0;
+        if (!isSpeaking && !askingYami) setAvatarMood("passive");
+      }
+    }
+
+    function isRestCommand(transcript) {
+      const normalized = normalizeSpeech(transcript);
+      const plain = normalized.replace(/[^\w\s]/g, " ").replace(/\s+/g, " ").trim();
+      return /\b(descan[sc](?:a|ar|e|o|ando)?\s*(?:yami|claw|clau)?|descanso\s*(?:yami|claw|clau)?|dorme\s*(?:yami|claw|clau)?|durma\s*(?:yami|claw|clau)?|pausa|pausar|parar de ouvir|pare de ouvir|para de ouvir|fica quieta|silencio)\b/.test(plain);
+    }
+
+    async function deactivateTalk(reason = "descansa") {
+      talkStopToken += 1;
+      setTalkMode(false);
+      queuedVoiceMessage = null;
+      isSpeaking = false;
+      askingYami = false;
+      stopSpeechAnimation();
+      setAvatarMood("passive");
+      voiceStatus.textContent = "Descansando. Diga acorda para iniciar de novo.";
+      yamiReply.textContent = "Yami pausada.";
+      try {
+        await fetch("/api/yami/voice/stop", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reason })
+        });
+      } catch {}
+    }
+
+    async function wakeYami() {
+      if (askingYami) return;
+      setTalkMode(true);
+      setVoiceBusy(true);
+      try {
+        const response = await fetch("/api/yami/wake", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "acorda" })
+        });
+        const payload = await response.json();
+        if (payload.ok && payload.tts) {
+          markSpokenText(payload.reply || "Estou ouvindo.", payload.voice || payload.tts || {});
+        }
+        voiceStatus.textContent = "Yami acordada. Pode falar.";
+        yamiReply.textContent = payload.reply || "Estou ouvindo.";
+      } catch (error) {
+        voiceStatus.textContent = "Yami acordada, mas audio indisponivel.";
+      } finally {
+        setVoiceBusy(false);
+      }
+    }
+
+    function routeVoiceTranscript(transcript) {
+      if (isRestCommand(transcript)) {
+        deactivateTalk("voz");
+        return null;
+      }
+      const command = extractCommand(transcript);
+      if (command) {
+        const isPureWake = command === "Estou ouvindo." || /^(oi|ola|e ai|yami|claw|clau)$/i.test(normalizeSpeech(command));
+        if (isPureWake) {
+          wakeYami();
+          return { woke: true, message: null, pureWake: true };
+        }
+        setTalkMode(true);
+        return { woke: true, message: command };
+      }
+      if (talkMode || isVoiceModeActive()) {
+        armVoiceMode();
+        return { woke: false, message: transcript };
+      }
+      return null;
+    }
+
+    async function askYami(message) {
+      const cleanMessage = String(message || "").trim();
+      if (!cleanMessage) return;
+      if (isRestCommand(cleanMessage)) {
+        await deactivateTalk("voz");
+        return;
+      }
+      const requestStopToken = talkStopToken;
+      if (askingYami) {
+        queuedVoiceMessage = cleanMessage;
+        voiceStatus.textContent = "Pedido na fila da Yami.";
+        return;
+      }
+      setVoiceBusy(true);
+      voiceStatus.textContent = "Enviando pedido para o nucleo Yami...";
+      try {
+        const response = await fetch("/api/yami/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: cleanMessage, source: "voice" })
+        });
+        const payload = await response.json();
+        const reply = payload.reply || payload.message || "Yami online.";
+        if (requestStopToken !== talkStopToken || (!talkMode && !isVoiceModeActive())) {
+          return;
+        }
+        if (!response.ok || payload.ok === false) {
+          yamiReply.textContent = reply || "Falha ao enviar para a Yami.";
+          voiceStatus.textContent = payload.error || payload.message || "Falha ao enviar para a Yami.";
+          return;
+        }
+        markSpokenText(reply, payload.voice || payload.tts || {});
+        if (payload.action && payload.action.label) {
+          voiceStatus.textContent = payload.action.ok
+            ? `Yami executou: ${payload.action.label}.`
+            : `Yami tentou: ${payload.action.label}.`;
+        } else {
+          voiceStatus.textContent = "Resposta enviada para a voz unica.";
+        }
+      } catch (error) {
+        yamiReply.textContent = "Falha ao enviar para a Yami.";
+        voiceStatus.textContent = `Falha no nucleo de IA: ${error.message || error}`;
+      } finally {
+        if (requestStopToken === talkStopToken) setVoiceBusy(false);
+        if (queuedVoiceMessage && requestStopToken === talkStopToken && talkMode) {
+          const nextMessage = queuedVoiceMessage;
+          queuedVoiceMessage = null;
+          if (isLikelySelfSpeech(nextMessage)) {
+            voiceStatus.textContent = "Ignorando eco da Yami.";
+          } else {
+            setTimeout(() => askYami(nextMessage), 450);
+          }
+        }
+      }
+    }
+
+    function beginRecognition(delayMs = 0) {
+      if (!voiceActive || recognitionRunning || !recognition) return;
+      setTimeout(() => {
+        if (!voiceActive || recognitionRunning || !recognition) return;
+        if (!tabIsPrimary && !claimPrimaryTab()) return;
+        try {
+          recognition.start();
+          recognitionRunning = true;
+          voicePanel.classList.add("listening");
+          setAvatarMood(talkMode ? "talk" : "listening");
+          voiceStatus.textContent = talkMode ? "Yami ouvindo. Nucleo conectado." : "Escutando. Diga acorda para iniciar.";
+        } catch {
+          recognitionRunning = false;
+          if (voiceActive) beginRecognition(1200);
+        }
+      }, delayMs);
+    }
+
+    function startVoice(options = {}) {
+      if (!ensurePrimaryVoiceTab()) return;
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Recognition) {
+        voiceStatus.textContent = "Reconhecimento de voz indisponivel neste navegador.";
+        microphoneBlocked = true;
+        return;
+      }
+      if (!recognition) {
+        recognition = new Recognition();
+        recognition.lang = "pt-BR";
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.onresult = async (event) => {
+          const latest = event.results[event.results.length - 1];
+          const transcript = latest && latest[0] ? latest[0].transcript.trim() : "";
+          if (!transcript) return;
+          if (!tabIsPrimary && !claimPrimaryTab()) return;
+          transcriptLog.textContent = transcript;
+          if (isRestCommand(transcript)) {
+            routeVoiceTranscript(transcript);
+            return;
+          }
+          if (isLikelySelfSpeech(transcript)) {
+            voiceStatus.textContent = "Ignorando eco da Yami.";
+            return;
+          }
+          if (askingYami) {
+            voiceStatus.textContent = "Yami ainda respondendo.";
+            return;
+          }
+          if (isSpeaking) return;
+          const routed = routeVoiceTranscript(transcript);
+          if (routed) {
+            if (routed.pureWake) {
+              return;
+            }
+            yamiReply.textContent = routed.woke ? "Estou ouvindo." : "Enviando para a Yami.";
+            voiceStatus.textContent = "Yami ouvindo e respondendo. Diga descansa para parar.";
+            await askYami(routed.message);
+          }
+        };
+        recognition.onerror = (event) => {
+          voiceStatus.textContent = `Microfone: ${event.error || "erro"}`;
+          if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+            voiceActive = false;
+            recognitionRunning = false;
+            microphoneBlocked = true;
+          }
+        };
+        recognition.onend = () => {
+          recognitionRunning = false;
+          voicePanel.classList.remove("listening");
+          if (!talkMode && !isSpeaking && !askingYami) setAvatarMood("passive");
+          if (voiceActive) {
+            beginRecognition(450);
+          }
+        };
+      }
+      voiceActive = true;
+      microphoneBlocked = false;
+      beginRecognition(0);
+    }
+
+    function stopVoice() {
+      deactivateTalk("comando");
+    }
+
+    addBtn.addEventListener("click", () => {
+      const normalized = normalizeContact(contactInput.value);
+      if (!normalized) return;
+      blockedContacts = Array.from(new Set([...blockedContacts, normalized]));
+      contactInput.value = "";
+      renderContacts();
+      saveState();
+    });
+
+    contactInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") addBtn.click();
+    });
+
+    contactList.addEventListener("click", (event) => {
+      const contact = event.target && event.target.dataset ? event.target.dataset.remove : "";
+      if (!contact) return;
+      blockedContacts = blockedContacts.filter((item) => item !== contact);
+      renderContacts();
+      saveState();
+    });
+
+    enabledToggle.addEventListener("change", saveState);
+    saveBtn.addEventListener("click", saveState);
+    refreshBtn.addEventListener("click", loadState);
+    restartBtn.addEventListener("click", restartGateway);
+    menuNavButtons.forEach((button) => {
+      button.addEventListener("click", () => setMenuPage(button.dataset.menuPage));
+    });
+    document.querySelectorAll("[data-menu-jump]").forEach((button) => {
+      button.addEventListener("click", () => setMenuPage(button.dataset.menuJump));
+    });
+    menuToggle.addEventListener("click", () => setMenuOpen(true));
+    menuToggle.addEventListener("pointerdown", () => setMenuOpen(true));
+    menuClose.addEventListener("click", () => setMenuOpen(false));
+    menuBackdrop.addEventListener("click", () => setMenuOpen(false));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    });
+    voiceSaveBtn.addEventListener("click", saveState);
+    voicePresetBtn.addEventListener("click", () => {
+      if (voiceBackend) voiceBackend.value = "powershell";
+      if (voiceName) voiceName.value = "Microsoft Maria Desktop";
+      if (voiceRate) voiceRate.value = "0";
+      if (voiceVolume) voiceVolume.value = "100";
+      if (voiceReference) voiceReference.value = "https://github.com/isair/jarvis";
+      if (voiceReferenceNote) voiceReferenceNote.value = "Referencia visual/conceitual salva; voz ativa continua Windows padrao, local e unica.";
+      renderVoiceSettings(getVoiceSettingsFromForm());
+    });
+    [voiceBackend, voiceName, voiceRate, voiceVolume, voiceReference, voiceReferenceNote].forEach((field) => {
+      if (!field) return;
+      field.addEventListener("input", () => renderVoiceSettings(getVoiceSettingsFromForm()));
+      field.addEventListener("change", () => renderVoiceSettings(getVoiceSettingsFromForm()));
+    });
+    voiceBtn.addEventListener("click", () => startVoice());
+    stopVoiceBtn.addEventListener("click", stopVoice);
+    testVoiceBtn.addEventListener("click", () => speakWithLocalTts("Estou ouvindo."));
+
+    /* ===== SETTINGS PANEL JS ===== */
+    const settingsToggle = document.getElementById("settingsToggle");
+    const settingsBackdrop = document.getElementById("settingsBackdrop");
+    const settingsDrawer = document.getElementById("settingsDrawer");
+    const settingsClose = document.getElementById("settingsClose");
+    const settingsBody = document.getElementById("settingsBody");
+
+    function setSettingsOpen(open) {
+      document.body.classList.toggle("settings-open", Boolean(open));
+      settingsToggle.classList.toggle("open", Boolean(open));
+      if (settingsDrawer) settingsDrawer.setAttribute("aria-hidden", open ? "false" : "true");
+      if (settingsBackdrop) {
+        if (open) settingsBackdrop.hidden = false;
+        else setTimeout(() => {
+          if (!document.body.classList.contains("settings-open")) settingsBackdrop.hidden = true;
+        }, 220);
+      }
+    }
+
+    settingsToggle.addEventListener("click", () => setSettingsOpen(true));
+    settingsClose.addEventListener("click", () => setSettingsOpen(false));
+    settingsBackdrop.addEventListener("click", () => setSettingsOpen(false));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && document.body.classList.contains("settings-open")) setSettingsOpen(false);
+    });
+
+    settingsBody.addEventListener("click", (event) => {
+      const item = event.target.closest("[data-setting]");
+      if (!item) return;
+      const setting = item.dataset.setting;
+      if (setting === "voice") {
+        setSettingsOpen(false);
+        setMenuPage("voice");
+        if (!document.body.classList.contains("menu-open")) setMenuOpen(true);
+        return;
+      }
+      if (setting === "security") {
+        setSettingsOpen(false);
+        setMenuPage("security");
+        if (!document.body.classList.contains("menu-open")) setMenuOpen(true);
+        return;
+      }
+      if (setting === "whatsapp") {
+        setSettingsOpen(false);
+        setMenuPage("whatsapp");
+        if (!document.body.classList.contains("menu-open")) setMenuOpen(true);
+        return;
+      }
+      if (setting === "google" || setting === "calendar") {
+        setSettingsOpen(false);
+        setMenuPage("integrations");
+        if (!document.body.classList.contains("menu-open")) setMenuOpen(true);
+        setTimeout(loadIntegrations, 300);
+        return;
+      }
+      if (setting === "pendrive") {
+        setSettingsOpen(false);
+        setMenuPage("pendrive");
+        if (!document.body.classList.contains("menu-open")) setMenuOpen(true);
+        return;
+      }
+      if (setting === "pendrive-export") {
+        (async () => {
+          try {
+            const resp = await fetch("/api/pendrive/export", { cache: "no-store" });
+            const data = await resp.json();
+            navigator.clipboard.writeText(JSON.stringify(data, null, 2)).catch(() => {});
+            alert("Bundle de identidade YAMI copiado para a area de transferencia!");
+          } catch {}
+        })();
+        return;
+      }
+      if (setting === "restore" || setting === "backup") {
+        const suggestion = document.getElementById("suggestionGoogle");
+        if (suggestion) {
+          suggestion.querySelector("p").textContent = "Esta funcionalidade estará disponível em breve. Fique de olho nas novidades!";
+          suggestion.querySelector("strong").textContent = "Em desenvolvimento";
+          document.getElementById("suggConnectGoogle").textContent = "Entendi";
+          document.getElementById("suggDismiss").textContent = "Fechar";
+        }
+        return;
+      }
+      const labels = {
+        "email": "Conecte seu e-mail para o Yami ler e responder mensagens.",
+        "storage-local": "Gerencie os arquivos que o Yami armazena no seu computador.",
+        "storage-photos": "Conecte o Google Fotos para fazer backup automático das suas imagens.",
+        "devices": "Veja todos os dispositivos pareados com o Yami.",
+        "theme": "O tema escuro é o padrão do Yami. Mais opções em breve.",
+        "language": "O Yami fala português! Outros idiomas estarão disponíveis em breve.",
+        "browser": "O navegador Chrome já está conectado para automação.",
+        "spotify": "Conecte sua conta Spotify para controlar músicas por voz.",
+        "permissions": "Gerencie as permissões de microfone, notificações e acesso do Yami."
+      };
+      const msg = labels[setting] || "Configuração selecionada.";
+      const suggestion = document.getElementById("suggestionGoogle");
+      if (suggestion) {
+        suggestion.querySelector("p").textContent = msg;
+        suggestion.querySelector("strong").textContent = setting === "email" ? "Configurar e-mail" : setting === "spotify" ? "Conectar Spotify" : "Configuração";
+        document.getElementById("suggConnectGoogle").textContent = "Ok";
+        document.getElementById("suggDismiss").textContent = "Fechar";
+      }
+    });
+
+    document.getElementById("suggConnectGoogle").addEventListener("click", () => {
+      const suggestion = document.getElementById("suggestionGoogle");
+      if (suggestion) {
+        suggestion.querySelector("p").textContent = "Ótimo! Você será notificado quando a conexão estiver pronta.";
+        suggestion.querySelector("strong").textContent = "Sugestão aceita!";
+        document.getElementById("suggConnectGoogle").textContent = "👍";
+        document.getElementById("suggConnectGoogle").disabled = true;
+        document.getElementById("suggDismiss").textContent = "Fechar";
+      }
+    });
+
+    document.getElementById("suggDismiss").addEventListener("click", () => {
+      const suggestion = document.getElementById("suggestionGoogle");
+      if (suggestion) {
+        suggestion.querySelector("p").textContent = "Tudo bem! Se mudar de ideia, é só voltar aqui nas configurações.";
+        suggestion.querySelector("strong").textContent = "Sem problemas";
+        document.getElementById("suggConnectGoogle").textContent = "Ok";
+        document.getElementById("suggDismiss").textContent = "Fechar";
+      }
+    });
+
+    /* ===== INTEGRATIONS / ACCOUNTS PANEL ===== */
+    const integrationsRefreshBtn = document.getElementById("integrationsRefreshBtn");
+    const connectedAccountsList = document.getElementById("connectedAccountsList");
+    const providersGrid = document.getElementById("providersGrid");
+    const metricConnectedAccounts = document.getElementById("metricConnectedAccounts");
+    const metricLastSync = document.getElementById("metricLastSync");
+    const metricTotalProviders = document.getElementById("metricTotalProviders");
+
+    function formatDate(iso) {
+      if (!iso) return "Nunca";
+      try { return new Date(iso).toLocaleString("pt-BR"); } catch { return iso; }
+    }
+
+    function renderPermissions(perms) {
+      if (!Array.isArray(perms) || perms.length === 0) return "";
+      return perms.map((p) =>
+        `<span class="account-card-perm ${p.granted ? 'granted' : ''}">${escapeHtml(p.name)}</span>`
+      ).join("");
+    }
+
+    function renderConnectedAccounts(accounts) {
+      const connected = accounts.filter((a) => a.connected);
+      if (connected.length === 0) {
+        connectedAccountsList.innerHTML =
+          `<div class="panel full" style="margin-top:8px">
+            <div class="panel-title">
+              <div>
+                <div class="label">Contas conectadas</div>
+                <div class="hint">Nenhuma conta conectada ainda. Escolha um provedor abaixo para comecar.</div>
+              </div>
+            </div>
+          </div>`;
+        metricConnectedAccounts.textContent = "0";
+        return;
+      }
+      metricConnectedAccounts.textContent = String(connected.length);
+      connectedAccountsList.innerHTML =
+        `<div class="panel full" style="margin-top:8px">
+          <div class="panel-title">
+            <div>
+              <div class="label">Contas conectadas</div>
+              <div class="hint">Configuracao unica. O Yami reutiliza essas conexoes automaticamente.</div>
+            </div>
+          </div>
+          ${connected.map((a) => `
+            <div class="account-card connected">
+              <span class="account-card-icon ${a.iconClass || ''}">${escapeHtml(a.icon || a.name[0])}</span>
+              <div class="account-card-body">
+                <div class="account-card-name">${escapeHtml(a.name)}</div>
+                <div class="account-card-desc">
+                  ${escapeHtml(a.displayName || a.email || a.description || "")}
+                  ${a.email ? ` &middot; ${escapeHtml(a.email)}` : ""}
+                </div>
+                <div class="account-card-meta">
+                  ${renderPermissions(a.permissions)}
+                </div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">
+                  Ultima sincronizacao: ${formatDate(a.lastSyncAt)}
+                  ${a.status === 'revoked' ? '&middot; Permissoes revogadas' : ''}
+                </div>
+              </div>
+              <div class="account-card-actions">
+                <button class="ghost" data-action="sync" data-provider="${escapeHtml(a.provider)}"
+                  title="Sincronizar agora">Sincronizar</button>
+                <button class="danger" data-action="disconnect" data-provider="${escapeHtml(a.provider)}"
+                  title="Desconectar conta">Desconectar</button>
+              </div>
+            </div>
+          `).join("")}
+        </div>`;
+    }
+
+    function renderProviders(providers, categories, connectedAccounts) {
+      const connected = connectedAccounts || [];
+      const connectedIds = {};
+      for (const a of connected) { if (a.connected) connectedIds[a.provider] = true; }
+
+      const catMap = {};
+      for (const c of categories) { catMap[c.id] = c; }
+
+      const grouped = {};
+      for (const p of providers) {
+        const cat = p.category || "outros";
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(p);
+      }
+
+      metricTotalProviders.textContent = String(providers.length);
+
+      let html = "";
+      for (const [catId, pro] of Object.entries(grouped)) {
+        const cat = catMap[catId] || { name: "Outros", icon: "🔌" };
+        html += `<div style="margin-top:12px">
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:8px">
+            ${escapeHtml(cat.icon)} ${escapeHtml(cat.name)}
+          </div>
+          <div class="feature-grid">`;
+        for (const p of pro) {
+          const isConnected = connectedIds[p.id];
+          html += `
+            <div class="provider-card">
+              <div class="provider-card-head">
+                <span class="provider-icon-lg ${p.iconClass || ''}">${escapeHtml(p.icon || p.name[0])}</span>
+                <strong>${escapeHtml(p.name)}</strong>
+              </div>
+              <p>${escapeHtml(p.description)}</p>
+              ${isConnected
+                ? `<span class="badge ok"><span class="dot"></span>Conectado</span>`
+                : `<span class="badge"><span class="dot"></span>Disponivel</span>`
+              }
+              <button class="${isConnected ? 'ghost' : 'primary'}"
+                data-action="${isConnected ? 'manage' : 'connect'}"
+                data-provider="${escapeHtml(p.id)}"
+                data-provider-name="${escapeHtml(p.name)}">
+                ${isConnected ? 'Gerenciar' : 'Conectar'}
+              </button>
+            </div>`;
+        }
+        html += `</div></div>`;
+      }
+      providersGrid.innerHTML = html;
+    }
+
+    async function loadIntegrations() {
+      try {
+        const response = await fetch("/api/accounts", { cache: "no-store" });
+        const data = await response.json();
+        if (!data.ok) throw new Error(data.message || "Falha ao carregar");
+        renderConnectedAccounts(data.accounts || []);
+        renderProviders(data.accounts || [], data.categories || [], data.accounts || []);
+        metricLastSync.textContent = formatDate(data.updatedAt);
+      } catch (error) {
+        connectedAccountsList.innerHTML =
+          `<div class="panel full" style="margin-top:8px">
+            <div class="panel-title">
+              <div class="hint" style="color:var(--red)">Erro: ${escapeHtml(error.message || error)}</div>
+            </div>
+          </div>`;
+      }
+    }
+
+    async function connectAccount(providerId, providerName) {
+      const email = prompt(`Conectar ${providerName}\n\nDigite o e-mail da conta ${providerName} (opcional):`);
+      try {
+        const response = await fetch("/api/accounts/connect", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            provider: providerId,
+            email: email || null,
+            displayName: email || providerName
+          })
+        });
+        const data = await response.json();
+        if (!data.ok) throw new Error(data.message || "Falha ao conectar");
+        loadIntegrations();
+      } catch (error) {
+        alert(`Erro ao conectar ${providerName}: ${error.message || error}`);
+      }
+    }
+
+    async function disconnectAccount(providerId, providerName) {
+      if (!confirm(`Desconectar ${providerName}?\n\nO Yami perdera acesso a esta conta. Voce pode reconectar depois.`)) return;
+      try {
+        const response = await fetch("/api/accounts/disconnect", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ provider: providerId })
+        });
+        const data = await response.json();
+        if (!data.ok) throw new Error(data.message || "Falha ao desconectar");
+        loadIntegrations();
+      } catch (error) {
+        alert(`Erro ao desconectar: ${error.message || error}`);
+      }
+    }
+
+    async function syncAccount(providerId) {
+      try {
+        const response = await fetch("/api/accounts/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ provider: providerId })
+        });
+        const data = await response.json();
+        if (!data.ok) throw new Error(data.message || "Falha ao sincronizar");
+        loadIntegrations();
+      } catch (error) {
+        alert(`Erro ao sincronizar: ${error.message || error}`);
+      }
+    }
+
+    document.addEventListener("click", (event) => {
+      const card = event.target.closest("[data-provider]");
+      if (!card) return;
+      const action = card.dataset.action;
+      const providerId = card.dataset.provider;
+      const providerName = card.dataset.providerName || providerId;
+      if (action === "connect") connectAccount(providerId, providerName);
+      else if (action === "disconnect") disconnectAccount(providerId, providerName);
+      else if (action === "sync") syncAccount(providerId);
+      else if (action === "manage") {
+        setMenuPage("dashboard");
+        const suggestion = document.getElementById("suggestionGoogle");
+        if (suggestion) {
+          suggestion.querySelector("p").textContent = `Gerenciando ${providerName}. Use as opcoes de sincronizar ou desconectar.`;
+          suggestion.querySelector("strong").textContent = providerName;
+          document.getElementById("suggConnectGoogle").textContent = "Ok";
+          document.getElementById("suggDismiss").textContent = "Fechar";
+        }
+      }
+    });
+
+    if (integrationsRefreshBtn) integrationsRefreshBtn.addEventListener("click", loadIntegrations);
+
+    /* ===== PENDRIVE UI ===== */
+    async function loadPendriveStatus() {
+      try {
+        const resp = await fetch("/api/pendrive", { cache: "no-store" });
+        const data = await resp.json();
+        if (!data.ok) throw new Error("Falha");
+        const idEl = document.getElementById("metricPendriveId");
+        const initEl = document.getElementById("metricPendriveInit");
+        const stageEl = document.getElementById("metricPendriveStage");
+        if (data.initialized && data.identity) {
+          if (idEl) idEl.textContent = data.identity.yamiId.slice(0, 20) + "...";
+          if (initEl) initEl.textContent = "Inicializado (G" + data.identity.generation + ")";
+          if (stageEl) stageEl.textContent = (data.evolution && data.evolution.currentStage) || "primordial";
+          const evolList = document.getElementById("pendriveEvolList");
+          if (evolList && data.evolution && data.evolution.recentHistory && data.evolution.recentHistory.length > 0) {
+            evolList.innerHTML = data.evolution.recentHistory.slice(-5).map((e) =>
+              `<div style="font-size:11px;color:var(--muted);padding:2px 0">[${e.type}] ${e.description}</div>`
+            ).join("");
+          }
+          const friendList = document.getElementById("pendriveFriendList");
+          if (friendList && data.social && data.social.friends) {
+            const f = data.social.friends;
+            friendList.innerHTML = `<div>${f.total} amigos · ${f.incoming} convites pendentes</div>`;
+          }
+        } else {
+          if (idEl) idEl.textContent = "---";
+          if (initEl) initEl.textContent = "Nao inicializado";
+          if (stageEl) stageEl.textContent = "---";
+        }
+        const syncBtn = document.getElementById("pendriveSyncBtn");
+        if (syncBtn && data.sync && data.sync.lastSyncAt) {
+          syncBtn.textContent = "Sincronizado: " + new Date(data.sync.lastSyncAt).toLocaleTimeString();
+        }
+      } catch {}
+    }
+
+    document.getElementById("pendriveInitBtn")?.addEventListener("click", async () => {
+      try {
+        const resp = await fetch("/api/pendrive/init", { method: "POST" });
+        const data = await resp.json();
+        if (data.ok) { alert("Pendrive YAMI inicializado com sucesso!"); loadPendriveStatus(); }
+        else alert("Erro: " + (data.message || "Falha"));
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    document.getElementById("pendriveRefreshBtn")?.addEventListener("click", loadPendriveStatus);
+
+    document.getElementById("pendriveAppearanceSave")?.addEventListener("click", async () => {
+      const theme = document.getElementById("pendriveTheme").value;
+      const eyes = document.getElementById("pendriveEyes").value;
+      const glow = document.getElementById("pendriveGlow").value;
+      const colorMap = { cyan: "85, 230, 255", amber: "255, 209, 102", green: "125, 247, 170", red: "255, 107, 122", violet: "177, 140, 255", pink: "255, 180, 200", blue: "70, 150, 255" };
+      try {
+        await fetch("/api/pendrive/appearance", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ themePreset: theme, eyeStyle: eyes, glowColor: colorMap[glow] || "85, 230, 255" })
+        });
+        if (yamiAvatar) yamiAvatar.style.setProperty("--avatar-glow-color", colorMap[glow] || "85, 230, 255");
+        alert("Aparencia atualizada!");
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    document.getElementById("pendriveEvolBtn")?.addEventListener("click", async () => {
+      const desc = document.getElementById("pendriveEvolDesc").value;
+      if (!desc) return alert("Digite uma descricao.");
+      try {
+        await fetch("/api/pendrive/evolution", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "user-registered", description: desc })
+        });
+        document.getElementById("pendriveEvolDesc").value = "";
+        loadPendriveStatus();
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    document.getElementById("pendriveFriendAdd")?.addEventListener("click", async () => {
+      const id = document.getElementById("pendriveFriendId").value;
+      const name = document.getElementById("pendriveFriendName").value || id;
+      if (!id) return alert("Digite o ID do amigo YAMI.");
+      try {
+        const resp = await fetch("/api/pendrive/social/friends", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "add", yamiId: id, name })
+        });
+        const data = await resp.json();
+        if (data.ok) { document.getElementById("pendriveFriendId").value = ""; document.getElementById("pendriveFriendName").value = ""; loadPendriveStatus(); refreshFriendSelect(); }
+        else alert("Erro: " + (data.message || "Falha"));
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    async function refreshFriendSelect() {
+      try {
+        const resp = await fetch("/api/pendrive/social/friends", { cache: "no-store" });
+        const data = await resp.json();
+        const sel = document.getElementById("pendriveMsgFriend");
+        if (!sel) return;
+        sel.innerHTML = '<option value="">Selecione um amigo</option>';
+        if (data.ok && data.friends && data.friends.friends) {
+          for (const f of data.friends.friends) {
+            sel.innerHTML += `<option value="${f.yamiId}">${f.displayName}</option>`;
+          }
+        }
+      } catch {}
+    }
+
+    document.getElementById("pendriveMsgSend")?.addEventListener("click", async () => {
+      const sel = document.getElementById("pendriveMsgFriend");
+      const to = sel.value;
+      const text = document.getElementById("pendriveMsgText").value;
+      if (!to || !text) return alert("Selecione um amigo e digite a mensagem.");
+      try {
+        await fetch("/api/pendrive/social/messages", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "send", toYamiId: to, text })
+        });
+        document.getElementById("pendriveMsgText").value = "";
+        document.getElementById("pendriveMsgLog").textContent = "Mensagem enviada para " + sel.options[sel.selectedIndex].text;
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    document.getElementById("pendriveMemoryAdd")?.addEventListener("click", async () => {
+      const text = document.getElementById("pendriveMemoryInput").value;
+      if (!text) return;
+      try {
+        await fetch("/api/pendrive/memory", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "note", content: text })
+        });
+        document.getElementById("pendriveMemoryInput").value = "";
+        document.getElementById("pendriveMemoryList").textContent = "Memoria salva.";
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    document.getElementById("pendriveMemorySearchBtn")?.addEventListener("click", async () => {
+      const q = document.getElementById("pendriveMemorySearch").value;
+      if (!q) return;
+      try {
+        const resp = await fetch("/api/pendrive/memory?search=" + encodeURIComponent(q), { cache: "no-store" });
+        const data = await resp.json();
+        const list = document.getElementById("pendriveMemoryList");
+        if (data.ok && data.results && data.results.length > 0) {
+          list.innerHTML = data.results.slice(0, 10).map((r) =>
+            `<div style="font-size:11px;color:var(--muted);padding:2px 0">${escapeHtml(r.content.slice(0, 100))}</div>`
+          ).join("");
+        } else { list.textContent = "Nenhum resultado."; }
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    document.getElementById("pendriveExportBtn")?.addEventListener("click", async () => {
+      try {
+        const resp = await fetch("/api/pendrive/export", { cache: "no-store" });
+        const data = await resp.json();
+        const out = document.getElementById("pendriveExportOut");
+        out.textContent = "Bundle exportado (" + data.origin + ")";
+        navigator.clipboard.writeText(JSON.stringify(data, null, 2)).catch(() => {});
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    document.getElementById("pendriveSyncBtn")?.addEventListener("click", async () => {
+      try {
+        const resp = await fetch("/api/pendrive/sync", { method: "POST" });
+        const data = await resp.json();
+        if (data.ok) loadPendriveStatus();
+      } catch (e) { alert("Erro: " + e.message); }
+    });
+
+    setMenuPage("dashboard");
+
+    setInterval(() => {
+      if (autoStartVoice && !microphoneBlocked && !voiceActive) {
+        startVoice({ silent: true });
+        return;
+      }
+      if (!voiceActive) return;
+      if (!tabIsPrimary && !claimPrimaryTab()) return;
+      if (!recognitionRunning) beginRecognition(0);
+      if (!talkMode && !isVoiceModeActive()) {
+        if (!askingYami && !isSpeaking) voiceStatus.textContent = "Escutando. Diga acorda para iniciar.";
+        if (!askingYami && !isSpeaking) setAvatarMood("listening");
+        return;
+      }
+      if (askingYami || isSpeaking) return;
+      setAvatarMood("talk");
+      voiceStatus.textContent = "Yami ouvindo. Nucleo conectado.";
+    }, TALK_KEEPALIVE_MS);
+
+    setInterval(() => {
+      if (!voiceActive) return;
+      const primary = claimPrimaryTab();
+      if (!primary) {
+        try { if (recognition) recognition.stop(); } catch {}
+        voicePanel.classList.remove("listening");
+        setAvatarMood("passive");
+        voiceStatus.textContent = "Standby: outra aba Yami esta com a voz ativa.";
+      }
+    }, 2500);
+
+    window.addEventListener("storage", (event) => {
+      if (event.key !== ACTIVE_TAB_KEY) return;
+      const active = readActiveTab();
+      if (active && active.id !== tabId && tabIsPrimary) {
+        tabIsPrimary = false;
+        try { if (recognition) recognition.stop(); } catch {}
+        voicePanel.classList.remove("listening");
+        setAvatarMood("passive");
+        voiceStatus.textContent = "Standby: outra aba Yami esta com a voz ativa.";
+      }
+    });
+
+    window.addEventListener("beforeunload", releasePrimaryTab);
+
+    checkOnboarding();
+    loadState();
+    startGazeCycle();
+    syncVoiceState({ quiet: true });
+    setInterval(() => syncVoiceState({ quiet: true }), 1200);
+    setInterval(loadState, 60000);
+    if (autoStartVoice) {
+      const autoArm = () => setTimeout(() => startVoice({ silent: true }), 700);
+      if (document.readyState === "complete") autoArm();
+      else window.addEventListener("load", autoArm, { once: true });
+    }
+  </script>
+</body>
+</html>

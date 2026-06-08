@@ -1,0 +1,14 @@
+{
+  "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+  "backend": "powershell",
+  "voice": "Microsoft Maria Desktop",
+  "model": "",
+  "rate": 0,
+  "volume": 100,
+  "wakeWord": "acorda",
+  "restWord": "descansa",
+  "language": "pt-BR",
+  "autoTts": false,
+  "ttsEnabled": false,
+  "updatedAt": "2026-06-08T19:00:50.715Z"
+}

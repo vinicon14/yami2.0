@@ -1,0 +1,17 @@
+{
+  "id": "minimal",
+  "name": "Perfil Minimo",
+  "description": "Apenas o essencial: voz local e comandos basicos. Sem contas conectadas.",
+  "features": {
+    "voice": true,
+    "dashboard": true,
+    "whatsapp": false,
+    "integrations": false,
+    "sync": false
+  },
+  "tts": {
+    "backend": "powershell",
+    "voice": "Microsoft Maria Desktop"
+  },
+  "recommended": false
+}

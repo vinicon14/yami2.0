@@ -1,0 +1,38 @@
+[
+  {
+    "timestamp": "2026-06-08T19:05:16.628Z",
+    "type": "command",
+    "content": "criar relatorio em pdf",
+    "context": {
+      "hour": 16,
+      "dayOfWeek": 1
+    }
+  },
+  {
+    "timestamp": "2026-06-08T19:07:45.852Z",
+    "type": "command",
+    "content": "criar relatorio em pdf",
+    "context": {
+      "hour": 16,
+      "dayOfWeek": 1
+    }
+  },
+  {
+    "timestamp": "2026-06-08T19:07:45.853Z",
+    "type": "command",
+    "content": "gerar relatorio pdf",
+    "context": {
+      "hour": 16,
+      "dayOfWeek": 1
+    }
+  },
+  {
+    "timestamp": "2026-06-08T19:07:45.854Z",
+    "type": "command",
+    "content": "fazer slides apresentacao",
+    "context": {
+      "hour": 16,
+      "dayOfWeek": 1
+    }
+  }
+]

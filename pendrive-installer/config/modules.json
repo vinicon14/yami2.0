@@ -1,0 +1,21 @@
+{
+  "native": [
+    "voice",
+    "dashboard",
+    "gateway",
+    "chats",
+    "whatsapp",
+    "integrations",
+    "autoevolve",
+    "comunicacao",
+    "agenda-inteligente",
+    "gerenciamento-arquivos",
+    "gerenciamento-fotos",
+    "compartilhamento-assistido"
+  ],
+  "custom": [],
+  "shared": [],
+  "community": [],
+  "pendingInstall": [],
+  "updatedAt": ""
+}

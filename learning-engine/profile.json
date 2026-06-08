@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "userId": "default",
+  "lastUpdated": "2026-06-08T19:07:45.856Z",
+  "totalInteractions": 4,
+  "preferences": {
+    "outputFormat": {
+      "value": "pdf",
+      "confidence": 0.17
+    }
+  },
+  "habits": {
+    "activeHours": {
+      "16:00": 4
+    },
+    "frequentCommands": [
+      {
+        "name": "criar relatorio em",
+        "count": 2,
+        "firstSeen": "2026-06-08T19:05:16.629Z",
+        "lastUsed": "2026-06-08T19:07:45.852Z"
+      },
+      {
+        "name": "gerar relatorio pdf",
+        "count": 1,
+        "firstSeen": "2026-06-08T19:07:45.853Z",
+        "lastUsed": "2026-06-08T19:07:45.853Z"
+      },
+      {
+        "name": "fazer slides apresentacao",
+        "count": 1,
+        "firstSeen": "2026-06-08T19:07:45.854Z",
+        "lastUsed": "2026-06-08T19:07:45.854Z"
+      }
+    ],
+    "frequentApps": [],
+    "frequentSites": [],
+    "communicationMethods": [],
+    "toolsUsed": {
+      "file-write": {
+        "count": 3,
+        "firstUsed": "2026-06-08T19:05:16.632Z",
+        "lastUsed": "2026-06-08T19:07:45.856Z"
+      },
+      "file-read": {
+        "count": 1,
+        "firstUsed": "2026-06-08T19:07:45.856Z",
+        "lastUsed": "2026-06-08T19:07:45.856Z"
+      }
+    }
+  },
+  "routines": {
+    "morning": {
+      "timeRange": "06:00-12:00",
+      "commonActions": [],
+      "frequency": 0
+    },
+    "afternoon": {
+      "timeRange": "12:00-18:00",
+      "commonActions": [
+        "fazer slides apresentacao",
+        "gerar relatorio pdf",
+        "criar relatorio em pdf"
+      ],
+      "frequency": 4,
+      "lastActive": "2026-06-08T19:07:45.854Z"
+    },
+    "evening": {
+      "timeRange": "18:00-00:00",
+      "commonActions": [],
+      "frequency": 0
+    },
+    "night": {
+      "timeRange": "00:00-06:00",
+      "commonActions": [],
+      "frequency": 0
+    }
+  },
+  "workflows": [
+    {
+      "name": "gerar relatorio",
+      "steps": [
+        "criar template",
+        "preencher dados",
+        "exportar pdf"
+      ],
+      "frequency": 1,
+      "firstUsed": "2026-06-08T19:07:45.857Z",
+      "lastUsed": "2026-06-08T19:07:45.857Z"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "c39a2XzDS9r6DyWPLTqH426oQS-gRK5Wyw4ZIoJOZWo": {
+    "token": "c39a2XzDS9r6DyWPLTqH426oQS-gRK5Wyw4ZIoJOZWo",
+    "ts": 1780773667614,
+    "profile": {
+      "roles": [
+        "node",
+        "operator"
+      ],
+      "scopes": [
+        "operator.approvals",
+        "operator.read",
+        "operator.talk.secrets",
+        "operator.write"
+      ]
+    },
+    "redeemedProfile": {
+      "roles": [],
+      "scopes": []
+    },
+    "issuedAtMs": 1780773667614
+  }
+}

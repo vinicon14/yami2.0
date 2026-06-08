@@ -1,0 +1,20 @@
+{
+  "0968125e-c4a6-49f6-b3bf-0637427f7947": {
+    "requestId": "0968125e-c4a6-49f6-b3bf-0637427f7947",
+    "deviceId": "a7ebb47a0bb53d534e7181248ddd3d83ac713c7e5549e31e5dbaf482b8ca31d0",
+    "publicKey": "ZX0WOZePCYQ2FLLPTPY8fDAuNB8aS9QytqdjBTl_6mM",
+    "displayName": "pcvini",
+    "platform": "windows",
+    "deviceFamily": "Windows",
+    "clientId": "node-host",
+    "clientMode": "node",
+    "role": "node",
+    "roles": [
+      "node"
+    ],
+    "scopes": [],
+    "silent": false,
+    "isRepair": true,
+    "ts": 1780865852520
+  }
+}

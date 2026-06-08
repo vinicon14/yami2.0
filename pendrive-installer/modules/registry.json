@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0-pendrive",
+  "updatedAt": "2026-06-08T00:00:00Z",
+  "modules": {
+    "openclaw-adapter": {
+      "type": "core",
+      "source": "openclaw-runtime-core",
+      "adapted": true,
+      "version": "1.0.0",
+      "status": "active",
+      "path": "modules/openclaw",
+      "entry": "module.json"
+    },
+    "opencloud-sync": {
+      "type": "sync",
+      "source": "opencloud-sync",
+      "adapted": true,
+      "version": "1.0.0",
+      "status": "active",
+      "path": "modules/opencloud",
+      "entry": "module.json"
+    },
+    "hermes-adapters": {
+      "type": "enhancement",
+      "source": "hermes-agent-adapters",
+      "adapted": true,
+      "version": "1.0.0",
+      "status": "active",
+      "path": "modules/hermes",
+      "entry": "module.json"
+    }
+  },
+  "loadOrder": ["openclaw-adapter", "opencloud-sync", "hermes-adapters"],
+  "compatibility": ["yami-pendrive-1.0"]
+}

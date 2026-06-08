@@ -1,0 +1,78 @@
+{
+  "product": "Yami",
+  "runtime": "yami-pendrive-runtime",
+  "version": "1.0.0-pendrive",
+  "identity": {
+    "publicName": "Yami",
+    "assistantName": "Yami",
+    "dashboardName": "Dashboard Yami",
+    "gatewayName": "Gateway Yami",
+    "chatName": "Chats Yami"
+  },
+  "architecture": {
+    "type": "pendrive-runtime",
+    "description": "Yami Pendrive Edition - plug-and-play portable assistant runtime. Installs from USB with zero configuration.",
+    "compatibility": [
+      "openclaw-runtime-core",
+      "hermes-agent-adapters",
+      "yami-pendrive-1.0"
+    ],
+    "installMode": "plug-and-play",
+    "installSources": ["pendrive", "local", "network"]
+  },
+  "coreModules": [
+    {
+      "id": "voice",
+      "name": "Voz Yami",
+      "status": "active",
+      "purpose": "Wake word, talk mode, rest intent, single local voice and avatar speech state."
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard Yami",
+      "status": "active",
+      "purpose": "Full-screen Tamagotchi home with scalable menu pages."
+    },
+    {
+      "id": "gateway",
+      "name": "Gateway Yami",
+      "status": "active",
+      "purpose": "Local gateway status and user-triggered control."
+    },
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp Yami",
+      "status": "active",
+      "purpose": "Automatic text-first WhatsApp workflow."
+    },
+    {
+      "id": "integrations",
+      "name": "Integracoes Yami",
+      "status": "active",
+      "purpose": "Universal account system: Google, Microsoft, Apple, WhatsApp, etc."
+    }
+  ],
+  "pendrive": {
+    "version": "1.0.0",
+    "minNodeVersion": "22.19.0",
+    "requiredDiskMB": 500,
+    "supportedOS": ["win32", "darwin", "linux"],
+    "autoRun": true,
+    "autorunFile": "autorun.inf",
+    "installerEntry": "installer/YamiInstaller.exe",
+    "setupWizard": "dashboard/setup-wizard.html",
+    "mobileApp": "mobile/YamiApp",
+    "updateSystem": "updater/YamiUpdater.ps1"
+  },
+  "rules": {
+    "notAVisualCopy": true,
+    "textIsDefault": true,
+    "shareFilesOnlyWhenExplicitlyRequested": true,
+    "wakeWord": "acorda",
+    "restWord": "descansa",
+    "gatewayRestartOnlyWhenRequested": true,
+    "plugAndPlay": true,
+    "noManualConfig": true,
+    "autoUpdate": true
+  }
+}

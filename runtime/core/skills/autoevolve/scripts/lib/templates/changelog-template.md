@@ -1,0 +1,5 @@
+## {{VERSION}} ({{DATE}})
+
+### {{CATEGORY}}
+
+- {{ENTRY}}

@@ -1,0 +1,102 @@
+{
+  "id": "evol-mq5jln7n-15wn",
+  "request": "Criar integracao com Google Calendar para sincronizar eventos",
+  "category": {
+    "id": "integration",
+    "label": "Nova integracao",
+    "keywords": [
+      "integracao",
+      "conectar",
+      "api",
+      "servico",
+      "app",
+      "aplicativo"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "TASK-01",
+      "phase": "analysis",
+      "title": "Analise: # Especificacao Tecnica: Criar integracao com Google Calenda",
+      "priority": "alta",
+      "estimate": "2h",
+      "dependencies": "Nenhuma",
+      "module": "integration",
+      "description": "Analisar requisitos, identificar componentes afetados e mapear dependencias.",
+      "acceptance": "- Requisitos documentados\n- Componentes mapeados\n- Riscos identificados",
+      "files": "- docs/espec/integration/requisitos.md\n- docs/espec/integration/analise.md",
+      "notes": "",
+      "rendered": "## Tarefa TASK-01: Analise: # Especificacao Tecnica: Criar integracao com Google Calenda\n\n**Prioridade:** alta\n**Estimativa:** 2h\n**Dependencias:** Nenhuma\n**Modulo:** integration\n\n### Descricao\n\nAnalisar requisitos, identificar componentes afetados e mapear dependencias.\n\n### Criterios de aceite\n\n- Requisitos documentados\n- Componentes mapeados\n- Riscos identificados\n\n### Arquivos afetados\n\n- docs/espec/integration/requisitos.md\n- docs/espec/integration/analise.md\n\n### Notas tecnicas\n\n\n"
+    },
+    {
+      "id": "TASK-02",
+      "phase": "planning",
+      "title": "Planejamento: # Especificacao Tecnica: Criar integracao com Google Calenda",
+      "priority": "alta",
+      "estimate": "1h",
+      "dependencies": "TASK-01 (Analise)",
+      "module": "integration",
+      "description": "Definir arquitetura, dividir em modulos e estabelecer cronograma de implementacao.",
+      "acceptance": "- Arquitetura definida\n- Modulos separados\n- Cronograma estabelecido",
+      "files": "- docs/espec/integration/arquitetura.md\n- docs/espec/integration/cronograma.md",
+      "notes": "",
+      "rendered": "## Tarefa TASK-02: Planejamento: # Especificacao Tecnica: Criar integracao com Google Calenda\n\n**Prioridade:** alta\n**Estimativa:** 1h\n**Dependencias:** TASK-01 (Analise)\n**Modulo:** integration\n\n### Descricao\n\nDefinir arquitetura, dividir em modulos e estabelecer cronograma de implementacao.\n\n### Criterios de aceite\n\n- Arquitetura definida\n- Modulos separados\n- Cronograma estabelecido\n\n### Arquivos afetados\n\n- docs/espec/integration/arquitetura.md\n- docs/espec/integration/cronograma.md\n\n### Notas tecnicas\n\n\n"
+    },
+    {
+      "id": "TASK-03",
+      "phase": "implementation",
+      "title": "Implementacao: # Especificacao Tecnica: Criar integracao com Google Calenda",
+      "priority": "media",
+      "estimate": "8h",
+      "dependencies": "TASK-02 (Planejamento)",
+      "module": "integration",
+      "description": "Implementar a funcionalidade seguindo a especificacao e as convencoes do YAMI.",
+      "acceptance": "- Codigo implementado\n- Convencoes seguidas\n- Sem erros de lint",
+      "files": "- runtime/core/skills/integration/\n- yami.json (se necessario)\n- runtime/yami-manifest.json (se necessario)",
+      "notes": "",
+      "rendered": "## Tarefa TASK-03: Implementacao: # Especificacao Tecnica: Criar integracao com Google Calenda\n\n**Prioridade:** media\n**Estimativa:** 8h\n**Dependencias:** TASK-02 (Planejamento)\n**Modulo:** integration\n\n### Descricao\n\nImplementar a funcionalidade seguindo a especificacao e as convencoes do YAMI.\n\n### Criterios de aceite\n\n- Codigo implementado\n- Convencoes seguidas\n- Sem erros de lint\n\n### Arquivos afetados\n\n- runtime/core/skills/integration/\n- yami.json (se necessario)\n- runtime/yami-manifest.json (se necessario)\n\n### Notas tecnicas\n\n\n"
+    },
+    {
+      "id": "TASK-04",
+      "phase": "tests",
+      "title": "Testes: # Especificacao Tecnica: Criar integracao com Google Calenda",
+      "priority": "media",
+      "estimate": "3h",
+      "dependencies": "TASK-03 (Implementacao)",
+      "module": "integration",
+      "description": "Criar e executar testes unitarios e de integracao para garantir o funcionamento esperado.",
+      "acceptance": "- Testes unitarios criados\n- Testes de integracao criados\n- Cobertura minima 70%",
+      "files": "- tests/integration/\n- tests/integration.test.mjs",
+      "notes": "",
+      "rendered": "## Tarefa TASK-04: Testes: # Especificacao Tecnica: Criar integracao com Google Calenda\n\n**Prioridade:** media\n**Estimativa:** 3h\n**Dependencias:** TASK-03 (Implementacao)\n**Modulo:** integration\n\n### Descricao\n\nCriar e executar testes unitarios e de integracao para garantir o funcionamento esperado.\n\n### Criterios de aceite\n\n- Testes unitarios criados\n- Testes de integracao criados\n- Cobertura minima 70%\n\n### Arquivos afetados\n\n- tests/integration/\n- tests/integration.test.mjs\n\n### Notas tecnicas\n\n\n"
+    },
+    {
+      "id": "TASK-05",
+      "phase": "validation",
+      "title": "Validacao: # Especificacao Tecnica: Criar integracao com Google Calenda",
+      "priority": "baixa",
+      "estimate": "2h",
+      "dependencies": "TASK-04 (Testes)",
+      "module": "integration",
+      "description": "Validar a implementacao contra os criterios de aceite definidos na especificacao.",
+      "acceptance": "- Todos os criterios de aceite atendidos\n- Nenhum regression introduzido\n- Performance aceitavel",
+      "files": "- docs/espec/integration/validacao.md",
+      "notes": "",
+      "rendered": "## Tarefa TASK-05: Validacao: # Especificacao Tecnica: Criar integracao com Google Calenda\n\n**Prioridade:** baixa\n**Estimativa:** 2h\n**Dependencias:** TASK-04 (Testes)\n**Modulo:** integration\n\n### Descricao\n\nValidar a implementacao contra os criterios de aceite definidos na especificacao.\n\n### Criterios de aceite\n\n- Todos os criterios de aceite atendidos\n- Nenhum regression introduzido\n- Performance aceitavel\n\n### Arquivos afetados\n\n- docs/espec/integration/validacao.md\n\n### Notas tecnicas\n\n\n"
+    },
+    {
+      "id": "TASK-06",
+      "phase": "integration",
+      "title": "Integracao: # Especificacao Tecnica: Criar integracao com Google Calenda",
+      "priority": "baixa",
+      "estimate": "2h",
+      "dependencies": "TASK-05 (Validacao)",
+      "module": "integration",
+      "description": "Integrar o novo modulo ao YAMI, registrar skills/plugins e atualizar a documentacao.",
+      "acceptance": "- Modulo registrado no YAMI\n- Documentacao atualizada\n- Changelog gerado",
+      "files": "- runtime/yami-manifest.json\n- yami.json\n- docs/integration/README.md",
+      "notes": "",
+      "rendered": "## Tarefa TASK-06: Integracao: # Especificacao Tecnica: Criar integracao com Google Calenda\n\n**Prioridade:** baixa\n**Estimativa:** 2h\n**Dependencias:** TASK-05 (Validacao)\n**Modulo:** integration\n\n### Descricao\n\nIntegrar o novo modulo ao YAMI, registrar skills/plugins e atualizar a documentacao.\n\n### Criterios de aceite\n\n- Modulo registrado no YAMI\n- Documentacao atualizada\n- Changelog gerado\n\n### Arquivos afetados\n\n- runtime/yami-manifest.json\n- yami.json\n- docs/integration/README.md\n\n### Notas tecnicas\n\n\n"
+    }
+  ]
+}

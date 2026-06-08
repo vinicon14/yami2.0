@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "enabled": true,
+  "lastUpdated": "2026-06-08T19:04:08.631067+00:00",
+  "totalMessagesAnalyzed": 1,
+  "profile": {
+    "vocabulary": {
+      "formal": 0.0,
+      "technical": 0.0,
+      "casual": 0.615
+    },
+    "formality": "casual",
+    "slangUsage": "noticia",
+    "sentenceStructure": "equilibrado",
+    "averageMessageLength": 84,
+    "emojiFrequency": "raro",
+    "commonExpressions": [
+      "pode ser",
+      "vamos"
+    ],
+    "greeting": "opa",
+    "closing": "",
+    "primaryTone": "inquisitivo",
+    "secondaryTone": "",
+    "styleTags": [
+      "casual",
+      "inquisitivo",
+      "vocabulário casual",
+      "frases equilibradas"
+    ],
+    "description": "estilo casual, tom inquisitivo, mensagens médias, raramente usa emojis"
+  },
+  "rawSamples": [
+    {
+      "text": "Opa, tudo bem? Tipo, achei interessante demais! Vamos explorar isso junto, pode ser?",
+      "features": {
+        "wordCount": 13,
+        "charCount": 84,
+        "sentenceCount": 1,
+        "avgSentenceLength": 13.0,
+        "avgMessageLength": 84,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 0.6153846153846154,
+        "hasGreeting": true,
+        "hasClosing": false,
+        "isQuestion": true,
+        "isExclamation": false,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:04:08.631067+00:00"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "yamiId": "",
+  "generation": 1,
+  "totalEvolutions": 0,
+  "currentStage": "primordial",
+  "stages": [
+    {
+      "id": "primordial",
+      "name": "Yami Primordial",
+      "description": "Primeira forma do Yami, recem-nascido",
+      "unlockedAt": null,
+      "milestones": []
+    }
+  ],
+  "history": [],
+  "unlockedFeatures": [],
+  "modulesInstalled": 0,
+  "lastEvolutionAt": null,
+  "updatedAt": ""
+}

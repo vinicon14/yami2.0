@@ -1,0 +1,23 @@
+{
+  "id": "openclaw-adapter",
+  "name": "OpenClaw Runtime Adapter",
+  "version": "1.0.0",
+  "source": "openclaw-runtime-core",
+  "license": "MIT",
+  "adapted": true,
+  "description": "Core runtime engine adapted from OpenClaw for YAMI. Provides gateway, agent execution, skills system, and authentication framework.",
+  "capabilities": ["gateway", "agent-runtime", "skills-engine", "auth-framework"],
+  "dependencies": [],
+  "compatibility": ["yami-pendrive-1.0", "openclaw-core-2026"],
+  "modules": [
+    {"id": "gateway", "name": "Yami Gateway", "purpose": "Local gateway for message routing and control"},
+    {"id": "agent", "name": "Yami Agent Runtime", "purpose": "AI agent execution engine"},
+    {"id": "skills", "name": "Yami Skills", "purpose": "Pluginable skills system"},
+    {"id": "auth", "name": "Yami Auth", "purpose": "OAuth and API key authentication"}
+  ],
+  "config": {
+    "gatewayPort": 18789,
+    "bindAddress": "127.0.0.1",
+    "mode": "local"
+  }
+}

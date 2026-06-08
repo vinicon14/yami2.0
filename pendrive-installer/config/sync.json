@@ -1,0 +1,19 @@
+{
+  "yamiId": "",
+  "lastSyncAt": null,
+  "lastHostName": "",
+  "lastHostPlatform": "win32",
+  "lastHostUser": "",
+  "syncVersion": "1.0",
+  "dirtyFlags": {
+    "profile": false,
+    "appearance": false,
+    "evolution": false,
+    "modules": false,
+    "voice": false,
+    "social": false,
+    "memory": false
+  },
+  "syncHistory": [],
+  "updatedAt": ""
+}

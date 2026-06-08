@@ -1,0 +1,17 @@
+{
+  "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+  "instanceName": "Yami",
+  "createdAt": "2026-06-08T19:00:50.708Z",
+  "updatedAt": "2026-06-08T19:00:50.708Z",
+  "hardwareId": "",
+  "generation": 1,
+  "version": "1.0.0-pendrive",
+  "publicKey": "",
+  "metadata": {
+    "origin": "pendrive-nucleus",
+    "protocol": "yami-identity-1.0",
+    "compatibility": [
+      "yami-pendrive-1.0"
+    ]
+  }
+}

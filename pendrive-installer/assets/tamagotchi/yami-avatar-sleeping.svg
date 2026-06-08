@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#0f1a1e"/>
+      <stop offset="60%" stop-color="#050a0e"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="160" fill="url(#bg)" stroke="rgba(145,174,184,0.15)" stroke-width="1"/>
+  <circle cx="200" cy="200" r="180" fill="rgba(145,174,184,0.02)"/>
+  <!-- Eyes closed -->
+  <ellipse cx="150" cy="145" rx="40" ry="6" fill="#0a1520" stroke="rgba(145,174,184,0.2)" stroke-width="1"/>
+  <ellipse cx="250" cy="145" rx="40" ry="6" fill="#0a1520" stroke="rgba(145,174,184,0.2)" stroke-width="1"/>
+  <!-- Zzz -->
+  <text x="290" y="80" font-family="sans-serif" font-size="24" fill="rgba(145,174,184,0.5)">z</text>
+  <text x="310" y="55" font-family="sans-serif" font-size="20" fill="rgba(145,174,184,0.35)">z</text>
+  <text x="325" y="35" font-family="sans-serif" font-size="16" fill="rgba(145,174,184,0.2)">z</text>
+  <!-- Mouth relaxed -->
+  <path d="M 175 225 Q 200 215 225 225" fill="none" stroke="rgba(145,174,184,0.3)" stroke-width="2" stroke-linecap="round"/>
+</svg>

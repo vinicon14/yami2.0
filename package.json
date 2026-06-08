@@ -1,0 +1,26 @@
+{
+  "name": "yami",
+  "version": "0.1.0-yami.1",
+  "description": "Yami - Personal AI Assistant Runtime",
+  "main": "yami-exe-wrapper.mjs",
+  "bin": {
+    "yami": "yami-exe-wrapper.mjs"
+  },
+  "pkg": {
+    "targets": ["win-x64"],
+    "output": "yami.exe",
+    "scripts": ["yami-exe-wrapper.mjs"],
+    "assets": [
+      "runtime/core/dist/**",
+      "runtime/core/node_modules/**",
+      "runtime/core/package.json",
+      "runtime/core/npm-shrinkwrap.json",
+      "auto-panel/**",
+      "database/**",
+      "learning-engine/**",
+      "auth/**",
+      "settings/**",
+      "yami.json"
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "id": "integracao-integration",
+  "title": "Proposta de integracao: Nova integracao",
+  "generatedAt": "2026-06-08T18:27:11.933Z",
+  "steps": [
+    {
+      "step": 1,
+      "action": "Registrar skill no yami.json",
+      "description": "Adicionar entrada em skills.entries.integration com enabled: true",
+      "file": "yami.json",
+      "code": "\"integration\": { \"enabled\": true }"
+    },
+    {
+      "step": 2,
+      "action": "Registrar modulo no yami-manifest.json",
+      "description": "Adicionar entrada em coreModules com status e proposito",
+      "file": "runtime/yami-manifest.json",
+      "code": "{\n  \"id\": \"integration\",\n  \"name\": \"Integracao\",\n  \"status\": \"scaffolded\",\n  \"purpose\": \"# Especificacao Tecnica: Melhorar sistema de voz para reconhecer comandos em por\"\n}"
+    },
+    {
+      "step": 3,
+      "action": "Criar estrutura de diretorios",
+      "description": "Criar runtime/core/skills/integration/ com SKILL.md, scripts/ e assets/",
+      "file": "runtime/core/skills/integration/"
+    },
+    {
+      "step": 4,
+      "action": "Gerar documentacao inicial",
+      "description": "Criar documentacao basica do modulo",
+      "file": "docs/"
+    },
+    {
+      "step": 5,
+      "action": "Atualizar CHANGELOG",
+      "description": "Registrar a nova funcionalidade no changelog do YAMI",
+      "file": "runtime/core/CHANGELOG.md"
+    },
+    {
+      "step": 6,
+      "action": "Testar integracao",
+      "description": "Validar que o registro e carregamento do modulo funcionam",
+      "file": "testes/"
+    }
+  ],
+  "checklist": [
+    {
+      "step": 1,
+      "action": "Registrar skill no yami.json",
+      "description": "Adicionar entrada em skills.entries.integration com enabled: true",
+      "file": "yami.json",
+      "code": "\"integration\": { \"enabled\": true }",
+      "done": false
+    },
+    {
+      "step": 2,
+      "action": "Registrar modulo no yami-manifest.json",
+      "description": "Adicionar entrada em coreModules com status e proposito",
+      "file": "runtime/yami-manifest.json",
+      "code": "{\n  \"id\": \"integration\",\n  \"name\": \"Integracao\",\n  \"status\": \"scaffolded\",\n  \"purpose\": \"# Especificacao Tecnica: Melhorar sistema de voz para reconhecer comandos em por\"\n}",
+      "done": false
+    },
+    {
+      "step": 3,
+      "action": "Criar estrutura de diretorios",
+      "description": "Criar runtime/core/skills/integration/ com SKILL.md, scripts/ e assets/",
+      "file": "runtime/core/skills/integration/",
+      "done": false
+    },
+    {
+      "step": 4,
+      "action": "Gerar documentacao inicial",
+      "description": "Criar documentacao basica do modulo",
+      "file": "docs/",
+      "done": false
+    },
+    {
+      "step": 5,
+      "action": "Atualizar CHANGELOG",
+      "description": "Registrar a nova funcionalidade no changelog do YAMI",
+      "file": "runtime/core/CHANGELOG.md",
+      "done": false
+    },
+    {
+      "step": 6,
+      "action": "Testar integracao",
+      "description": "Validar que o registro e carregamento do modulo funcionam",
+      "file": "testes/",
+      "done": false
+    }
+  ],
+  "manifest": {
+    "yamiJson": "\"integration\": { \"enabled\": true }",
+    "manifestEntry": {
+      "id": "integration",
+      "name": "Integracao",
+      "status": "scaffolded",
+      "purpose": "# Especificacao Tecnica: Melhorar sistema de voz para reconhecer comandos em por"
+    }
+  }
+}

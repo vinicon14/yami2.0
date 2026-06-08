@@ -1,0 +1,20 @@
+{
+  "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+  "friends": [
+    {
+      "yamiId": "ymi-exemplo-001",
+      "displayName": "Amigo Teste",
+      "handle": "",
+      "addedAt": "2026-06-08T19:01:23.995Z",
+      "status": "active",
+      "lastInteractionAt": null,
+      "sharedModules": [],
+      "sharedCustomizations": []
+    }
+  ],
+  "pendingIncoming": [],
+  "pendingOutgoing": [],
+  "blocked": [],
+  "maxFriends": 500,
+  "updatedAt": "2026-06-08T19:01:23.995Z"
+}

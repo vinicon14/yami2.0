@@ -1,0 +1,24 @@
+{
+  "id": "hermes-adapters",
+  "name": "Hermes Agent Adapters",
+  "version": "1.0.0",
+  "source": "hermes-agent-adapters",
+  "license": "MIT",
+  "adapted": true,
+  "description": "Voice, memory, permissions, and agent ergonomics adapted from Hermes. Provides wake-word detection, conversation memory, permission management, and natural interaction patterns.",
+  "capabilities": ["voice-engine", "memory-management", "permission-system", "agent-ergonomics"],
+  "dependencies": ["openclaw-adapter"],
+  "compatibility": ["yami-pendrive-1.0", "hermes-adapters-2026"],
+  "modules": [
+    {"id": "voice", "name": "Voz Yami", "purpose": "Wake word detection and TTS"},
+    {"id": "memory", "name": "Yami Memory", "purpose": "Conversation context and recall"},
+    {"id": "permissions", "name": "Yami Permissions", "purpose": "User-controlled permission management"},
+    {"id": "agent-ergonomics", "name": "Yami Interaction", "purpose": "Natural conversation flow patterns"}
+  ],
+  "config": {
+    "wakeWord": "acorda",
+    "restWord": "descansa",
+    "language": "pt-BR",
+    "ttsBackend": "powershell"
+  }
+}

@@ -1,0 +1,9 @@
+[AutoRun]
+open=installer\YamiInstaller.exe
+icon=assets\tamagotchi\yami.ico
+label=Yami Pendrive
+action=Instalar Yami
+shell\install=Instalar &Yami
+shell\install\command=installer\YamiInstaller.exe
+shell\open=Abrir &Yami Pendrive
+shell\open\command=explorer.exe

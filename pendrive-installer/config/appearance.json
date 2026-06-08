@@ -1,0 +1,17 @@
+{
+  "bodyColor": "#03070b",
+  "glowColor": "85, 230, 255",
+  "accentColor": "#55e6ff",
+  "eyeStyle": "default",
+  "eyeColor": "#6ab",
+  "mouthStyle": "default",
+  "accessory": null,
+  "animationSet": "default",
+  "themePreset": "dark-neon",
+  "bgEffect": "grid-scanlines",
+  "particles": true,
+  "customCss": "",
+  "scale": 1,
+  "brightness": 1,
+  "updatedAt": ""
+}

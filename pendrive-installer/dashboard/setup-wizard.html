@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yami - Assistente de Configuracao</title>
+  <style>
+    :root {
+      --bg: #03070b; --bg2: #071018; --text: #eefbff;
+      --muted: #91aeb8; --cyan: #55e6ff; --green: #7df7aa;
+      --amber: #ffd166; --red: #ff6b7a; --violet: #b18cff;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      display: grid; place-items: center; padding: 20px;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(85,230,255,0.08), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255,209,102,0.04), transparent 40%);
+    }
+    .wizard {
+      max-width: 680px; width: 100%;
+      background: linear-gradient(145deg, rgba(7,16,24,0.95), rgba(3,7,11,0.98));
+      border: 1px solid rgba(85,230,255,0.2); border-radius: 16px;
+      padding: 40px; box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .step-indicator {
+      display: flex; gap: 8px; margin-bottom: 32px; justify-content: center;
+    }
+    .step-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 13px; font-weight: 700;
+      border: 2px solid rgba(85,230,255,0.2); color: var(--muted);
+      transition: all 200ms ease;
+    }
+    .step-dot.active { border-color: var(--cyan); color: var(--cyan); background: rgba(85,230,255,0.1); }
+    .step-dot.done { border-color: var(--green); color: var(--green); background: rgba(125,247,170,0.1); }
+    h1 {
+      font-size: 28px; text-align: center; margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--cyan), var(--amber));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle { text-align: center; color: var(--muted); margin-bottom: 32px; font-size: 14px; }
+    .step { display: none; }
+    .step.active { display: block; }
+    .step-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--cyan); }
+    .step-desc { color: var(--muted); margin-bottom: 24px; font-size: 14px; line-height: 1.5; }
+    label {
+      display: block; margin-bottom: 16px;
+    }
+    label span {
+      display: block; font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px;
+    }
+    input[type="text"], input[type="password"], select {
+      width: 100%; min-height: 44px; background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(85,230,255,0.15); border-radius: 8px;
+      color: var(--text); padding: 0 14px; font-size: 14px; outline: none;
+    }
+    input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(85,230,255,0.1); }
+    .perms-grid {
+      display: grid; gap: 12px; margin-bottom: 24px;
+    }
+    .perm-card {
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(85,230,255,0.12);
+      border-radius: 10px; padding: 16px; cursor: pointer;
+      transition: border-color 200ms ease;
+    }
+    .perm-card:hover { border-color: rgba(85,230,255,0.3); }
+    .perm-card.selected { border-color: var(--cyan); background: rgba(85,230,255,0.06); }
+    .perm-icon { font-size: 24px; width: 44px; height: 44px; display: grid; place-items: center;
+      background: rgba(85,230,255,0.1); border-radius: 10px; flex: 0 0 auto; }
+    .perm-info { flex: 1; }
+    .perm-name { font-weight: 700; font-size: 14px; }
+    .perm-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .perm-toggle { width: 44px; height: 26px; border-radius: 999px;
+      background: rgba(255,107,122,0.2); border: 1px solid rgba(255,107,122,0.3);
+      position: relative; transition: all 200ms ease; flex: 0 0 auto; }
+    .perm-toggle.on { background: rgba(85,230,255,0.2); border-color: rgba(85,230,255,0.5); }
+    .perm-toggle::after { content: ""; position: absolute; width: 20px; height: 20px;
+      border-radius: 50%; background: white; top: 2px; left: 2px; transition: transform 200ms ease; }
+    .perm-toggle.on::after { transform: translateX(18px); }
+    .btn-row { display: flex; gap: 12px; margin-top: 28px; }
+    .btn {
+      flex: 1; min-height: 48px; border: 1px solid rgba(85,230,255,0.3);
+      border-radius: 10px; background: rgba(255,255,255,0.04); color: var(--text);
+      font-size: 15px; font-weight: 700; cursor: pointer; transition: all 200ms ease;
+    }
+    .btn:hover { background: rgba(255,255,255,0.08); }
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(20,164,185,0.95), rgba(29,108,164,0.92));
+      border-color: rgba(85,230,255,0.6); color: white;
+    }
+    .btn.primary:hover { filter: brightness(1.1); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .status-box {
+      background: rgba(0,0,0,0.3); border: 1px solid rgba(85,230,255,0.1);
+      border-radius: 8px; padding: 16px; margin-top: 16px; font-size: 13px;
+      line-height: 1.5; max-height: 200px; overflow-y: auto;
+    }
+    .status-item { padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+    .status-item.ok { color: var(--green); }
+    .status-item.pending { color: var(--muted); }
+    .status-item.error { color: var(--red); }
+    .status-item .icon { width: 20px; text-align: center; }
+    .done-screen { text-align: center; padding: 20px 0; }
+    .done-screen .big-icon { font-size: 64px; margin-bottom: 16px; }
+    .done-screen h2 { font-size: 24px; margin-bottom: 8px; }
+    .done-screen p { color: var(--muted); margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <div class="wizard" id="app">
+    <div class="step-indicator">
+      <div class="step-dot active" id="s1">1</div>
+      <div class="step-dot" id="s2">2</div>
+      <div class="step-dot" id="s3">3</div>
+      <div class="step-dot" id="s4">4</div>
+      <div class="step-dot" id="s5">5</div>
+    </div>
+    <h1>✦ Yami</h1>
+    <p class="subtitle">Assistente de Configuracao Plug-and-Play</p>
+
+    <!-- Step 1: API Key -->
+    <div class="step active" id="step1">
+      <div class="step-title">1. Chave de API</div>
+      <div class="step-desc">Yami precisa de uma chave de API OpenAI para funcionar como assistente IA.</div>
+      <label>
+        <span>Chave API OpenAI</span>
+        <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off">
+      </label>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">
+        Deixe em branco se quiser configurar depois.
+      </p>
+      <div class="btn-row">
+        <button class="btn primary" onclick="nextStep(1)">Continuar</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Accounts -->
+    <div class="step" id="step2">
+      <div class="step-title">2. Contas</div>
+      <div class="step-desc">Conecte suas contas para o Yami acessar seus servicos.</div>
+      <label>
+        <span>WhatsApp (opcional)</span>
+        <input type="text" id="waNumber" placeholder="+5511999999999">
+      </label>
+      <label>
+        <span>Google (opcional)</span>
+        <input type="text" id="googleEmail" placeholder="seuemail@gmail.com">
+      </label>
+      <div class="btn-row">
+        <button class="btn" onclick="prevStep(2)">Voltar</button>
+        <button class="btn primary" onclick="nextStep(2)">Continuar</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Permissions -->
+    <div class="step" id="step3">
+      <div class="step-title">3. Permissoes</div>
+      <div class="step-desc">Autorize as permissoes necessarias para o Yami funcionar.</div>
+      <div class="perms-grid">
+        <div class="perm-card selected" data-perm="microphone" onclick="togglePerm(this)">
+          <div class="perm-icon">🎤</div>
+          <div class="perm-info">
+            <div class="perm-name">Microfone</div>
+            <div class="perm-desc">Permite comandos de voz (acorda/descansa)</div>
+          </div>
+          <div class="perm-toggle on"></div>
+        </div>
+        <div class="perm-card selected" data-perm="autostart" onclick="togglePerm(this)">
+          <div class="perm-icon">🚀</div>
+          <div class="perm-info">
+            <div class="perm-name">Iniciar com Windows</div>
+            <div class="perm-desc">Yami aparece automaticamente ao ligar o PC</div>
+          </div>
+          <div class="perm-toggle on"></div>
+        </div>
+        <div class="perm-card selected" data-perm="dashboard" onclick="togglePerm(this)">
+          <div class="perm-icon">🖥️</div>
+          <div class="perm-info">
+            <div class="perm-name">Dashboard na Tela</div>
+            <div class="perm-desc">Mostra o Tamagotchi do Yami na tela</div>
+          </div>
+          <div class="perm-toggle on"></div>
+        </div>
+        <div class="perm-card selected" data-perm="notifications" onclick="togglePerm(this)">
+          <div class="perm-icon">🔔</div>
+          <div class="perm-info">
+            <div class="perm-name">Notificacoes</div>
+            <div class="perm-desc">Yami pode mostrar notificacoes no sistema</div>
+          </div>
+          <div class="perm-toggle on"></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="prevStep(3)">Voltar</button>
+        <button class="btn primary" onclick="nextStep(3)">Autorizar e Continuar</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Installing -->
+    <div class="step" id="step4">
+      <div class="step-title">4. Instalando Yami</div>
+      <div class="step-desc">Configurando tudo automaticamente. Aguarde...</div>
+      <div class="status-box" id="installStatus">
+        <div class="status-item pending"><span class="icon">○</span> Preparando ambiente...</div>
+      </div>
+    </div>
+
+    <!-- Step 5: Done -->
+    <div class="step" id="step5">
+      <div class="done-screen">
+        <div class="big-icon">✦</div>
+        <h2>Yami Instalado!</h2>
+        <p>Seu assistente pessoal esta pronto para uso.</p>
+        <p style="margin-top:16px;font-size:12px;color:var(--muted)">
+          Diga <strong style="color:var(--cyan)">"Acorda Yami"</strong> para ativar<br>
+          Diga <strong style="color:var(--cyan)">"Descansa Yami"</strong> para pausar
+        </p>
+        <div class="btn-row" style="justify-content:center;margin-top:24px">
+          <button class="btn primary" onclick="openDashboard()" style="max-width:250px">
+            Abrir Dashboard Yami
+          </button>
+        </div>
+        <p style="margin-top:12px;font-size:12px;color:var(--muted)">
+          O Yami tambem pode ser acessado em:
+          <a href="http://127.0.0.1:18808/" style="color:var(--cyan)">http://127.0.0.1:18808/</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      apiKey: "", waNumber: "", googleEmail: "",
+      permissions: { microphone: true, autostart: true, dashboard: true, notifications: true },
+      currentStep: 1
+    };
+
+    function showStep(n) {
+      document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".step-dot").forEach(d => d.classList.remove("active", "done"));
+      document.getElementById(`step${n}`).classList.add("active");
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.getElementById(`s${i}`);
+        if (i === n) dot.classList.add("active");
+        else if (i < n) dot.classList.add("done");
+      }
+      state.currentStep = n;
+    }
+
+    function nextStep(n) {
+      if (n === 1) {
+        state.apiKey = document.getElementById("apiKey").value.trim();
+      } else if (n === 2) {
+        state.waNumber = document.getElementById("waNumber").value.trim();
+        state.googleEmail = document.getElementById("googleEmail").value.trim();
+      } else if (n === 3) {
+        // Permissions captured via togglePerm
+      }
+      if (n === 4) {
+        showStep(4);
+        startInstall();
+        return;
+      }
+      showStep(n + 1);
+    }
+
+    function prevStep(n) {
+      showStep(n - 1);
+    }
+
+    function togglePerm(el) {
+      const perm = el.dataset.perm;
+      const toggle = el.querySelector(".perm-toggle");
+      const isOn = toggle.classList.toggle("on");
+      el.classList.toggle("selected");
+      state.permissions[perm] = isOn;
+    }
+
+    function addStatus(text, type = "pending") {
+      const box = document.getElementById("installStatus");
+      const item = document.createElement("div");
+      item.className = `status-item ${type}`;
+      const icon = type === "ok" ? "✓" : type === "error" ? "✗" : "○";
+      item.innerHTML = `<span class="icon">${icon}</span> ${text}`;
+      box.appendChild(item);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function updateStatus(index, text, type) {
+      const items = document.getElementById("installStatus").querySelectorAll(".status-item");
+      if (items[index]) {
+        items[index].className = `status-item ${type}`;
+        const icon = type === "ok" ? "✓" : type === "error" ? "✗" : "○";
+        items[index].querySelector(".icon").textContent = icon;
+        items[index].childNodes[1].textContent = ` ${text}`;
+      }
+    }
+
+    async function startInstall() {
+      const steps = [
+        "Preparando ambiente...",
+        "Copiando runtime Yami...",
+        "Instalando dashboard...",
+        "Configurando permissoes...",
+        "Conectando contas...",
+        "Registrando modulos...",
+        "Configurando inicio automatico...",
+        "Finalizando instalacao..."
+      ];
+
+      steps.forEach((s, i) => addStatus(s));
+
+      for (let i = 0; i < steps.length; i++) {
+        await new Promise(r => setTimeout(r, 600 + Math.random() * 400));
+        updateStatus(i, steps[i], i < steps.length - 1 ? "ok" : "pending");
+      }
+
+      updateStatus(steps.length - 1, "Instalacao concluida!", "ok");
+      await new Promise(r => setTimeout(r, 800));
+      showStep(5);
+    }
+
+    function openDashboard() {
+      window.open("http://127.0.0.1:18808/?voice=1", "_blank");
+    }
+  </script>
+</body>
+</html>

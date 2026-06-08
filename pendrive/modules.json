@@ -1,0 +1,22 @@
+{
+  "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+  "native": [
+    "voice",
+    "dashboard",
+    "gateway",
+    "chats",
+    "whatsapp",
+    "integrations",
+    "autoevolve",
+    "comunicacao",
+    "agenda-inteligente",
+    "gerenciamento-arquivos",
+    "gerenciamento-fotos",
+    "compartilhamento-assistido"
+  ],
+  "custom": [],
+  "shared": [],
+  "community": [],
+  "pendingInstall": [],
+  "updatedAt": "2026-06-08T19:00:50.715Z"
+}

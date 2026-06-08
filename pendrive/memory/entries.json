@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+  "entries": [
+    {
+      "id": "mem-mq5kuhef-1e704087",
+      "type": "note",
+      "content": "Usuário prefere assistência matinal. Horário ideal: 7am",
+      "tags": [],
+      "createdAt": "2026-06-08T19:01:36.280Z",
+      "accessCount": 0
+    }
+  ],
+  "maxEntries": 10000,
+  "updatedAt": "2026-06-08T19:01:36.280Z"
+}

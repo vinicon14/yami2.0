@@ -1,0 +1,13 @@
+{
+  "backend": "powershell",
+  "voice": "Microsoft Maria Desktop",
+  "model": "",
+  "rate": 0,
+  "volume": 100,
+  "wakeWord": "acorda",
+  "restWord": "descansa",
+  "language": "pt-BR",
+  "autoTts": false,
+  "ttsEnabled": false,
+  "updatedAt": ""
+}

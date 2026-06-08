@@ -1,0 +1,50 @@
+{
+  "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+  "generation": 1,
+  "totalEvolutions": 2,
+  "currentStage": "primordial",
+  "stages": [
+    {
+      "id": "primordial",
+      "name": "Yami Primordial",
+      "description": "Primeira forma do Yami, recem-nascido",
+      "unlockedAt": "2026-06-08T19:00:50.715Z",
+      "milestones": [
+        {
+          "id": "nascimento",
+          "name": "Nascimento",
+          "description": "Yami foi iniciado pela primeira vez",
+          "unlockedAt": "2026-06-08T19:00:50.715Z"
+        }
+      ]
+    }
+  ],
+  "history": [
+    {
+      "id": "ev-birth-mq5kti8t",
+      "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+      "type": "nascimento",
+      "description": "Yami foi inicializado com identidade pendrive",
+      "details": {
+        "version": "1.0.0-pendrive"
+      },
+      "timestamp": "2026-06-08T19:00:50.715Z",
+      "generation": 1
+    },
+    {
+      "id": "ev-mq5ku3c5-3d711dd8",
+      "yamiId": "ymi-mq5kti8l-8846c0baae22bad1",
+      "type": "usuario-aprendeu-comando",
+      "description": "Usuário treinou novo comando de voz",
+      "details": {},
+      "timestamp": "2026-06-08T19:01:18.053Z",
+      "generation": 1
+    }
+  ],
+  "unlockedFeatures": [
+    "pendrive-nucleus"
+  ],
+  "modulesInstalled": 0,
+  "lastEvolutionAt": "2026-06-08T19:01:18.054Z",
+  "updatedAt": "2026-06-08T19:01:18.054Z"
+}

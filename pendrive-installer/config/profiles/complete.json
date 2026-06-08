@@ -1,0 +1,17 @@
+{
+  "id": "complete",
+  "name": "Perfil Completo",
+  "description": "Todas as funcionalidades ativadas: voz, WhatsApp, integracoes, nuvem.",
+  "features": {
+    "voice": true,
+    "dashboard": true,
+    "whatsapp": true,
+    "integrations": true,
+    "sync": true
+  },
+  "tts": {
+    "backend": "powershell",
+    "voice": "Microsoft Maria Desktop"
+  },
+  "recommended": true
+}

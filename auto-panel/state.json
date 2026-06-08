@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "blockedContacts": [],
+  "voice": {
+    "backend": "powershell",
+    "voice": "Microsoft Maria Desktop",
+    "model": "",
+    "rate": 0,
+    "volume": 100,
+    "referenceUrl": "https://github.com/isair/jarvis",
+    "referenceNote": "Referencia visual/conceitual para assistente local. A voz ativa continua sendo a voz Windows padrao.",
+    "nativeSpeak": false
+  },
+  "updatedAt": "2026-06-08T17:39:01.155Z"
+}
