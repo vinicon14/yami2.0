@@ -1,34 +1,35 @@
 {
   "version": 1,
   "enabled": true,
-  "lastUpdated": "2026-06-08T19:04:08.631067+00:00",
-  "totalMessagesAnalyzed": 1,
+  "lastUpdated": "2026-06-08T19:38:16.319994+00:00",
+  "totalMessagesAnalyzed": 11,
   "profile": {
     "vocabulary": {
       "formal": 0.0,
       "technical": 0.0,
-      "casual": 0.615
+      "casual": 0.826
     },
     "formality": "casual",
     "slangUsage": "noticia",
     "sentenceStructure": "equilibrado",
-    "averageMessageLength": 84,
+    "averageMessageLength": 39,
     "emojiFrequency": "raro",
     "commonExpressions": [
-      "pode ser",
-      "vamos"
+      "vamos",
+      "pode ser"
     ],
     "greeting": "opa",
     "closing": "",
     "primaryTone": "inquisitivo",
-    "secondaryTone": "",
+    "secondaryTone": "descontraído",
     "styleTags": [
       "casual",
       "inquisitivo",
+      "descontraído",
       "vocabulário casual",
       "frases equilibradas"
     ],
-    "description": "estilo casual, tom inquisitivo, mensagens médias, raramente usa emojis"
+    "description": "estilo casual, tom inquisitivo, mensagens curtas, raramente usa emojis"
   },
   "rawSamples": [
     {
@@ -52,6 +53,226 @@
         "allCapsRatio": 0.0
       },
       "analyzedAt": "2026-06-08T19:04:08.631067+00:00"
+    },
+    {
+      "text": "Opa, tudo certo? Achei bem legal mesmo!",
+      "features": {
+        "wordCount": 7,
+        "charCount": 39,
+        "sentenceCount": 1,
+        "avgSentenceLength": 7.0,
+        "avgMessageLength": 39,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 0.5714285714285714,
+        "hasGreeting": true,
+        "hasClosing": false,
+        "isQuestion": false,
+        "isExclamation": true,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:08:29.357471+00:00"
+    },
+    {
+      "text": "Tipo, vamos explorar mais isso ai",
+      "features": {
+        "wordCount": 6,
+        "charCount": 33,
+        "sentenceCount": 1,
+        "avgSentenceLength": 6.0,
+        "avgMessageLength": 33,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 0.6666666666666666,
+        "hasGreeting": false,
+        "hasClosing": false,
+        "isQuestion": false,
+        "isExclamation": false,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:08:29.357471+00:00"
+    },
+    {
+      "text": "Valeu pela ajuda, cara! Muito bom mesmo",
+      "features": {
+        "wordCount": 7,
+        "charCount": 39,
+        "sentenceCount": 1,
+        "avgSentenceLength": 7.0,
+        "avgMessageLength": 39,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 1.0,
+        "hasGreeting": false,
+        "hasClosing": false,
+        "isQuestion": false,
+        "isExclamation": false,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:08:29.357471+00:00"
+    },
+    {
+      "text": "Nossa, que interessante demais!",
+      "features": {
+        "wordCount": 4,
+        "charCount": 31,
+        "sentenceCount": 1,
+        "avgSentenceLength": 4.0,
+        "avgMessageLength": 31,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 1.0,
+        "hasGreeting": false,
+        "hasClosing": false,
+        "isQuestion": false,
+        "isExclamation": true,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:08:29.357471+00:00"
+    },
+    {
+      "text": "Entao, vamos marcar para depois?",
+      "features": {
+        "wordCount": 5,
+        "charCount": 32,
+        "sentenceCount": 1,
+        "avgSentenceLength": 5.0,
+        "avgMessageLength": 32,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 1.0,
+        "hasGreeting": false,
+        "hasClosing": false,
+        "isQuestion": true,
+        "isExclamation": false,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:08:29.357471+00:00"
+    },
+    {
+      "text": "Opa, tudo certo? Achei bem legal mesmo!",
+      "features": {
+        "wordCount": 7,
+        "charCount": 39,
+        "sentenceCount": 1,
+        "avgSentenceLength": 7.0,
+        "avgMessageLength": 39,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 0.5714285714285714,
+        "hasGreeting": true,
+        "hasClosing": false,
+        "isQuestion": false,
+        "isExclamation": true,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:38:16.317327+00:00"
+    },
+    {
+      "text": "Tipo, vamos explorar mais isso ai",
+      "features": {
+        "wordCount": 6,
+        "charCount": 33,
+        "sentenceCount": 1,
+        "avgSentenceLength": 6.0,
+        "avgMessageLength": 33,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 0.6666666666666666,
+        "hasGreeting": false,
+        "hasClosing": false,
+        "isQuestion": false,
+        "isExclamation": false,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:38:16.317327+00:00"
+    },
+    {
+      "text": "Valeu pela ajuda, cara! Muito bom mesmo",
+      "features": {
+        "wordCount": 7,
+        "charCount": 39,
+        "sentenceCount": 1,
+        "avgSentenceLength": 7.0,
+        "avgMessageLength": 39,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 1.0,
+        "hasGreeting": false,
+        "hasClosing": false,
+        "isQuestion": false,
+        "isExclamation": false,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:38:16.317327+00:00"
+    },
+    {
+      "text": "Nossa, que interessante demais!",
+      "features": {
+        "wordCount": 4,
+        "charCount": 31,
+        "sentenceCount": 1,
+        "avgSentenceLength": 4.0,
+        "avgMessageLength": 31,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 1.0,
+        "hasGreeting": false,
+        "hasClosing": false,
+        "isQuestion": false,
+        "isExclamation": true,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:38:16.317327+00:00"
+    },
+    {
+      "text": "Entao, vamos marcar para depois?",
+      "features": {
+        "wordCount": 5,
+        "charCount": 32,
+        "sentenceCount": 1,
+        "avgSentenceLength": 5.0,
+        "avgMessageLength": 32,
+        "hasEmoji": false,
+        "emojiCount": 0,
+        "emojiList": [],
+        "formalityScore": 0.0,
+        "technicalScore": 0.0,
+        "slangScore": 1.0,
+        "hasGreeting": false,
+        "hasClosing": false,
+        "isQuestion": true,
+        "isExclamation": false,
+        "allCapsRatio": 0.0
+      },
+      "analyzedAt": "2026-06-08T19:38:16.317327+00:00"
     }
   ]
 }

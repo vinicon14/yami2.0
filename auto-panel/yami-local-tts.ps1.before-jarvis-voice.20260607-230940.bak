@@ -1,0 +1,47 @@
+param(
+  [string]$Text,
+  [string]$OutputPath
+)
+
+$ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($Text)) {
+  $Text = [Console]::In.ReadToEnd()
+}
+
+$Text = ($Text -replace "\s+", " ").Trim()
+if ([string]::IsNullOrWhiteSpace($Text)) {
+  throw "Texto vazio para TTS."
+}
+
+if ([string]::IsNullOrWhiteSpace($OutputPath)) {
+  throw "OutputPath obrigatorio para TTS."
+}
+
+$directory = Split-Path -Parent $OutputPath
+if ($directory -and -not (Test-Path -LiteralPath $directory)) {
+  New-Item -ItemType Directory -Path $directory -Force | Out-Null
+}
+
+Add-Type -AssemblyName System.Speech
+$speaker = New-Object System.Speech.Synthesis.SpeechSynthesizer
+$speaker.Volume = 100
+$speaker.Rate = 0
+
+$preferredVoices = @(
+  "Microsoft Maria Desktop",
+  "Microsoft Maria",
+  "Microsoft Zira Desktop"
+)
+
+foreach ($voiceName in $preferredVoices) {
+  try {
+    $speaker.SelectVoice($voiceName)
+    break
+  } catch {}
+}
+
+$speaker.SetOutputToWaveFile($OutputPath)
+$speaker.Speak($Text)
+$speaker.SetOutputToNull()
+$speaker.Dispose()

@@ -23,30 +23,80 @@ Orquestra o ciclo completo de evolucao assistida: ideia -> especificacao -> tare
 7. **Documentacao** - Gera docs automaticos + changelog
 8. **Integracao** - Propoe integracao ao projeto YAMI
 
-## Uso
+## Uso Rápido
 
 ```bash
-node skills/autoevolve/scripts/evolve.mjs --request "Criar integracao com Google Calendar"
-node skills/autoevolve/scripts/evolve.mjs --request "Adicionar comando de voz para abrir aplicativos" --outdir ./evolucoes
-node skills/autoevolve/scripts/evolve.mjs --request-file ./solicitacao.txt --target codex
+# Criar uma evolução
+node scripts/evolve.mjs --request "Criar integracao com Google Calendar"
+
+# Consultar evolucoes
+node scripts/query.mjs list
+node scripts/query.mjs stats
+node scripts/query.mjs evol-abc123-xyz
+
+# Executar com Codex
+node scripts/execute.mjs --id evol-abc123 --task TASK-01 --tool codex
+
+# Rollback/Snapshot
+node scripts/rollback.mjs --id evol-abc123 --snapshot
 ```
 
-## Estrutura de saida
+## Estrutura de Saída
 
 ```
-evolucoes/<id>/
-  spec.md              - Especificacao tecnica
-  tasks.json           - Tarefas de desenvolvimento
-  prompts/             - Prompts prontos para cada ferramenta
-    codex.md
-    claude.md
-    opencode.md
-  docs/                - Documentacao gerada
-  HISTORY.md           - Historico da evolucao
+evolucoes/
+├── HISTORY.md                    # Histórico central
+├── .registry.json                # Banco de dados estruturado
+└── evol-<id>/
+    ├── spec.md                   # Especificação técnica (10 seções)
+    ├── tasks.json                # 6 tarefas de desenvolvimento
+    ├── prompts/                  # Prompts prontos para execução
+    │   ├── codex-TASK-01.md
+    │   ├── codex-combinado.md
+    │   ├── claude-combinado.md
+    │   └── opencode-combinado.md
+    ├── docs/                     # Documentação automática
+    │   ├── README.md
+    │   └── CHANGELOG.md
+    ├── integracao/               # Proposta de integração
+    │   ├── proposal.md
+    │   └── proposal.json
+    └── execucoes/                # Resultados de execução
+        ├── codex/TASK-01/
+        ├── claude/TASK-02/
+        └── opencode/TASK-03/
 ```
 
-## Diretorios
+## Scripts Disponíveis
 
-- `evolucoes/` - saida gerada (criado sob demanda)
-- `scripts/evolve.mjs` - orquestrador principal
-- `scripts/lib/` - modulos internos
+- `evolve.mjs` - Criar nova evolução
+- `query.mjs` - Consultar, listar, buscar evoluções
+- `execute.mjs` - Executar tarefas com Codex/Claude/OpenCode
+- `rollback.mjs` - Gerenciar snapshots e reverter fases
+
+## Opções Principais
+
+### evolve.mjs
+- `--request <texto>` - Descrição da funcionalidade
+- `--request-file <path>` - Arquivo com descrição
+- `--outdir <path>` - Diretório de saída
+- `--target <lista>` - Ferramentas alvo (codex,claude,opencode)
+
+### query.mjs
+- `list` - Listar evoluções
+- `stats` - Estatísticas
+- `<id>` - Detalhes de evolução
+- `--status <valor>` - Filtrar por status
+- `--category <valor>` - Filtrar por categoria
+- `--search <texto>` - Buscar
+
+### execute.mjs
+- `--id <id>` - ID da evolução
+- `--task <TASK-01>` - Tarefa específica
+- `--tool <codex|claude|opencode>` - Ferramenta
+- `--all-tasks` - Executar todas as 6 tarefas
+- `--background` - Executar sem esperar
+
+### rollback.mjs
+- `--snapshot` - Criar backup do estado atual
+- `--revert --to <fase>` - Voltar para fase anterior

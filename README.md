@@ -173,6 +173,63 @@ O projeto é baseado em 18 prompts conceituais que formam a base para enviar ao 
 
 Veja [YAMI_18_PROMPTS.md](YAMI_18_PROMPTS.md) para detalhes completos.
 
+## 📋 Regra 2: Comunicação Padrão Baseada em Texto
+
+O YAMI implementa uma política de comunicação padrão baseada em texto para todas as plataformas conectadas.
+
+### Princípio Principal
+
+**Texto é o formato padrão de comunicação em todas as plataformas.**
+
+Independentemente da plataforma (WhatsApp, Telegram, Discord, E-mail, SMS, etc.), o YAMI sempre prioriza mensagens de texto, salvo quando o usuário solicita explicitamente outro formato.
+
+### Regras Obrigatórias
+
+✅ **CORRETO:**
+- Usuário: "Envie uma mensagem para João avisando que chegarei às 18h."
+- YAMI: Envia mensagem de texto para João
+
+✅ **TAMBÉM CORRETO:**
+- Usuário: "Envie isso como áudio."
+- YAMI: Confirma e converte para áudio
+
+❌ **INCORRETO:**
+- Usuário: "Envie uma mensagem para João."
+- YAMI: Converte automaticamente em áudio ❌
+
+### Princípios
+
+1. **Simplicidade** - Não complique com múltiplas opções
+2. **Clareza** - Deixe claro o que está sendo enviado
+3. **Previsibilidade** - Comportamento consistente sempre
+4. **Controle do Usuário** - O usuário decide o formato final
+5. **Consistência** - Mesmas regras em todas as plataformas
+6. **Baixa Fricção** - Simples de usar, sem complicações
+
+### Formatos Não-Texto
+
+O YAMI **NUNCA** envia automaticamente:
+- 🎵 Áudios
+- 🎬 Vídeos
+- 🖼️ Imagens
+- 📄 Documentos
+- 📦 Arquivos
+
+Esses formatos **só são utilizados com solicitação explícita** do usuário.
+
+### Plataformas Cobertas
+
+- WhatsApp
+- Telegram
+- Discord
+- E-mail
+- SMS
+- Mensagens internas do YAMI
+- Redes sociais integradas
+- Futuras integrações
+
+Para mais detalhes, veja [COMMUNICATION_POLICY.md](COMMUNICATION_POLICY.md).
+
 ## 🗓️ Roadmap
 
 ### Fase 1: MVP (Semanas 1-4)

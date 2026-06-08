@@ -1,0 +1,144 @@
+{
+  "product": "Yami",
+  "runtime": "yami-native-runtime",
+  "version": "0.1.0-yami.1",
+  "identity": {
+    "publicName": "Yami",
+    "assistantName": "Yami",
+    "dashboardName": "Dashboard Yami",
+    "gatewayName": "Gateway Yami",
+    "chatName": "Chats Yami"
+  },
+  "architecture": {
+    "type": "own-runtime-with-upstream-adapters",
+    "description": "Yami has its own home, panel, state, voice runtime, dashboard model and module registry. OpenClaw and Hermes are treated as upstream implementation sources, not as the public product identity.",
+    "compatibility": [
+      "openclaw-runtime-core",
+      "hermes-agent-adapters"
+    ]
+  },
+  "coreModules": [
+    {
+      "id": "voice",
+      "name": "Voz Yami",
+      "status": "active",
+      "purpose": "Wake word, talk mode, rest intent, single local voice and avatar speech state."
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard Yami",
+      "status": "active",
+      "purpose": "Full-screen Tamagotchi home with scalable menu pages."
+    },
+    {
+      "id": "gateway",
+      "name": "Gateway Yami",
+      "status": "active",
+      "purpose": "Local gateway status and user-triggered control."
+    },
+    {
+      "id": "chats",
+      "name": "Chats Yami",
+      "status": "planned-active",
+      "purpose": "Conversation sessions per number and future communication modules."
+    },
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp Yami",
+      "status": "active",
+      "purpose": "Automatic text-first WhatsApp workflow with user-controlled blocks."
+    },
+    {
+      "id": "integrations",
+      "name": "Integracoes Yami",
+      "status": "active",
+      "purpose": "Sistema universal de contas: Google, Microsoft, Apple, WhatsApp, Telegram, Discord, GitHub, GitLab, armazenamento, redes sociais, produtividade e futuras integracoes."
+    },
+    {
+      "id": "autoevolve",
+      "name": "Evolucao Yami",
+      "status": "active",
+      "purpose": "Autoevolucao assistida por IA: transforma ideias em especificacoes, tarefas, prompts Codex e documentacao. Ciclo: analise, planejamento, implementacao, testes, validacao, integracao."
+    },
+    {
+      "id": "comunicacao",
+      "name": "Comunicacao Yami",
+      "status": "active",
+      "purpose": "Native personal communication management — messaging, reading, assisted replies, conversation organization and contact reminders.",
+      "native": true,
+      "skills": ["native/comunicacao"]
+    },
+    {
+      "id": "agenda-inteligente",
+      "name": "Agenda Inteligente Yami",
+      "status": "active",
+      "purpose": "Native smart calendar — appointments, reminders, routines, calendar sync and free time suggestions.",
+      "native": true,
+      "skills": ["native/agenda-inteligente"]
+    },
+    {
+      "id": "gerenciamento-arquivos",
+      "name": "Arquivos Yami",
+      "status": "active",
+      "purpose": "Native file management — locate, organize, identify content, group, prepare for sharing and contextual search.",
+      "native": true,
+      "skills": ["native/gerenciamento-arquivos"]
+    },
+    {
+      "id": "gerenciamento-fotos",
+      "name": "Fotos Yami",
+      "status": "active",
+      "purpose": "Native photo management — locate images, contextual search, albums, find by date/event and prepare for sharing.",
+      "native": true,
+      "skills": ["native/gerenciamento-fotos"]
+    },
+    {
+      "id": "compartilhamento-assistido",
+      "name": "Compartilhamento Yami",
+      "status": "active",
+      "purpose": "Native assisted sharing — share documents, images, audio and files with explicit user confirmation.",
+      "native": true,
+      "skills": ["native/compartilhamento-assistido"]
+    },
+    {
+      "id": "os-agent",
+      "name": "Controle Yami",
+      "status": "active",
+      "purpose": "Arquitetura de agente para controle total do sistema operacional. Orquestra acoes sobre apps, arquivos, processos, janelas, scripts, navegador e rede com planejamento contextual, permissoes, observacao e recuperacao de erros.",
+      "native": true,
+      "path": "runtime/os_agent",
+      "capabilities": [
+        "open_app", "close_app", "switch_app", "list_apps",
+        "list_directory", "create_folder", "read_file", "write_file",
+        "delete_file", "copy_file", "move_file", "rename_file",
+        "search_files", "get_disk_usage", "get_file_info",
+        "list_processes", "kill_process", "monitor_resources", "get_system_info",
+        "list_windows", "switch_window", "screenshot", "get_clipboard",
+        "execute_command", "run_script", "run_python", "run_powershell",
+        "navigate", "get_tabs", "execute_js", "search_web",
+        "download_file", "check_connectivity"
+      ],
+      "executors": [
+        "files", "apps", "processes", "windows",
+        "scripts", "browser", "network"
+      ]
+    }
+  ],
+  "rules": {
+    "notAVisualCopy": true,
+    "textIsDefault": true,
+    "shareFilesOnlyWhenExplicitlyRequested": true,
+    "fileSharePolicyEnforced": {
+      "enabled": true,
+      "name": "Regra 2: Compartilhamento Explicito de Arquivos",
+      "description": "Nenhum arquivo deve ser enviado automaticamente. O YAMI so compartilha arquivos quando houver uma solicitacao explicita do usuario.",
+      "implementation": "tool-dispatch-layer-blocking",
+      "block_tools": ["send_message", "wacli"],
+      "requires_explicit_consent": true,
+      "user_confirmation_flow": "identify -> confirm -> share"
+    },
+    "wakeWord": "acorda",
+    "restWord": "descansa",
+    "gatewayRestartOnlyWhenRequested": true
+  }
+}

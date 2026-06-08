@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "evolutions": [
+    {
+      "id": "evol-mq5l954c-d72s",
+      "request": "Adicionar suporte para notificacoes push via WhatsApp",
+      "category": "integration",
+      "status": "gerado",
+      "createdAt": "2026-06-08T19:13:00.243Z",
+      "updatedAt": "2026-06-08T19:13:00.243Z",
+      "outputDir": "C:\\Users\\vinim\\.yami\\runtime\\core\\skills\\autoevolve\\evolucoes\\evol-mq5l954c-d72s",
+      "phase": "spec",
+      "taskCount": 6,
+      "validationScore": 100,
+      "tags": [
+        "integration",
+        "autogerado"
+      ]
+    }
+  ]
+}

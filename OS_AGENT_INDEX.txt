@@ -1,0 +1,214 @@
+================================================================================
+                    YAMI — OS AGENT DOCUMENTATION INDEX
+================================================================================
+
+ARQUIVO PRINCIPAL DE SUMARIO:
+  OS_AGENT_SUMMARY.md ...................... Resumo executivo da implementacao
+  QUICK_START_OS_AGENT.md .................. Como comecar em 5 minutos
+
+DOCUMENTACAO DO MODULO (em runtime/os_agent/):
+  
+  README.md ............................... Guia completo de uso
+    - Visao geral
+    - Arquitetura
+    - Exemplos de uso
+    - Niveis de permissao
+    - Extensibilidade
+    - Performance
+    - Seguranca
+
+  ARCHITECTURE.md ......................... Design tecnico detalhado
+    - Componentes principais
+    - Fluxos de dados
+    - Padroes de design
+    - Garantias e propriedades
+    - Performance
+    - Testes
+
+  INTEGRATION.md .......................... Guia de integracao com sistemas externos
+    - Integracao com YAMI existente
+    - Google Drive/Photos
+    - Calendario
+    - Email
+    - Task managers
+    - Workflows (Airflow, Jenkins)
+    - Testes
+
+CODIGO-FONTE:
+
+  Nucleo (core/):
+    orchestrator.py ........................ Orquestrador principal
+    planner.py ............................ Planejador de acoes
+    permissions.py ........................ Gerenciador de permissoes
+
+  Executores (executors/):
+    base.py ............................... Classe abstrata
+    files.py .............................. Operacoes de arquivo
+    apps.py ............................... Gerenciamento de apps
+    processes.py .......................... Monitoramento de processos
+    windows.py ............................ Controle de janelas
+    scripts.py ............................ Execucao de scripts
+    browser.py ............................ Interacao com navegador
+    network.py ............................ Operacoes de rede
+
+  Observacao (observer/):
+    monitor.py ............................ Monitor do sistema
+
+  Recuperacao (recovery/):
+    error_handler.py ...................... Estrategias de recuperacao
+
+  Configuracao (config/):
+    defaults.py ........................... Configuracao tipada
+
+  Raiz:
+    __init__.py ........................... Exports principais
+    __main__.py ........................... Teste de verificacao
+    cli.py ................................ Interface CLI
+    examples.py ........................... 10 exemplos de uso
+
+REGISTRO NO YAMI:
+  runtime/yami-manifest.json .............. Modulo registrado como "Controle Yami"
+
+================================================================================
+                              RAPIDO ACESSO
+================================================================================
+
+COMECAR AGORA:
+  1. Ler QUICK_START_OS_AGENT.md
+  2. Executar: python -m runtime.os_agent.cli interactive
+  3. Tentar um comando: "execute abrir chrome"
+
+ENTENDER A ARQUITETURA:
+  1. Ler README.md (estrutura)
+  2. Ler ARCHITECTURE.md (design detalhado)
+
+INTEGRAR COM SISTEMAS EXTERNOS:
+  1. Ler INTEGRATION.md
+  2. Ver exemplos em INTEGRATION.md
+
+EXECUTAR TESTES:
+  python -m runtime.os_agent.__main__
+
+VER EXEMPLOS:
+  python -m runtime.os_agent.examples [1-10]
+
+================================================================================
+                          ESTATISTICAS DA IMPLEMENTACAO
+================================================================================
+
+Arquivos Python: .......................... 23
+Linhas de codigo: ......................... 3.220
+Documentacao (MD): ........................ 4 arquivos
+Executores: .............................. 7
+Acoes registradas: ....................... 45
+Niveis de permissao: ..................... 4
+Estrategias de recuperacao: .............. 5
+Padroes de acao reconhecidos: ............ 29
+Exemplos de uso: ......................... 10
+
+================================================================================
+                          STATUS DA IMPLEMENTACAO
+================================================================================
+
+[OK] Estrutura modular
+[OK] 7 Executors completos
+[OK] PermissionManager com 4 niveis
+[OK] Planner com 29 padroes
+[OK] ErrorHandler com 5 estrategias
+[OK] SystemMonitor com observacao
+[OK] Configuracao tipada
+[OK] Documentacao completa
+[OK] CLI funcional
+[OK] Exemplos de uso
+[OK] Testes executados com sucesso
+[OK] Registrado no YAMI manifest
+
+PRONTO PARA USO!
+
+================================================================================
+                            ESTRUTURA DE DIRETORIOS
+================================================================================
+
+runtime/os_agent/
+├── __init__.py                     # Exports principais
+├── __main__.py                     # Verificacao da arquitetura
+├── cli.py                          # Interface CLI
+├── examples.py                     # Exemplos de uso
+├── README.md                       # Documentacao completa
+├── ARCHITECTURE.md                 # Design tecnico
+├── INTEGRATION.md                  # Guia de integracao
+├── core/
+│   ├── orchestrator.py            # Orquestrador
+│   ├── planner.py                 # Planejador
+│   └── permissions.py             # Permissoes
+├── executors/
+│   ├── base.py
+│   ├── files.py
+│   ├── apps.py
+│   ├── processes.py
+│   ├── windows.py
+│   ├── scripts.py
+│   ├── browser.py
+│   └── network.py
+├── observer/
+│   └── monitor.py
+├── recovery/
+│   └── error_handler.py
+└── config/
+    └── defaults.py
+
+================================================================================
+                         PRINCIPAIS COMPONENTES
+================================================================================
+
+ORCHESTRATOR:
+  - Coordena o pipeline completo
+  - Planejar -> Autorizar -> Executar -> Observar
+  - Interface simples: orch.execute(comando)
+
+PLANNER:
+  - Reconhece padroes em linguagem natural
+  - Decompe em ActionSteps
+  - Retorna ActionPlan estruturado
+
+PERMISSION MANAGER:
+  - 4 niveis: SAFE / NOTIFY / CONFIRM / BLOCKED
+  - Cache de aprovacoes (sessao/permanente)
+  - Callback customizavel
+
+EXECUTORS (7 dominios):
+  - Cada um eh modular e independente
+  - Implementam acoes atomicas
+  - Dispatch automatico
+
+SYSTEM MONITOR:
+  - Snapshots periodicos do sistema
+  - Deteccao de mudancas
+  - Contexto para planejador
+
+ERROR HANDLER:
+  - 5 estrategias de recuperacao
+  - Fallback map customizavel
+  - Retry adaptativo
+
+================================================================================
+                            SUPORTE E CONTATO
+================================================================================
+
+Para questoes:
+  - Documentacao: README.md
+  - Design: ARCHITECTURE.md
+  - Integracao: INTEGRATION.md
+  - Testes: __main__.py
+
+Feedback:
+  - GitHub: https://github.com/anomalyco/opencode/issues
+  - Docs: https://opencode.ai/docs
+
+================================================================================
+
+Gerado: Junho 2026
+Status: COMPLETA E VERIFICADA
+Versao: 0.1.0
+
+================================================================================

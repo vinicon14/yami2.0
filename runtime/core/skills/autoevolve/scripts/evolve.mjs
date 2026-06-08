@@ -9,6 +9,7 @@ import { recordEvolution, updateStatus } from "./lib/history.mjs";
 import { validateOutput } from "./lib/validator.mjs";
 import { generateDocs } from "./lib/documenter.mjs";
 import { proposeIntegration } from "./lib/integration-proposer.mjs";
+import { registerEvolution } from "./lib/registry.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = join(__dirname, "..");
@@ -135,6 +136,18 @@ async function run() {
     outputDir,
   });
   console.log(`     -> ${id} registrado no historico`);
+  
+  registerEvolution({
+    id,
+    request: opts.request,
+    category: category.id,
+    status: "gerado",
+    outputDir,
+    phase: "spec",
+    taskCount: tasks.length,
+    validationScore: validation.score,
+    tags: [category.id, "autogerado"],
+  });
   console.log(`\n  Resumo:`);
   console.log(`  -------`);
   console.log(`  ID:        ${id}`);

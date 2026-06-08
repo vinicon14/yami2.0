@@ -1,0 +1,311 @@
+{
+  "version": "1.0",
+  "categories": [
+    {
+      "id": "email-calendar",
+      "name": "E-mail e Agenda",
+      "icon": "📧"
+    },
+    {
+      "id": "messaging",
+      "name": "Mensageiros",
+      "icon": "💬"
+    },
+    {
+      "id": "devops",
+      "name": "Desenvolvimento",
+      "icon": "⚙"
+    },
+    {
+      "id": "storage",
+      "name": "Armazenamento",
+      "icon": "💾"
+    },
+    {
+      "id": "productivity",
+      "name": "Produtividade",
+      "icon": "📋"
+    },
+    {
+      "id": "social",
+      "name": "Redes Sociais",
+      "icon": "🌐"
+    },
+    {
+      "id": "third-party",
+      "name": "Terceiros",
+      "icon": "🔌"
+    }
+  ],
+  "providers": [
+    {
+      "id": "google",
+      "name": "Google",
+      "icon": "G",
+      "iconClass": "g",
+      "category": "email-calendar",
+      "description": "Gmail, Google Agenda, Google Fotos, Google Drive e mais",
+      "color": "#4285f4",
+      "authType": "oauth2",
+      "authUrl": "https://accounts.google.com/o/oauth2/auth",
+      "tokenUrl": "https://oauth2.googleapis.com/token",
+      "scopes": [
+        "https://www.googleapis.com/auth/gmail.readonly",
+        "https://www.googleapis.com/auth/calendar.readonly",
+        "https://www.googleapis.com/auth/drive.readonly",
+        "https://www.googleapis.com/auth/photoslibrary.readonly"
+      ],
+      "capabilities": [
+        { "id": "email", "name": "Ler e-mails", "scope": "https://www.googleapis.com/auth/gmail.readonly" },
+        { "id": "calendar", "name": "Consultar agenda", "scope": "https://www.googleapis.com/auth/calendar.readonly" },
+        { "id": "drive", "name": "Buscar arquivos", "scope": "https://www.googleapis.com/auth/drive.readonly" },
+        { "id": "photos", "name": "Gerenciar fotos", "scope": "https://www.googleapis.com/auth/photoslibrary.readonly" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "icon": "M",
+      "iconClass": "m",
+      "category": "email-calendar",
+      "description": "Outlook, OneDrive, Microsoft 365",
+      "color": "#00a4ef",
+      "authType": "oauth2",
+      "authUrl": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+      "tokenUrl": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+      "scopes": [
+        "User.Read",
+        "Mail.Read",
+        "Calendars.Read",
+        "Files.Read"
+      ],
+      "capabilities": [
+        { "id": "email", "name": "Ler e-mails Outlook", "scope": "Mail.Read" },
+        { "id": "calendar", "name": "Consultar agenda", "scope": "Calendars.Read" },
+        { "id": "onedrive", "name": "Buscar arquivos OneDrive", "scope": "Files.Read" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "apple",
+      "name": "Apple",
+      "icon": "A",
+      "iconClass": "a",
+      "category": "email-calendar",
+      "description": "iCloud, Apple Mail, Calendário",
+      "color": "#555555",
+      "authType": "oauth2",
+      "authUrl": "https://appleid.apple.com/auth/authorize",
+      "tokenUrl": "https://appleid.apple.com/auth/token",
+      "scopes": [
+        "name",
+        "email"
+      ],
+      "capabilities": [
+        { "id": "icloud", "name": "Acessar iCloud", "scope": "name" },
+        { "id": "email", "name": "Apple Mail", "scope": "email" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp",
+      "icon": "💬",
+      "iconClass": "wa",
+      "category": "messaging",
+      "description": "Mensagens, mídia e grupos",
+      "color": "#25d366",
+      "authType": "channel",
+      "channelKey": "whatsapp",
+      "capabilities": [
+        { "id": "chat", "name": "Enviar e receber mensagens" },
+        { "id": "media", "name": "Compartilhar mídia" },
+        { "id": "groups", "name": "Grupos" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram",
+      "icon": "✈",
+      "iconClass": "p",
+      "category": "messaging",
+      "description": "Mensagens, bots e canais",
+      "color": "#0088cc",
+      "authType": "api_key",
+      "capabilities": [
+        { "id": "chat", "name": "Enviar e receber mensagens" },
+        { "id": "channels", "name": "Canais e grupos" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "icon": "D",
+      "iconClass": "p",
+      "category": "messaging",
+      "description": "Servidores, canais e chamadas",
+      "color": "#5865f2",
+      "authType": "oauth2",
+      "capabilities": [
+        { "id": "chat", "name": "Mensagens em servidores" },
+        { "id": "voice", "name": "Canais de voz" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "icon": "G",
+      "iconClass": "s",
+      "category": "devops",
+      "description": "Repositórios, issues e ações",
+      "color": "#333333",
+      "authType": "oauth2",
+      "authUrl": "https://github.com/login/oauth/authorize",
+      "tokenUrl": "https://github.com/login/oauth/access_token",
+      "scopes": [
+        "repo",
+        "read:user"
+      ],
+      "capabilities": [
+        { "id": "repos", "name": "Gerenciar repositórios", "scope": "repo" },
+        { "id": "issues", "name": "Issues e pull requests", "scope": "repo" },
+        { "id": "actions", "name": "GitHub Actions", "scope": "repo" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab",
+      "icon": "G",
+      "iconClass": "a",
+      "category": "devops",
+      "description": "Repositórios, CI/CD e projetos",
+      "color": "#fc6d26",
+      "authType": "oauth2",
+      "authUrl": "https://gitlab.com/oauth/authorize",
+      "tokenUrl": "https://gitlab.com/oauth/token",
+      "scopes": [
+        "read_repository",
+        "read_api"
+      ],
+      "capabilities": [
+        { "id": "repos", "name": "Gerenciar repositórios", "scope": "read_repository" },
+        { "id": "ci", "name": "CI/CD pipelines", "scope": "read_api" },
+        { "id": "issues", "name": "Issues e merge requests", "scope": "read_api" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "google-drive",
+      "name": "Google Drive",
+      "icon": "📁",
+      "iconClass": "g",
+      "category": "storage",
+      "description": "Armazenamento em nuvem Google",
+      "color": "#4285f4",
+      "authType": "oauth2",
+      "parentProvider": "google",
+      "capabilities": [
+        { "id": "files", "name": "Listar e buscar arquivos" },
+        { "id": "upload", "name": "Upload de arquivos" },
+        { "id": "organize", "name": "Organizar pastas" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "onedrive",
+      "name": "OneDrive",
+      "icon": "☁",
+      "iconClass": "m",
+      "category": "storage",
+      "description": "Armazenamento em nuvem Microsoft",
+      "color": "#00a4ef",
+      "authType": "oauth2",
+      "parentProvider": "microsoft",
+      "capabilities": [
+        { "id": "files", "name": "Listar e buscar arquivos" },
+        { "id": "upload", "name": "Upload de arquivos" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "icon": "N",
+      "iconClass": "wa",
+      "category": "productivity",
+      "description": "Notas, wikis e gerenciamento de projetos",
+      "color": "#000000",
+      "authType": "oauth2",
+      "capabilities": [
+        { "id": "pages", "name": "Ler e escrever páginas" },
+        { "id": "databases", "name": "Consultar bancos de dados" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "trello",
+      "name": "Trello",
+      "icon": "T",
+      "iconClass": "p",
+      "category": "productivity",
+      "description": "Quadros, listas e cartões",
+      "color": "#0079bf",
+      "authType": "api_key",
+      "capabilities": [
+        { "id": "boards", "name": "Gerenciar quadros" },
+        { "id": "cards", "name": "Cartões e checklists" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "icon": "S",
+      "iconClass": "a",
+      "category": "messaging",
+      "description": "Canais, mensagens e notificações",
+      "color": "#4a154b",
+      "authType": "oauth2",
+      "capabilities": [
+        { "id": "chat", "name": "Enviar mensagens em canais" },
+        { "id": "notify", "name": "Notificações" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "icon": "🎵",
+      "iconClass": "a",
+      "category": "third-party",
+      "description": "Música, playlists e controle",
+      "color": "#1db954",
+      "authType": "oauth2",
+      "capabilities": [
+        { "id": "playback", "name": "Controle de reprodução" },
+        { "id": "playlists", "name": "Gerenciar playlists" }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian",
+      "icon": "O",
+      "iconClass": "p",
+      "category": "productivity",
+      "description": "Notas locais e vaults",
+      "color": "#7c3aed",
+      "authType": "local",
+      "capabilities": [
+        { "id": "notes", "name": "Ler e escrever notas" },
+        { "id": "vault", "name": "Navegar vaults" }
+      ],
+      "enabled": true
+    }
+  ]
+}

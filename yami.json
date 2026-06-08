@@ -300,6 +300,19 @@
         "sendMessage": true,
         "reactions": false,
         "polls": false
+      },
+      "communicationPolicy": {
+        "version": "2.0",
+        "enabled": true,
+        "defaultFormat": "text",
+        "allowedFormats": ["text", "audio", "video", "image", "document", "file"],
+        "requireExplicitFor": ["audio", "video", "image", "document", "file"],
+        "rules": {
+          "textFirst": true,
+          "noAutoConversion": true,
+          "askBeforeSending": true,
+          "confirmNonTextFormats": true
+        }
       }
     }
   },
@@ -428,7 +441,133 @@
         ]
       },
       "voiceWake": "acorda",
-      "voiceRest": "descansa"
+      "voiceRest": "descansa",
+      "communicationPolicy": {
+        "version": "2.0",
+        "effective": "2026-06-08",
+        "name": "Regra 2: Comunicação Padrão Baseada em Texto",
+        "description": "Standard text-first communication policy for all connected platforms (WhatsApp, Telegram, Discord, Email, SMS, Internal messages, and future integrations)",
+        "mandate": "Texto é o formato padrão de comunicação. Independentemente da plataforma utilizada, o YAMI deve sempre priorizar mensagens de texto, salvo quando o usuário solicitar explicitamente outro formato.",
+        "principles": [
+          "Simplicidade (Simplicity)",
+          "Clareza (Clarity)",
+          "Previsibilidade (Predictability)",
+          "Controle do usuário (User control)",
+          "Consistência entre plataformas (Cross-platform consistency)",
+          "Baixa fricção (Low friction)"
+        ],
+        "defaultFormat": "text",
+        "platforms": {
+          "whatsapp": {
+            "enabled": true,
+            "defaultFormat": "text",
+            "allowedFormats": ["text", "audio", "video", "image", "document", "file"],
+            "requireExplicitFor": ["audio", "video", "image", "document", "file"],
+            "rules": {
+              "textFirst": true,
+              "noAutoConversion": true,
+              "askBeforeSending": true
+            }
+          },
+          "telegram": {
+            "enabled": true,
+            "defaultFormat": "text",
+            "allowedFormats": ["text", "audio", "video", "image", "document", "file", "sticker"],
+            "requireExplicitFor": ["audio", "video", "image", "document", "file", "sticker"],
+            "rules": {
+              "textFirst": true,
+              "noAutoConversion": true,
+              "askBeforeSending": true
+            }
+          },
+          "discord": {
+            "enabled": true,
+            "defaultFormat": "text",
+            "allowedFormats": ["text", "audio", "video", "image", "document", "file", "embed"],
+            "requireExplicitFor": ["audio", "video", "image", "document", "file", "embed"],
+            "rules": {
+              "textFirst": true,
+              "noAutoConversion": true,
+              "askBeforeSending": true
+            }
+          },
+          "email": {
+            "enabled": true,
+            "defaultFormat": "text",
+            "allowedFormats": ["text", "html", "attachment"],
+            "requireExplicitFor": ["attachment"],
+            "rules": {
+              "textFirst": true,
+              "noAutoConversion": true,
+              "askBeforeSending": true
+            }
+          },
+          "sms": {
+            "enabled": true,
+            "defaultFormat": "text",
+            "allowedFormats": ["text"],
+            "requireExplicitFor": [],
+            "rules": {
+              "textFirst": true,
+              "noAutoConversion": true,
+              "askBeforeSending": false
+            }
+          },
+          "internal": {
+            "enabled": true,
+            "defaultFormat": "text",
+            "allowedFormats": ["text", "audio", "video", "image", "document", "file"],
+            "requireExplicitFor": ["audio", "video", "image", "document", "file"],
+            "rules": {
+              "textFirst": true,
+              "noAutoConversion": true,
+              "askBeforeSending": true
+            }
+          },
+          "futureIntegrations": {
+            "description": "All future platform integrations must follow the text-first default policy",
+            "inheritsRules": true
+          }
+        },
+        "prohibitedAutomaticBehaviors": [
+          "Converting text messages to audio without explicit user request",
+          "Sending video when text was requested",
+          "Automatically attaching files without user consent",
+          "Sending images without explicit user instruction",
+          "Creating documents without explicit user instruction",
+          "Initiating any non-text communication format without asking"
+        ],
+        "allowedUserCommands": {
+          "textFormat": ["Send this as text", "Envie isso como texto"],
+          "audioFormat": ["Send this as audio", "Envie isso como áudio"],
+          "videoFormat": ["Send this as video", "Transforme isso em vídeo"],
+          "imageFormat": ["Send as image", "Envie como imagem"],
+          "documentFormat": ["Send as document", "Envie como documento"],
+          "fileFormat": ["Send as file", "Envie como arquivo"],
+          "attachFormat": ["Attach this", "Anexe isto"]
+        },
+        "userScenarios": {
+          "correct": [
+            "Envie uma mensagem para João avisando que chegarei às 18h.",
+            "Diga ao grupo que a reunião é amanhã às 10h.",
+            "Notifique o time sobre a atualização de status.",
+            "Mande para Maria que aprovei o projeto."
+          ],
+          "incorrect": [
+            "Transformar automaticamente a mensagem em áudio ou vídeo.",
+            "Enviar vídeos quando texto foi solicitado.",
+            "Anexar arquivos sem consentimento explícito do usuário.",
+            "Assumir que o usuário quer imagens ou documentos."
+          ]
+        },
+        "enforcementRules": {
+          "explicitRequestRequired": true,
+          "userControlPriority": true,
+          "noAssumeFormat": true,
+          "clearNegotiationFlow": "When sending non-text formats, always confirm intent: 'Should I send this as [FORMAT]?'",
+          "documentUserRequest": true
+        }
+      }
     },
     "nativeCapabilities": {
       "version": "1.0.0",

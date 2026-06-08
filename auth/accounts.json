@@ -1,0 +1,28 @@
+{
+  "accounts": [
+    {
+      "provider": "whatsapp",
+      "lastSyncAt": "2026-06-08T17:00:00.000Z",
+      "status": "connected",
+      "displayName": "Yami",
+      "error": null,
+      "connectedAt": "2026-06-08T00:00:00.000Z",
+      "permissions": [
+        {
+          "name": "Enviar e receber mensagens",
+          "id": "chat",
+          "grantedAt": "2026-06-08T00:00:00.000Z",
+          "granted": true
+        },
+        {
+          "name": "Compartilhar midia",
+          "id": "media",
+          "grantedAt": "2026-06-08T00:00:00.000Z",
+          "granted": true
+        }
+      ],
+      "scopes": []
+    }
+  ],
+  "updatedAt": "2026-06-08T17:00:00.000Z"
+}

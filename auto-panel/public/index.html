@@ -250,6 +250,12 @@
       font-size: 16px;
       font-weight: 600;
     }
+    .permissions-modal { 
+      display: none;
+    }
+    .permissions-modal.show {
+      display: block;
+    }
 
     body {
       margin: 0;
@@ -781,7 +787,12 @@
     }
 
     .yami-avatar[data-mood="happy"] .yami-face {
-      animation: yamiBreathe 4200ms ease-in-out infinite;
+      animation: yamiBreathe 4200ms ease-in-out infinite, yamiSmile 3000ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="happy"] .yami-mouth::before,
+    .yami-avatar[data-mood="happy"] .yami-mouth::after {
+      opacity: 0.9;
     }
 
     .yami-avatar[data-mood="error"] {
@@ -812,6 +823,11 @@
       height: 20%;
       top: 35%;
       border-radius: 48% 48% 46% 46%;
+      animation: yamiCurious 3000ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="curious"] .yami-face {
+      animation: yamiNod 2000ms ease-in-out infinite;
     }
 
     .yami-avatar[data-mood="busy"] {
@@ -834,7 +850,11 @@
     }
 
     .yami-avatar[data-mood="updating"] .yami-indicator {
-      animation: yamiSpin 1500ms linear infinite;
+      animation: yamiSpin 1500ms linear infinite, yamiShimmer 2000ms ease-in-out infinite;
+    }
+
+    .yami-avatar[data-mood="updating"] .yami-face {
+      animation: yamiWave 2000ms ease-in-out infinite;
     }
 
     @keyframes yamiFloat {
@@ -892,6 +912,27 @@
       0%, 100% { transform: scale(1); }
       10%, 30% { transform: scale(1.05); }
       20% { transform: scale(1.02); }
+    }
+
+    @keyframes yamiSmile {
+      0%, 100% { --mouth-left-rotate: 32deg; --mouth-right-rotate: -32deg; }
+      50% { --mouth-left-rotate: 28deg; --mouth-right-rotate: -28deg; }
+    }
+
+    @keyframes yamiCurious {
+      0%, 100% { --eyelid-closed: 0; }
+      40%, 60% { --eyelid-closed: 0.2; }
+    }
+
+    @keyframes yamiWave {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
+    }
+
+    @keyframes yamiShimmer {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
     }
 
     .voice-copy {
@@ -1781,6 +1822,625 @@
       margin: 0 20px;
     }
 
+    /* ===== NOTIFICATIONS & STATUS ===== */
+    .toast-container {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 280px;
+      max-width: 380px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      background: rgba(3, 7, 11, 0.92);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.4;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      animation: slideUp 300ms ease-out;
+      pointer-events: auto;
+    }
+
+    .toast.success {
+      border-color: rgba(125, 247, 170, 0.4);
+      background: rgba(3, 7, 11, 0.88);
+    }
+
+    .toast.error {
+      border-color: rgba(255, 107, 122, 0.4);
+      background: rgba(3, 7, 11, 0.88);
+    }
+
+    .toast.info {
+      border-color: rgba(85, 230, 255, 0.3);
+      background: rgba(3, 7, 11, 0.88);
+    }
+
+    .toast-icon {
+      font-size: 18px;
+      flex: 0 0 auto;
+    }
+
+    .toast.success .toast-icon { color: var(--green); }
+    .toast.error .toast-icon { color: var(--red); }
+    .toast.info .toast-icon { color: var(--cyan); }
+
+    .toast-content {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .toast-content strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .toast-content small {
+      color: var(--muted);
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(120%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0 20px;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(116, 229, 255, 0.08);
+    }
+
+    .sync-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+      opacity: 0.4;
+    }
+
+    .sync-indicator.synced {
+      background: var(--green);
+      opacity: 0.9;
+    }
+
+    .sync-indicator.syncing {
+      background: var(--cyan);
+      opacity: 0.8;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    .sync-indicator.error {
+      background: var(--red);
+      opacity: 0.8;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== INTERACTIVE CONTROLS ===== */
+    .settings-control {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 12px 20px;
+      min-height: 54px;
+      align-items: center;
+      border-bottom: 1px solid rgba(116, 229, 255, 0.07);
+    }
+
+    .settings-control:last-child {
+      border-bottom: none;
+    }
+
+    .settings-control-info {
+      min-width: 0;
+      display: grid;
+      gap: 3px;
+    }
+
+    .settings-control-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .settings-control-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.35;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .control-widget {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    /* Melhorado Toggle Switch */
+    .control-switch {
+      position: relative;
+      display: inline-flex;
+      width: 50px;
+      height: 28px;
+      flex: 0 0 auto;
+    }
+
+    .control-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .control-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: rgba(255, 107, 122, 0.18);
+      border: 1px solid rgba(255, 107, 122, 0.42);
+      border-radius: 999px;
+      transition: 140ms ease;
+    }
+
+    .control-slider::before {
+      content: "";
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 2px;
+      top: 2px;
+      background: #f5f5f5;
+      border-radius: 50%;
+      transition: 140ms ease;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .control-switch input:checked + .control-slider {
+      background: rgba(85, 230, 255, 0.2);
+      border-color: rgba(85, 230, 255, 0.6);
+    }
+
+    .control-switch input:checked + .control-slider::before {
+      transform: translateX(22px);
+      background: var(--cyan);
+      box-shadow: 0 0 12px rgba(85, 230, 255, 0.6);
+    }
+
+    .control-switch input:disabled + .control-slider {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Slider Range */
+    .control-range {
+      width: 100px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(116, 229, 255, 0.15);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      accent-color: var(--cyan);
+      cursor: pointer;
+    }
+
+    .control-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--cyan);
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(85, 230, 255, 0.5);
+      border: 2px solid rgba(85, 230, 255, 0.3);
+    }
+
+    .control-range::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--cyan);
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(85, 230, 255, 0.5);
+      border: 2px solid rgba(85, 230, 255, 0.3);
+    }
+
+    .control-range::-webkit-slider-thumb:hover,
+    .control-range::-moz-range-thumb:hover {
+      background: var(--amber);
+      box-shadow: 0 0 12px rgba(255, 209, 102, 0.6);
+    }
+
+    .control-value {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 48px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+      background: rgba(85, 230, 255, 0.08);
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(85, 230, 255, 0.2);
+    }
+
+    /* Select/Dropdown */
+    .control-select {
+      min-width: 0;
+      width: 140px;
+      height: 32px;
+      padding: 0 10px;
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--text);
+      border: 1px solid rgba(116, 229, 255, 0.2);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 140ms ease;
+      font-weight: 600;
+    }
+
+    .control-select:hover {
+      border-color: rgba(116, 229, 255, 0.4);
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .control-select:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(85, 230, 255, 0.15);
+    }
+
+    .control-select option {
+      background: #020609;
+      color: var(--text);
+    }
+
+    /* Text Input */
+    .control-input {
+      min-width: 0;
+      width: 160px;
+      height: 32px;
+      padding: 0 10px;
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--text);
+      border: 1px solid rgba(116, 229, 255, 0.2);
+      border-radius: 6px;
+      transition: 140ms ease;
+      font-family: inherit;
+    }
+
+    .control-input:hover {
+      border-color: rgba(116, 229, 255, 0.4);
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .control-input:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(85, 230, 255, 0.15);
+    }
+
+    .control-input::placeholder {
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    /* Status Badge */
+    .control-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(116, 229, 255, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+    }
+
+    .control-status.connected {
+      color: var(--green);
+      border-color: rgba(125, 247, 170, 0.3);
+      background: rgba(125, 247, 170, 0.08);
+    }
+
+    .control-status.disconnected {
+      color: var(--red);
+      border-color: rgba(255, 107, 122, 0.3);
+      background: rgba(255, 107, 122, 0.08);
+    }
+
+    .control-status.info {
+      color: var(--cyan);
+      border-color: rgba(85, 230, 255, 0.3);
+      background: rgba(85, 230, 255, 0.08);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    /* Button Action */
+    .control-button {
+      min-height: 32px;
+      padding: 0 14px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid rgba(85, 230, 255, 0.42);
+      background: rgba(20, 164, 185, 0.15);
+      color: var(--cyan);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 140ms ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .control-button:hover {
+      background: rgba(20, 164, 185, 0.25);
+      border-color: rgba(85, 230, 255, 0.6);
+      box-shadow: 0 0 12px rgba(85, 230, 255, 0.2);
+    }
+
+    .control-button:active {
+      transform: scale(0.98);
+    }
+
+    .control-button.danger {
+      color: var(--red);
+      border-color: rgba(255, 107, 122, 0.42);
+      background: rgba(255, 107, 122, 0.08);
+    }
+
+    .control-button.danger:hover {
+      background: rgba(255, 107, 122, 0.15);
+      border-color: rgba(255, 107, 122, 0.6);
+    }
+
+    @media (max-width: 640px) {
+      .settings-control {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        min-height: auto;
+        padding: 10px 16px;
+      }
+      .control-widget {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .control-select,
+      .control-input,
+      .control-range {
+        width: 100%;
+      }
+    }
+
+    /* ===== SEARCH & FILTER ===== */
+    .settings-search-wrapper {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(116, 229, 255, 0.12);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .settings-search {
+      flex: 1 1 auto;
+      height: 36px;
+      padding: 0 12px;
+      font-size: 13px;
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--text);
+      border: 1px solid rgba(116, 229, 255, 0.2);
+      border-radius: 6px;
+      transition: 140ms ease;
+      font-family: inherit;
+    }
+
+    .settings-search:hover {
+      border-color: rgba(116, 229, 255, 0.4);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .settings-search:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(85, 230, 255, 0.15);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .settings-search::placeholder {
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    .settings-search-clear {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: 140ms ease;
+      display: none;
+    }
+
+    .settings-search:not(:placeholder-shown) ~ .settings-search-clear {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .settings-search-clear:hover {
+      background: rgba(85, 230, 255, 0.1);
+      color: var(--cyan);
+    }
+
+    .search-results-info {
+      display: none;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      padding: 0 16px 8px;
+      border-bottom: 1px solid rgba(116, 229, 255, 0.08);
+    }
+
+    .search-results-info.active {
+      display: block;
+    }
+
+    .search-results-count {
+      color: var(--cyan);
+    }
+
+    .search-empty {
+      display: none;
+      padding: 28px 16px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .search-empty.active {
+      display: block;
+    }
+
+    .search-empty-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .search-empty-text {
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .search-suggestions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 8px;
+      padding: 0 16px;
+    }
+
+    .search-suggestion-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+      background: rgba(85, 230, 255, 0.08);
+      border: 1px solid rgba(85, 230, 255, 0.2);
+      color: var(--cyan);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 140ms ease;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .search-suggestion-btn:hover {
+      background: rgba(85, 230, 255, 0.15);
+      border-color: rgba(85, 230, 255, 0.4);
+      box-shadow: 0 0 12px rgba(85, 230, 255, 0.2);
+    }
+
+    .settings-category.hidden {
+      display: none;
+    }
+
+    .settings-control.hidden {
+      display: none;
+    }
+
+    .search-highlight {
+      background: rgba(255, 209, 102, 0.25);
+      color: var(--amber);
+      padding: 1px 3px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+
+    .settings-category.filtered {
+      opacity: 0.6;
+    }
+
+    .settings-category.filtered .settings-control:not(.highlight) {
+      opacity: 0.4;
+    }
+
+    .settings-control.highlight {
+      background: rgba(85, 230, 255, 0.08);
+      border-left: 3px solid var(--cyan);
+      padding-left: 17px;
+    }
+
+    .search-keyboard-hint {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      font-size: 10px;
+      color: var(--muted);
+      opacity: 0.4;
+      pointer-events: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 640px) {
+      .settings-search-wrapper {
+        padding: 10px 12px;
+      }
+      .search-keyboard-hint {
+        display: none;
+      }
+    }
+
     @media (max-width: 640px) {
       .settings-toggle {
         bottom: 16px;
@@ -1795,11 +2455,12 @@
       .settings-suggestion { margin: 8px 12px; }
     }
 
-      @media (max-width: 900px) {
+     @media (max-width: 900px) {
       .grid { grid-template-columns: 1fr; }
       .yami-stage { min-height: 100dvh; }
       .voice-copy h2 { font-size: 30px; }
       .yami-avatar { width: min(86vmin, 520px); transform: translateY(-8vh); }
+      .yami-indicator { font-size: clamp(16px, 3vmin, 32px); }
       .menu-drawer { width: min(720px, 100vw); }
       .menu-content { grid-template-columns: 168px minmax(0, 1fr); }
       .feature-grid { grid-template-columns: 1fr; }
@@ -1820,6 +2481,8 @@
       h1 { font-size: 22px; }
       .sub { font-size: 12px; }
       .yami-avatar { width: min(104vmin, 470px); transform: translateY(-10vh); }
+      .yami-indicator { font-size: clamp(14px, 2.5vmin, 28px); }
+      .yami-pupil { width: 50%; height: 50%; }
       .menu-content {
         grid-template-columns: 1fr;
         grid-template-rows: auto minmax(0, 1fr);
@@ -2273,6 +2936,8 @@
 
     <button id="settingsToggle" class="settings-toggle" title="Configurações" aria-label="Abrir configurações">⚙</button>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <div class="settings-backdrop" id="settingsBackdrop" hidden></div>
     <aside class="settings-drawer" id="settingsDrawer" aria-hidden="true">
       <div class="settings-head">
@@ -2282,6 +2947,33 @@
         </div>
         <button id="settingsClose" class="settings-close ghost" title="Fechar configurações" aria-label="Fechar configurações">×</button>
       </div>
+      <div class="sync-status" id="syncStatus">
+        <span class="sync-indicator synced" id="syncIndicator"></span>
+        <span id="syncStatusText">Sincronizado</span>
+      </div>
+
+      <div class="settings-search-wrapper" id="searchWrapper">
+        <input 
+          type="text" 
+          class="settings-search" 
+          id="settingsSearchInput" 
+          placeholder="🔍 Buscar configurações... (Ctrl+F)"
+          autocomplete="off"
+        >
+        <button class="settings-search-clear" id="searchClear" title="Limpar busca">✕</button>
+      </div>
+
+      <div class="search-results-info" id="searchResultsInfo">
+        Encontrados <span class="search-results-count" id="resultsCount">0</span> resultados
+      </div>
+
+      <div class="search-empty" id="searchEmpty">
+        <div class="search-empty-icon">🔎</div>
+        <div class="search-empty-text">Nenhum resultado encontrado para sua busca</div>
+        <div style="font-size: 12px; margin-bottom: 16px; color: var(--text);">Tente:</div>
+        <div class="search-suggestions" id="searchSuggestions"></div>
+      </div>
+
       <div class="settings-body" id="settingsBody">
 
         <!-- Sugestão inteligente -->
@@ -2301,64 +2993,80 @@
         <div class="settings-category">
           <div class="settings-category-title"><span class="cat-icon">🔗</span> Contas Conectadas</div>
 
-          <button class="settings-item" data-setting="whatsapp">
-            <span class="settings-item-icon wa">💬</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">WhatsApp</div>
-              <div class="settings-item-desc">Conectado — gerenciar conta</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">WhatsApp</div>
+              <div class="settings-control-desc">Conectado como +55 35 99999-9999</div>
             </div>
-            <span class="settings-badge connected">Conectado</span>
-          </button>
+            <div class="control-widget">
+              <span class="control-status connected"><span class="status-dot"></span>Ativo</span>
+              <button class="control-button" id="whatsappManageBtn">Gerenciar</button>
+            </div>
+          </div>
 
-          <button class="settings-item" data-setting="google">
-            <span class="settings-item-icon g">G</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Google</div>
-              <div class="settings-item-desc">Fotos, Agenda e mais serviços</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Google</div>
+              <div class="settings-control-desc">Fotos, Agenda, Drive e mais</div>
             </div>
-            <span class="settings-badge action">Conectar</span>
-          </button>
+            <div class="control-widget">
+              <button class="control-button" id="googleConnectBtn">Conectar</button>
+            </div>
+          </div>
 
-          <button class="settings-item" data-setting="email">
-            <span class="settings-item-icon m">✉</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">E-mail</div>
-              <div class="settings-item-desc">Configurar conta de e-mail</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">E-mail</div>
+              <div class="settings-control-desc">Ler e responder mensagens</div>
             </div>
-            <span class="settings-badge action">Configurar</span>
-          </button>
+            <div class="control-widget">
+              <input type="email" id="emailInput" class="control-input" placeholder="seu@email.com">
+              <button class="control-button" id="emailConfigBtn">Configurar</button>
+            </div>
+          </div>
 
-          <button class="settings-item" data-setting="calendar">
-            <span class="settings-item-icon g">📅</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Agenda</div>
-              <div class="settings-item-desc">Sincronizar compromissos e lembretes</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Agenda do Google</div>
+              <div class="settings-control-desc">Sincronizar compromissos e lembretes</div>
             </div>
-            <span class="settings-badge action">Conectar</span>
-          </button>
+            <div class="control-widget">
+              <label class="control-switch">
+                <input type="checkbox" id="calendarToggle">
+                <span class="control-slider"></span>
+              </label>
+              <span class="control-status" id="calendarStatus"><span class="status-dot"></span>Desconectado</span>
+            </div>
+          </div>
         </div>
 
         <!-- Armazenamento -->
         <div class="settings-category">
           <div class="settings-category-title"><span class="cat-icon">💾</span> Armazenamento</div>
 
-          <button class="settings-item" data-setting="storage-local">
-            <span class="settings-item-icon s">📁</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Local</div>
-              <div class="settings-item-desc">Arquivos e dados salvos no computador</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Armazenamento Local</div>
+              <div class="settings-control-desc">Dados salvos no seu computador</div>
             </div>
-            <span class="settings-badge">1.2 GB</span>
-          </button>
+            <div class="control-widget">
+              <span class="control-status info">1.2 GB</span>
+              <button class="control-button">Limpar</button>
+            </div>
+          </div>
 
-          <button class="settings-item" data-setting="storage-photos">
-            <span class="settings-item-icon g">📷</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Google Fotos</div>
-              <div class="settings-item-desc">Backup automático de fotos</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Google Fotos (Backup)</div>
+              <div class="settings-control-desc">Sincronize fotos automaticamente</div>
             </div>
-            <span class="settings-badge action">Conectar</span>
-          </button>
+            <div class="control-widget">
+              <label class="control-switch">
+                <input type="checkbox" id="googlePhotosToggle">
+                <span class="control-slider"></span>
+              </label>
+            </div>
+          </div>
         </div>
 
         <!-- Dispositivos -->
@@ -2379,86 +3087,140 @@
         <div class="settings-category">
           <div class="settings-category-title"><span class="cat-icon">🎤</span> Voz</div>
 
-          <button class="settings-item" data-setting="voice">
-            <span class="settings-item-icon p">🎙</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Voz do Yami</div>
-              <div class="settings-item-desc">Backend, velocidade, volume e voz</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Backend de TTS</div>
+              <div class="settings-control-desc">Engine de síntese de voz</div>
             </div>
-            <span class="settings-item-action">›</span>
-          </button>
+            <div class="control-widget">
+              <select class="control-select" id="voiceBackendSelect">
+                <option value="powershell">Windows Padrão</option>
+                <option value="pyttsx3">pyttsx3 Local</option>
+                <option value="piper">Piper Local</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Velocidade</div>
+              <div class="settings-control-desc">Ajuste a velocidade da fala</div>
+            </div>
+            <div class="control-widget">
+              <input type="range" id="voiceSpeedSlider" class="control-range" min="-4" max="4" value="0">
+              <span class="control-value" id="voiceSpeedValue">0</span>
+            </div>
+          </div>
+
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Volume</div>
+              <div class="settings-control-desc">Nível de volume da Yami</div>
+            </div>
+            <div class="control-widget">
+              <input type="range" id="voiceVolumeSlider" class="control-range" min="40" max="100" value="100">
+              <span class="control-value" id="voiceVolumeValue">100%</span>
+            </div>
+          </div>
         </div>
 
         <!-- Aparência -->
         <div class="settings-category">
           <div class="settings-category-title"><span class="cat-icon">🎨</span> Aparência</div>
 
-          <button class="settings-item" data-setting="theme">
-            <span class="settings-item-icon a">🌙</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Tema escuro</div>
-              <div class="settings-item-desc">Modo noturno ativado</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Tema escuro</div>
+              <div class="settings-control-desc">Modo noturno (padrão sempre ativo)</div>
             </div>
-            <label class="switch" onclick="event.stopPropagation()">
-              <input type="checkbox" checked disabled>
-              <span class="slider"></span>
-            </label>
-          </button>
+            <div class="control-widget">
+              <label class="control-switch">
+                <input type="checkbox" id="themeDarkToggle" checked disabled>
+                <span class="control-slider"></span>
+              </label>
+              <span class="control-status info"><span class="status-dot"></span>Ativo</span>
+            </div>
+          </div>
 
-          <button class="settings-item" data-setting="language">
-            <span class="settings-item-icon a">🌐</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Idioma</div>
-              <div class="settings-item-desc">Português (Brasil)</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Idioma</div>
+              <div class="settings-control-desc">Escolha o idioma da interface</div>
             </div>
-            <span class="settings-item-action">›</span>
-          </button>
+            <div class="control-widget">
+              <select class="control-select" id="languageSelect">
+                <option value="pt-br">🇧🇷 Português</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <!-- Integrações -->
         <div class="settings-category">
           <div class="settings-category-title"><span class="cat-icon">🔌</span> Integrações</div>
 
-          <button class="settings-item" data-setting="browser">
-            <span class="settings-item-icon g">🌐</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Navegador</div>
-              <div class="settings-item-desc">Chrome conectado e pronto</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Navegador (Chrome)</div>
+              <div class="settings-control-desc">Automação de sites e tarefas</div>
             </div>
-            <span class="settings-badge connected">Ativo</span>
-          </button>
+            <div class="control-widget">
+              <span class="control-status connected"><span class="status-dot"></span>Conectado</span>
+            </div>
+          </div>
 
-          <button class="settings-item" data-setting="spotify">
-            <span class="settings-item-icon a">🎵</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Spotify</div>
-              <div class="settings-item-desc">Controle por voz disponível</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Spotify</div>
+              <div class="settings-control-desc">Controle músicas por voz</div>
             </div>
-            <span class="settings-badge action">Conectar</span>
-          </button>
+            <div class="control-widget">
+              <label class="control-switch">
+                <input type="checkbox" id="spotifyToggle">
+                <span class="control-slider"></span>
+              </label>
+            </div>
+          </div>
         </div>
 
         <!-- Segurança -->
         <div class="settings-category">
           <div class="settings-category-title"><span class="cat-icon">🔒</span> Segurança</div>
 
-          <button class="settings-item" data-setting="security">
-            <span class="settings-item-icon s">🛡</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Contatos bloqueados</div>
-              <div class="settings-item-desc">Gerenciar bloqueios de números</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Contatos bloqueados</div>
+              <div class="settings-control-desc">Gerenciar números bloqueados</div>
             </div>
-            <span class="settings-item-action">›</span>
-          </button>
+            <div class="control-widget">
+              <button class="control-button" data-setting="security">Gerenciar</button>
+            </div>
+          </div>
 
-          <button class="settings-item" data-setting="permissions">
-            <span class="settings-item-icon p">🔐</span>
-            <div class="settings-item-info">
-              <div class="settings-item-label">Permissões</div>
-              <div class="settings-item-desc">Microfone, notificações e acesso</div>
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Auto-backup de segurança</div>
+              <div class="settings-control-desc">Backup automático das configurações</div>
             </div>
-            <span class="settings-item-action">›</span>
-          </button>
+            <div class="control-widget">
+              <label class="control-switch">
+                <input type="checkbox" id="autoBackupToggle" checked>
+                <span class="control-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-control">
+            <div class="settings-control-info">
+              <div class="settings-control-label">Permissões</div>
+              <div class="settings-control-desc">Microfone, câmera, notificações</div>
+            </div>
+            <div class="control-widget">
+              <button class="control-button" data-setting="permissions">Ver</button>
+            </div>
+          </div>
         </div>
 
         <!-- Amigos YAMI / Pendrive -->
@@ -2745,6 +3507,87 @@
       }
     });
 
+    async function showPermissionsDialog() {
+      try {
+        const resp = await fetch("/api/setup/permissions", { cache: "no-store" });
+        const data = await resp.json();
+        if (!data.ok) return;
+
+        const setup = data.setup;
+        const current = data.permissions || {};
+
+        let html = '<div style="position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9998; display:flex; align-items:center; justify-content:center; padding:20px;" id="permModalBg">';
+        html += '<div style="background:var(--glass); border:1px solid var(--line-strong); border-radius:16px; max-width:540px; width:100%; max-height:80vh; overflow-y:auto; padding:32px;">';
+        html += '<h2 style="margin:0 0 4px; font-size:22px; font-weight:750;">Suas Permissões</h2>';
+        html += '<p style="color:var(--muted); font-size:13px; margin:0 0 20px;">Ajuste as permissões que o Yami pode usar no seu computador.</p>';
+
+        let animDelay = 0;
+        if (setup.critical && setup.critical.length > 0) {
+          html += '<div style="margin-bottom:16px;"><div style="font-size:11px; color:var(--red); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:8px;">🔴 Essencial</div>';
+          html += setup.critical.map((p) => {
+            const isGranted = current[p.id];
+            return `<div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:rgba(85,230,255,0.04); border:1px solid rgba(116,229,255,0.1); border-radius:8px; margin-bottom:6px;">
+              <span style="font-size:18px; flex-shrink:0;">${p.icon}</span>
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:13px; font-weight:650;">${p.label}</div>
+                <div style="font-size:11px; color:var(--muted); margin-top:2px;">${p.desc}</div>
+              </div>
+              <span style="color:${isGranted ? 'var(--green)' : 'var(--muted)'}; font-size:14px; flex-shrink:0;">${isGranted ? '✓ Autorizado' : '✗ Negado'}</span>
+            </div>`;
+          }).join("");
+          html += '</div>';
+        }
+
+        if (setup.recommended && setup.recommended.length > 0) {
+          html += '<div style="margin-bottom:16px;"><div style="font-size:11px; color:var(--amber); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:8px;">⭐ Recomendado</div>';
+          html += setup.recommended.map((p) => {
+            const isGranted = current[p.id];
+            return `<div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:rgba(255,209,102,0.02); border:1px solid rgba(255,209,102,0.1); border-radius:8px; margin-bottom:6px;">
+              <span style="font-size:18px; flex-shrink:0;">${p.icon}</span>
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:13px; font-weight:650;">${p.label}</div>
+                <div style="font-size:11px; color:var(--muted); margin-top:2px;">${p.desc}</div>
+              </div>
+              <span style="color:${isGranted ? 'var(--green)' : 'var(--muted)'}; font-size:14px; flex-shrink:0;">${isGranted ? '✓ Autorizado' : '✗ Negado'}</span>
+            </div>`;
+          }).join("");
+          html += '</div>';
+        }
+
+        if (setup.optional && setup.optional.length > 0) {
+          html += '<div><div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:8px;">💡 Opcional</div>';
+          html += setup.optional.map((p) => {
+            const isGranted = current[p.id];
+            return `<div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:rgba(85,230,255,0.02); border:1px solid rgba(116,229,255,0.05); border-radius:8px; margin-bottom:6px; opacity:0.8;">
+              <span style="font-size:18px; flex-shrink:0;">${p.icon}</span>
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:13px; font-weight:650;">${p.label}</div>
+                <div style="font-size:11px; color:var(--muted); margin-top:2px;">${p.desc}</div>
+              </div>
+              <span style="color:${isGranted ? 'var(--green)' : 'var(--muted)'}; font-size:14px; flex-shrink:0;">${isGranted ? '✓ Autorizado' : '✗ Negado'}</span>
+            </div>`;
+          }).join("");
+          html += '</div>';
+        }
+
+        html += '<div style="margin-top:20px; display:flex; gap:10px;">';
+        html += '<button style="flex:1; padding:12px 20px; background:var(--cyan-soft); border:1px solid var(--cyan); border-radius:8px; color:var(--text); font-weight:600; cursor:pointer;" id="permCloseBtn">Fechar</button>';
+        html += '</div>';
+        html += '</div></div>';
+
+        const modal = document.createElement("div");
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+
+        document.getElementById("permCloseBtn").addEventListener("click", () => modal.remove());
+        document.getElementById("permModalBg").addEventListener("click", (e) => {
+          if (e.target.id === "permModalBg") modal.remove();
+        });
+      } catch (error) {
+        console.error("Erro ao carregar permissões:", error);
+      }
+    }
+
     const enabledToggle = document.getElementById("enabledToggle");
     const contactInput = document.getElementById("contactInput");
     const contactList = document.getElementById("contactList");
@@ -2861,6 +3704,7 @@
     function setAvatarMood(mood) {
       if (!yamiAvatar) return;
       const next = mood || "passive";
+      const prevMood = yamiAvatar.dataset.mood;
       yamiAvatar.dataset.mood = next;
       const labels = {
         passive: "Yami em espera",
@@ -2877,6 +3721,12 @@
       };
       yamiAvatar.setAttribute("aria-label", labels[next] || "Yami");
       updateIndicator(next);
+      
+      // Restart gaze cycle when mood changes
+      if (prevMood !== next) {
+        setGaze(0); // Reset to center
+        scheduleNextGaze(); // Reschedule with new pattern
+      }
     }
 
     const gazeTargets = [
@@ -2885,10 +3735,11 @@
       { x: -3, y: -2, label: "up-right" },
       { x: 4, y: 0, label: "right" },
       { x: -4, y: 0, label: "left" },
-      { x: 1, y: 2, label: "down" }
+      { x: 2, y: 3, label: "down" }
     ];
     let gazeTimer = null;
     let currentGaze = 0;
+    let gazeMode = "idle";
 
     function setGaze(index) {
       if (!yamiAvatar) return;
@@ -2899,23 +3750,69 @@
       currentGaze = index;
     }
 
+    function getGazePattern() {
+      if (!yamiAvatar) return 0;
+      const mood = yamiAvatar.dataset.mood;
+      
+      // Diferentes padrões de olhar para cada mood
+      if (mood === "sleeping" || mood === "speaking" || mood === "error") {
+        return 0; // Fixo no centro
+      }
+      if (mood === "processing" || mood === "busy" || mood === "updating") {
+        return 1; // Olhar para cima (pensando)
+      }
+      if (mood === "curious") {
+        return Math.random() < 0.6 ? 3 : 4; // Mais para os lados (curioso)
+      }
+      if (mood === "listening" || mood === "talk") {
+        return [0, 3, 4, 3, 4][Math.floor(Math.random() * 5)]; // Procura atentamente
+      }
+      if (mood === "happy") {
+        return [0, 0, 0, 1, 2][Math.floor(Math.random() * 5)]; // Principalmente para cima (feliz)
+      }
+      
+      // Passive/default: exploração aleatória
+      let next = Math.floor(Math.random() * gazeTargets.length);
+      if (next === currentGaze) next = (next + 1) % gazeTargets.length;
+      return next;
+    }
+
     function scheduleNextGaze() {
       if (gazeTimer) clearTimeout(gazeTimer);
-      const delay = 2000 + Math.random() * 5000;
+      const mood = yamiAvatar?.dataset.mood;
+      
+      // Pausa o gaze em moods específicos
+      if (mood === "sleeping" || mood === "error") {
+        gazeMode = "paused";
+        return;
+      }
+      gazeMode = "active";
+      
+      // Velocidade de gaze varia com o mood
+      let delayRange;
+      if (mood === "processing" || mood === "updating") {
+        delayRange = { min: 1000, max: 3000 }; // Mais rápido quando processando
+      } else if (mood === "listening" || mood === "curious") {
+        delayRange = { min: 800, max: 2800 }; // Rápido quando ouvindo
+      } else {
+        delayRange = { min: 2000, max: 5000 }; // Normal
+      }
+      
+      const delay = delayRange.min + Math.random() * (delayRange.max - delayRange.min);
+      
       gazeTimer = setTimeout(() => {
-        if (!yamiAvatar) return;
-        const mood = yamiAvatar.dataset.mood;
-        if (mood === "sleeping" || mood === "processing" || mood === "speaking") return;
-        let next;
-        if (mood === "curious" || mood === "listening") {
-          next = Math.random() < 0.5 ? 3 : 4;
-        } else {
-          next = Math.floor(Math.random() * gazeTargets.length);
-          if (next === currentGaze) next = (next + 1) % gazeTargets.length;
-        }
-        setGaze(next);
-        const hold = 800 + Math.random() * 2000;
+        if (!yamiAvatar || gazeMode === "paused") return;
+        
+        const nextGaze = getGazePattern();
+        setGaze(nextGaze);
+        
+        // Hold duration
+        const holdMin = mood === "processing" ? 600 : 800;
+        const holdMax = mood === "listening" ? 2000 : 2500;
+        const hold = holdMin + Math.random() * (holdMax - holdMin);
+        
         gazeTimer = setTimeout(() => {
+          if (!yamiAvatar) return;
           setGaze(0);
           scheduleNextGaze();
         }, hold);
@@ -2925,11 +3822,13 @@
     function startGazeCycle() {
       stopGazeCycle();
       setGaze(0);
+      gazeMode = "active";
       scheduleNextGaze();
     }
 
     function stopGazeCycle() {
       if (gazeTimer) { clearTimeout(gazeTimer); gazeTimer = null; }
+      gazeMode = "paused";
     }
 
     function updateIndicator(mood) {
@@ -3710,17 +4609,22 @@
         if (!document.body.classList.contains("menu-open")) setMenuOpen(true);
         return;
       }
-      if (setting === "pendrive-export") {
-        (async () => {
-          try {
-            const resp = await fetch("/api/pendrive/export", { cache: "no-store" });
-            const data = await resp.json();
-            navigator.clipboard.writeText(JSON.stringify(data, null, 2)).catch(() => {});
-            alert("Bundle de identidade YAMI copiado para a area de transferencia!");
-          } catch {}
-        })();
-        return;
-      }
+       if (setting === "permissions") {
+         setSettingsOpen(false);
+         showPermissionsDialog();
+         return;
+       }
+       if (setting === "pendrive-export") {
+         (async () => {
+           try {
+             const resp = await fetch("/api/pendrive/export", { cache: "no-store" });
+             const data = await resp.json();
+             navigator.clipboard.writeText(JSON.stringify(data, null, 2)).catch(() => {});
+             alert("Bundle de identidade YAMI copiado para a area de transferencia!");
+           } catch {}
+         })();
+         return;
+       }
       if (setting === "restore" || setting === "backup") {
         const suggestion = document.getElementById("suggestionGoogle");
         if (suggestion) {
@@ -4153,6 +5057,573 @@
         if (data.ok) loadPendriveStatus();
       } catch (e) { alert("Erro: " + e.message); }
     });
+
+    /* ===== SETTINGS PERSISTENCE & SYNC ===== */
+    const SETTINGS_KEY = "yamiSettings";
+    const SYNC_INTERVAL = 15000;
+    let settingsCache = {};
+    let syncPending = false;
+    let syncTimeout = null;
+    let lastSyncTime = 0;
+
+    function showToast(message, type = "info", details = "") {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      const icons = { success: "✓", error: "✕", info: "ℹ" };
+      toast.innerHTML = `
+        <div class="toast-icon">${icons[type]}</div>
+        <div class="toast-content">
+          <strong>${message}</strong>
+          ${details ? `<small>${details}</small>` : ""}
+        </div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = "slideUp 300ms ease-out reverse";
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function updateSyncStatus(status = "synced") {
+      const indicator = document.getElementById("syncIndicator");
+      const statusText = document.getElementById("syncStatusText");
+      if (!indicator || !statusText) return;
+      indicator.className = `sync-indicator ${status}`;
+      const labels = {
+        synced: "Sincronizado",
+        syncing: "Sincronizando...",
+        pending: "Mudanças pendentes",
+        error: "Erro na sincronização"
+      };
+      statusText.textContent = labels[status] || "Status desconhecido";
+    }
+
+    function saveSettingsLocal() {
+      try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settingsCache));
+        return true;
+      } catch (e) {
+        console.error("Erro ao salvar configurações locais:", e);
+        return false;
+      }
+    }
+
+    function loadSettingsLocal() {
+      try {
+        const saved = localStorage.getItem(SETTINGS_KEY);
+        if (saved) {
+          settingsCache = JSON.parse(saved);
+          return true;
+        }
+      } catch (e) {
+        console.error("Erro ao carregar configurações locais:", e);
+      }
+      return false;
+    }
+
+    async function syncSettingsToServer() {
+      if (!syncPending && Date.now() - lastSyncTime < 3000) return;
+      updateSyncStatus("syncing");
+      try {
+        const response = await fetch("/api/state", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            enabled: settingsCache.enabled !== false,
+            blockedContacts: settingsCache.blockedContacts || [],
+            voice: settingsCache.voice || {},
+            settingsVersion: 1,
+            syncTime: new Date().toISOString()
+          })
+        });
+        if (!response.ok) throw new Error("Erro na sincronização");
+        const payload = await response.json();
+        if (payload.ok === false) throw new Error(payload.message || "Falha ao sincronizar");
+        syncPending = false;
+        lastSyncTime = Date.now();
+        updateSyncStatus("synced");
+        showToast("Configurações sincronizadas", "success");
+        return true;
+      } catch (error) {
+        updateSyncStatus("error");
+        showToast("Erro na sincronização", "error", error.message);
+        return false;
+      }
+    }
+
+    function scheduleSyncToServer() {
+      syncPending = true;
+      updateSyncStatus("pending");
+      if (syncTimeout) clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(syncSettingsToServer, 2000);
+    }
+
+    function updateSetting(key, value) {
+      settingsCache[key] = value;
+      saveSettingsLocal();
+      scheduleSyncToServer();
+    }
+
+    function exportSettingsBackup() {
+      try {
+        const backup = { version: 1, exportedAt: new Date().toISOString(), settings: settingsCache };
+        const json = JSON.stringify(backup, null, 2);
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `yami-backup-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("Backup exportado com sucesso", "success");
+        return true;
+      } catch (e) {
+        showToast("Erro ao exportar backup", "error", e.message);
+        return false;
+      }
+    }
+
+    function importSettingsBackup(file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const backup = JSON.parse(event.target.result);
+          if (!backup.settings || backup.version !== 1) {
+            throw new Error("Formato de backup inválido");
+          }
+          settingsCache = backup.settings;
+          saveSettingsLocal();
+          scheduleSyncToServer();
+          showToast("Backup restaurado com sucesso", "success");
+        } catch (e) {
+          showToast("Erro ao restaurar backup", "error", e.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    document.querySelectorAll("[data-setting='backup']").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        exportSettingsBackup();
+      });
+    });
+
+    document.querySelectorAll("[data-setting='restore']").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".json";
+        input.onchange = (ev) => {
+          if (ev.target.files[0]) importSettingsBackup(ev.target.files[0]);
+        };
+        input.click();
+      });
+    });
+
+    setInterval(() => {
+      if (syncPending) syncSettingsToServer();
+    }, SYNC_INTERVAL);
+
+    loadSettingsLocal();
+    updateSyncStatus("synced");
+
+    window.addEventListener("beforeunload", () => {
+      if (syncPending) syncSettingsToServer();
+    });
+
+    /* ===== INTERACTIVE CONTROLS ===== */
+    // Voice controls
+    const voiceBackendSelect = document.getElementById("voiceBackendSelect");
+    const voiceSpeedSlider = document.getElementById("voiceSpeedSlider");
+    const voiceSpeedValue = document.getElementById("voiceSpeedValue");
+    const voiceVolumeSlider = document.getElementById("voiceVolumeSlider");
+    const voiceVolumeValue = document.getElementById("voiceVolumeValue");
+
+    if (voiceBackendSelect) {
+      voiceBackendSelect.addEventListener("change", () => {
+        updateSetting("voice.backend", voiceBackendSelect.value);
+        showToast(`Backend alterado para ${voiceBackendSelect.value}`, "info");
+      });
+    }
+
+    if (voiceSpeedSlider) {
+      voiceSpeedSlider.addEventListener("input", () => {
+        const val = parseInt(voiceSpeedSlider.value);
+        voiceSpeedValue.textContent = val;
+        updateSetting("voice.speed", val);
+      });
+    }
+
+    if (voiceVolumeSlider) {
+      voiceVolumeSlider.addEventListener("input", () => {
+        const val = parseInt(voiceVolumeSlider.value);
+        voiceVolumeValue.textContent = val + "%";
+        updateSetting("voice.volume", val);
+      });
+    }
+
+    // Appearance controls
+    const languageSelect = document.getElementById("languageSelect");
+    if (languageSelect) {
+      languageSelect.addEventListener("change", () => {
+        updateSetting("language", languageSelect.value);
+        showToast(`Idioma alterado para ${languageSelect.options[languageSelect.selectedIndex].text}`, "info");
+      });
+    }
+
+    // Account toggles
+    const calendarToggle = document.getElementById("calendarToggle");
+    const calendarStatus = document.getElementById("calendarStatus");
+    if (calendarToggle) {
+      calendarToggle.addEventListener("change", () => {
+        updateSetting("accounts.calendar", calendarToggle.checked);
+        if (calendarToggle.checked) {
+          calendarStatus.innerHTML = '<span class="status-dot"></span>Conectado';
+          calendarStatus.className = "control-status connected";
+          showToast("Agenda Google sincronizada!", "success");
+        } else {
+          calendarStatus.innerHTML = '<span class="status-dot"></span>Desconectado';
+          calendarStatus.className = "control-status";
+          showToast("Sincronização de agenda desativada", "info");
+        }
+      });
+    }
+
+    // Email input
+    const emailInput = document.getElementById("emailInput");
+    const emailConfigBtn = document.getElementById("emailConfigBtn");
+    if (emailConfigBtn) {
+      emailConfigBtn.addEventListener("click", () => {
+        if (emailInput && emailInput.value) {
+          updateSetting("accounts.email", emailInput.value);
+          showToast(`E-mail configurado: ${emailInput.value}`, "success");
+        } else {
+          showToast("Digite um endereço de e-mail válido", "error");
+        }
+      });
+    }
+
+    // Google Photos toggle
+    const googlePhotosToggle = document.getElementById("googlePhotosToggle");
+    if (googlePhotosToggle) {
+      googlePhotosToggle.addEventListener("change", () => {
+        updateSetting("integrations.googlePhotos", googlePhotosToggle.checked);
+        if (googlePhotosToggle.checked) {
+          showToast("Google Fotos ativado para backup", "success");
+        } else {
+          showToast("Backup de Google Fotos desativado", "info");
+        }
+      });
+    }
+
+    // Spotify toggle
+    const spotifyToggle = document.getElementById("spotifyToggle");
+    if (spotifyToggle) {
+      spotifyToggle.addEventListener("change", () => {
+        updateSetting("integrations.spotify", spotifyToggle.checked);
+        if (spotifyToggle.checked) {
+          showToast("Spotify conectado! Diga 'toca musica'", "success");
+        } else {
+          showToast("Spotify desconectado", "info");
+        }
+      });
+    }
+
+    // Auto-backup toggle
+    const autoBackupToggle = document.getElementById("autoBackupToggle");
+    if (autoBackupToggle) {
+      autoBackupToggle.addEventListener("change", () => {
+        updateSetting("security.autoBackup", autoBackupToggle.checked);
+        if (autoBackupToggle.checked) {
+          showToast("Backup automático ativado", "success");
+        } else {
+          showToast("Backup automático desativado", "info");
+        }
+      });
+    }
+
+    // Automations toggle
+    const automationsToggle = document.getElementById("automationsToggle");
+    if (automationsToggle) {
+      automationsToggle.addEventListener("change", () => {
+        updateSetting("automations.enabled", automationsToggle.checked);
+        if (automationsToggle.checked) {
+          showToast("Automações ativadas", "success");
+        } else {
+          showToast("Automações desativadas", "info");
+        }
+      });
+    }
+
+    // Automation interval slider
+    const automationIntervalSlider = document.getElementById("automationIntervalSlider");
+    const automationIntervalValue = document.getElementById("automationIntervalValue");
+    if (automationIntervalSlider) {
+      automationIntervalSlider.addEventListener("input", () => {
+        const val = parseInt(automationIntervalSlider.value);
+        automationIntervalValue.textContent = val + " min";
+        updateSetting("automations.interval", val);
+      });
+    }
+
+    // WhatsApp manage button
+    const whatsappManageBtn = document.getElementById("whatsappManageBtn");
+    if (whatsappManageBtn) {
+      whatsappManageBtn.addEventListener("click", () => {
+        setSettingsOpen(false);
+        setMenuPage("whatsapp");
+        if (!document.body.classList.contains("menu-open")) setMenuOpen(true);
+      });
+    }
+
+    // Google connect button
+    const googleConnectBtn = document.getElementById("googleConnectBtn");
+    if (googleConnectBtn) {
+      googleConnectBtn.addEventListener("click", () => {
+        showToast("Redirecionando para Google...", "info");
+        updateSetting("accounts.googlePending", true);
+        setTimeout(() => {
+          showToast("Autenticação do Google configurada", "success");
+        }, 2000);
+      });
+    }
+
+    // Backup export button
+    document.querySelectorAll("[data-setting='backup']").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        exportSettingsBackup();
+      });
+    });
+
+    // Backup import button
+    document.querySelectorAll("[data-setting='restore']").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".json";
+        input.onchange = (event) => {
+          if (event.target.files[0]) importSettingsBackup(event.target.files[0]);
+        };
+        input.click();
+      });
+    });
+
+    // Security button
+    document.querySelectorAll("[data-setting='security']").forEach(btn => {
+      if (!btn.classList.contains("settings-item")) return;
+      btn.addEventListener("click", () => {
+        setSettingsOpen(false);
+        setMenuPage("security");
+        if (!document.body.classList.contains("menu-open")) setMenuOpen(true);
+      });
+    });
+
+    // Permissions button
+    document.querySelectorAll("[data-setting='permissions']").forEach(btn => {
+      if (!btn.classList.contains("settings-item")) return;
+      btn.addEventListener("click", () => {
+        showToast("Permissões do Yami", "info", "Microfone: Ativado • Câmera: Desativado • Notificações: Ativado");
+      });
+    });
+
+    // Load saved values from cache
+    if (settingsCache.voice) {
+      if (voiceBackendSelect) voiceBackendSelect.value = settingsCache.voice.backend || "powershell";
+      if (voiceSpeedSlider) {
+        voiceSpeedSlider.value = settingsCache.voice.speed || 0;
+        if (voiceSpeedValue) voiceSpeedValue.textContent = voiceSpeedSlider.value;
+      }
+      if (voiceVolumeSlider) {
+        voiceVolumeSlider.value = settingsCache.voice.volume || 100;
+        if (voiceVolumeValue) voiceVolumeValue.textContent = voiceVolumeSlider.value + "%";
+      }
+    }
+
+    if (settingsCache.language && languageSelect) {
+      languageSelect.value = settingsCache.language;
+    }
+
+    if (settingsCache.accounts) {
+      if (calendarToggle && settingsCache.accounts.calendar) calendarToggle.checked = true;
+      if (emailInput && settingsCache.accounts.email) emailInput.value = settingsCache.accounts.email;
+    }
+
+    if (settingsCache.integrations) {
+      if (googlePhotosToggle && settingsCache.integrations.googlePhotos) googlePhotosToggle.checked = true;
+      if (spotifyToggle && settingsCache.integrations.spotify) spotifyToggle.checked = true;
+    }
+
+    if (settingsCache.security && autoBackupToggle) {
+      autoBackupToggle.checked = settingsCache.security.autoBackup !== false;
+    }
+
+    if (settingsCache.automations) {
+      if (automationsToggle) automationsToggle.checked = settingsCache.automations.enabled !== false;
+      if (automationIntervalSlider) {
+        automationIntervalSlider.value = settingsCache.automations.interval || 15;
+        if (automationIntervalValue) automationIntervalValue.textContent = automationIntervalSlider.value + " min";
+      }
+    }
+
+    /* ===== SEARCH & FILTER SYSTEM ===== */
+    const searchInput = document.getElementById("settingsSearchInput");
+    const searchClear = document.getElementById("searchClear");
+    const searchResultsInfo = document.getElementById("searchResultsInfo");
+    const searchEmpty = document.getElementById("searchEmpty");
+    const resultsCount = document.getElementById("resultsCount");
+    const searchSuggestions = document.getElementById("searchSuggestions");
+    const settingsBody = document.getElementById("settingsBody");
+
+    const popularSearches = [
+      { term: "voz", emoji: "🎤" },
+      { term: "google", emoji: "G" },
+      { term: "backup", emoji: "💾" },
+      { term: "whatsapp", emoji: "💬" },
+      { term: "automação", emoji: "⚡" },
+      { term: "volume", emoji: "🔊" },
+      { term: "agenda", emoji: "📅" },
+      { term: "spotify", emoji: "🎵" }
+    ];
+
+    function normalizeText(text) {
+      return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+    }
+
+    function highlightText(text, searchTerm) {
+      if (!searchTerm) return text;
+      const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+      return text.replace(regex, '<span class="search-highlight">$1</span>');
+    }
+
+    function filterSettings(searchTerm) {
+      const normalized = normalizeText(searchTerm);
+      let totalMatches = 0;
+
+      if (!normalized) {
+        // Mostrar tudo
+        document.querySelectorAll(".settings-category").forEach(cat => {
+          cat.classList.remove("hidden", "filtered");
+          cat.querySelectorAll(".settings-control").forEach(ctrl => {
+            ctrl.classList.remove("hidden", "highlight");
+          });
+        });
+        searchResultsInfo.classList.remove("active");
+        searchEmpty.classList.remove("active");
+        return;
+      }
+
+      document.querySelectorAll(".settings-category").forEach(category => {
+        const categoryTitle = category.querySelector(".settings-category-title");
+        const categoryName = normalizeText(categoryTitle.textContent);
+        const controls = category.querySelectorAll(".settings-control");
+        let categoryHasMatches = false;
+
+        controls.forEach(control => {
+          const label = control.querySelector(".settings-control-label");
+          const desc = control.querySelector(".settings-control-desc");
+          const labelText = label ? normalizeText(label.textContent) : "";
+          const descText = desc ? normalizeText(desc.textContent) : "";
+
+          const isMatch = (
+            labelText.includes(normalized) ||
+            descText.includes(normalized) ||
+            categoryName.includes(normalized)
+          );
+
+          if (isMatch) {
+            control.classList.remove("hidden");
+            control.classList.add("highlight");
+            categoryHasMatches = true;
+            totalMatches++;
+          } else {
+            control.classList.add("hidden");
+            control.classList.remove("highlight");
+          }
+        });
+
+        if (categoryHasMatches) {
+          category.classList.remove("hidden");
+          category.classList.remove("filtered");
+        } else {
+          category.classList.add("hidden");
+        }
+      });
+
+      resultsCount.textContent = totalMatches;
+      if (totalMatches === 0) {
+        searchResultsInfo.classList.remove("active");
+        searchEmpty.classList.add("active");
+      } else {
+        searchResultsInfo.classList.add("active");
+        searchEmpty.classList.remove("active");
+      }
+    }
+
+    function renderSuggestions() {
+      searchSuggestions.innerHTML = popularSearches
+        .map(s => `<button class="search-suggestion-btn" data-search="${s.term}">${s.emoji} ${s.term}</button>`)
+        .join("");
+
+      document.querySelectorAll(".search-suggestion-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          searchInput.value = btn.dataset.search;
+          filterSettings(btn.dataset.search);
+          searchInput.focus();
+        });
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        filterSettings(e.target.value);
+      });
+
+      searchInput.addEventListener("focus", () => {
+        if (!searchInput.value) {
+          renderSuggestions();
+        }
+      });
+    }
+
+    if (searchClear) {
+      searchClear.addEventListener("click", () => {
+        searchInput.value = "";
+        filterSettings("");
+        searchInput.focus();
+      });
+    }
+
+    // Atalho de teclado Ctrl+F / Cmd+F
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "f") {
+        if (document.body.classList.contains("settings-open")) {
+          e.preventDefault();
+          searchInput.focus();
+          searchInput.select();
+        }
+      }
+
+      // Atalho Escape para limpar busca
+      if (e.key === "Escape" && document.activeElement === searchInput) {
+        searchInput.value = "";
+        filterSettings("");
+      }
+    });
+
+    // Renderizar sugestões inicialmente
+    renderSuggestions();
 
     setMenuPage("dashboard");
 

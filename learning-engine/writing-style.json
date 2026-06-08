@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "enabled": true,
+  "lastUpdated": "2026-06-08T19:08:55.807Z",
+  "totalMessages": 0,
+  "style": {
+    "formality": null,
+    "tone": null,
+    "vocabularyLevel": null,
+    "sentenceStructure": null,
+    "avgMessageLength_samples": 0,
+    "avgWordsPerSentence_samples": 0,
+    "emojiFrequency": 0,
+    "emojiFrequency_samples": 0,
+    "slangFrequency": 0,
+    "slangFrequency_samples": 0,
+    "dominantTone": null
+  },
+  "vocabulary": [],
+  "expressions": [],
+  "greetings": [],
+  "signoffs": [],
+  "toneHistory": [],
+  "messages": []
+}

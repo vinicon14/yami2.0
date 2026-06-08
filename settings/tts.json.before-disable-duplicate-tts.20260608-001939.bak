@@ -1,0 +1,7 @@
+{
+  "tts": {
+    "provider": "tts-local-cli",
+    "auto": "on",
+    "enabled": true
+  }
+}
