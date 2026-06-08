@@ -1,0 +1,195 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                   YAMI - Guia de Instalação Completo                       ║
+║              Personal AI Assistant Runtime v0.1.0                          ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+🚀 COMO INSTALAR (3 OPÇÕES)
+═════════════════════════════════════════════════════════════════════════════
+
+OPÇÃO 1: INSTALAÇÃO AUTOMÁTICA (Recomendado)
+──────────────────────────────────────────────
+1. Execute o arquivo "setup.bat" (duplo clique)
+2. Escolha a pasta de instalação (padrão: C:\Program Files\YAMI)
+3. Aguarde a instalação (leva 30-60 segundos)
+4. Atalhos serão criados automaticamente
+5. Pronto! Pode executar a qualquer momento
+
+
+OPÇÃO 2: INSTALAÇÃO MANUAL
+───────────────────────────
+1. Crie uma pasta em C:\Program Files\YAMI (ou local de sua escolha)
+2. Copie TODOS os arquivos desta pasta para C:\Program Files\YAMI
+3. Clique 2x em "yami.exe" dentro da pasta
+4. Pronto!
+
+
+OPÇÃO 3: EXECUTAR DIRETO (Sem Instalação)
+───────────────────────────────────────────
+1. Não precisa instalar nada
+2. Clique 2x em "yami.exe" diretamente nesta pasta
+3. O aplicativo abrirá imediatamente
+4. Atalho não será criado, mas tudo funciona
+
+
+═════════════════════════════════════════════════════════════════════════════
+ O QUE CADA ARQUIVO FÁZ
+═════════════════════════════════════════════════════════════════════════════
+
+setup.bat
+  └─ Script automático de instalação
+    Clique 2x para começar a instalação
+
+install.ps1
+  └─ Script PowerShell que executa a instalação
+    (executado automaticamente por setup.bat)
+
+yami.exe
+  └─ Executável principal do YAMI
+    Clique 2x para executar o aplicativo
+
+yami.apk
+  └─ Versão Android do YAMI
+    Transfira para seu Android e clique para instalar
+
+yami.json
+  └─ Arquivo de configuração
+    Não modifique a menos que saiba o que está fazendo
+
+bin/
+  └─ Pasta com arquivos suporte necessários
+
+YAMI-Portable.zip
+  └─ Arquivo portável completo
+    Pode usar para instalar em outro computador
+
+Outros arquivos (.txt, .md)
+  └─ Documentação e informações
+
+
+═════════════════════════════════════════════════════════════════════════════
+ REQUISITOS DO SISTEMA
+═════════════════════════════════════════════════════════════════════════════
+
+✓ Windows 10 ou 11 (64-bit)
+✓ 2GB de RAM mínimo
+✓ 200MB de espaço livre
+✓ Conexão com internet
+✓ PowerShell 3.0+ (já vem com Windows 10/11)
+
+
+═════════════════════════════════════════════════════════════════════════════
+ PASSO A PASSO - INSTALAÇÃO AUTOMÁTICA
+═════════════════════════════════════════════════════════════════════════════
+
+1. Duplo clique em "setup.bat"
+   → Uma janela de terminal abrirá
+
+2. Será solicitada confirmação de privilégios (Administrador)
+   → Clique "Sim" ou "Executar" quando solicitado
+
+3. O instalador começará a copiar arquivos
+   → Você verá: [HH:MM:SS] Mensagens de progresso
+   → Isso é normal e esperado
+
+4. Após conclusão, verá:
+   ✅ INSTALAÇÃO CONCLUÍDA COM SUCESSO!
+   
+5. Atalhos serão criados em:
+   • Área de Trabalho: YAMI.lnk
+   • Menu Iniciar: Programs → YAMI → YAMI.lnk
+
+6. O programa será executado automaticamente
+   → Se desejar executar novamente, clique em YAMI.lnk
+
+
+═════════════════════════════════════════════════════════════════════════════
+ SE ALGO DER ERRADO
+═════════════════════════════════════════════════════════════════════════════
+
+Erro: "Acesso Negado"
+  → Execute o setup.bat como Administrador
+    (Clique direito → Executar como administrador)
+
+Erro: "Arquivo não encontrado"
+  → Certifique-se de que todos os arquivos estão nesta pasta
+    (yami.exe, setup.bat, bin/, etc)
+
+Erro: "PowerShell não é reconhecido"
+  → Windows 10/11 já vem com PowerShell
+    Se o erro persistir, reinstale os drivers do Windows
+
+O EXE não abre depois de instalar
+  → Tente executar como Administrador
+  → Verifique se tem 2GB de RAM disponível
+  → Desative antivírus temporariamente se bloquear
+
+
+═════════════════════════════════════════════════════════════════════════════
+ COMO USAR DEPOIS DE INSTALAR
+═════════════════════════════════════════════════════════════════════════════
+
+Opção 1: Via Atalho
+  → Clique em YAMI.lnk na Área de Trabalho
+  → Ou procure "YAMI" no Menu Iniciar
+
+Opção 2: Via Pasta
+  → Abra: C:\Program Files\YAMI
+  → Duplo clique em yami.exe
+
+Opção 3: Via Linha de Comando
+  → Abra CMD ou PowerShell
+  → Digite: C:\Program Files\YAMI\yami.exe
+
+Opção 4: Via APK (Android)
+  → Transfira yami.apk para seu Android
+  → Clique nele para instalar
+  → Configure conforme solicitado
+
+
+═════════════════════════════════════════════════════════════════════════════
+ CONFIGURAÇÃO INICIAL
+═════════════════════════════════════════════════════════════════════════════
+
+Na primeira execução, você precisará:
+  1. Configurar as chaves de API (se necessário)
+  2. Conectar integrações (calendário, contatos, etc)
+  3. Definir preferências (voz, tema, idioma)
+
+Tudo isso é feito de forma interativa no primeiro uso.
+
+
+═════════════════════════════════════════════════════════════════════════════
+ INFORMAÇÕES IMPORTANTES
+═════════════════════════════════════════════════════════════════════════════
+
+Versão: 0.1.0
+Data de Build: 08/06/2026
+Plataforma: Windows 10/11 64-bit, Android 8.0+
+Status: Testado e Funcional ✓
+
+Localização após instalação:
+  • Pasta Principal: C:\Program Files\YAMI
+  • Configuração: C:\Users\[seu-usuário]\AppData\Local\YAMI
+
+Backup de dados:
+  • Os dados são armazenados em AppData\Local\YAMI
+  • Você pode fazer backup dessa pasta antes de desinstalar
+
+
+═════════════════════════════════════════════════════════════════════════════
+ SUPORTE E DOCUMENTAÇÃO
+═════════════════════════════════════════════════════════════════════════════
+
+Para mais informações:
+  • Consulte os arquivos README.md e INSTALL.txt nesta pasta
+  • Verifique o CHECKSUM.txt para validar integridade
+  • GitHub: https://github.com/vinicon14/yami2.0
+
+Precisa de ajuda?
+  • Tente os arquivos .txt nesta pasta
+  • Consulte a documentação no repositório GitHub
+
+
+═════════════════════════════════════════════════════════════════════════════
+                     Obrigado por escolher YAMI!
+═════════════════════════════════════════════════════════════════════════════
