@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set "YAMI_HOME=%USERPROFILE%\.yami"
+for %%I in ("%~dp0..") do set "YAMI_HOME=%%~fI"
 set "YAMI_CONFIG_PATH=%YAMI_HOME%\yami.json"
 set "OPENCLAW_HOME=%YAMI_HOME%"
 set "OPENCLAW_CONFIG_PATH=%YAMI_CONFIG_PATH%"

@@ -1,0 +1,17 @@
+YAMI no pendrive
+
+Para abrir:
+1. Conecte o pendrive.
+2. Execute Abrir-Yami.cmd na raiz do pendrive.
+3. O painel do Yami abre em modo app no Chrome.
+
+Estrutura esperada:
+- .yami: runtime completo do Yami.
+- Abrir-Yami.cmd: inicializador principal.
+- .yami\YAMI-RUNTIME-COMPLETE.zip: pacote completo do runtime usado para restaurar dependencias se alguma pasta estiver incompleta.
+
+Observacoes:
+- O Yami usa a pasta .yami do proprio pendrive quando aberto por este atalho.
+- O perfil do navegador e cache sao gerados localmente e nao precisam ir para GitHub.
+- A gateway nao e reiniciada automaticamente por este atalho.
+- Se o launcher detectar que dependencias do runtime faltam, ele extrai YAMI-RUNTIME-COMPLETE.zip automaticamente antes de abrir.

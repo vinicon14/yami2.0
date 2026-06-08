@@ -1,0 +1,185 @@
+═════════════════════════════════════════════════════════════════
+  YAMI - Personal AI Assistant Runtime v0.1.0-yami.1
+  Guia de Instalação e Uso
+═════════════════════════════════════════════════════════════════
+
+📦 ARQUIVOS DE DISTRIBUIÇÃO
+─────────────────────────────
+
+1. YAMI-Portable.zip (6.72 MB)
+   └─ Versão Windows 64-bit portável
+
+2. yami.apk (0.01 MB)
+   └─ Versão Android mobile
+
+
+═════════════════════════════════════════════════════════════════
+ INSTALAÇÃO NO WINDOWS
+═════════════════════════════════════════════════════════════════
+
+OPÇÃO 1: Usando o arquivo ZIP (Recomendado)
+───────────────────────────────────────────
+
+1. Baixe o arquivo: YAMI-Portable.zip
+2. Extraia em um local seguro (ex: C:\Programas\YAMI)
+3. Dentro da pasta extraída, localize e execute:
+   - run.bat (launch simples)
+   - OU yami.exe (executável direto)
+
+4. O aplicativo abrirá uma janela de terminal
+5. Siga as instruções na tela para configurar
+
+
+OPÇÃO 2: Executável Standalone
+────────────────────────────────
+
+1. Extraia o arquivo YAMI-Portable.zip
+2. Execute diretamente: yami.exe
+3. Não requer instalação adicional
+
+
+REQUISITOS DO WINDOWS
+──────────────────────
+
+✓ Windows 10/11 64-bit
+✓ 2GB de RAM mínimo
+✓ 100MB de espaço livre
+✓ Conexão com internet (para IA e integrações)
+
+
+═════════════════════════════════════════════════════════════════
+ INSTALAÇÃO NO ANDROID
+═════════════════════════════════════════════════════════════════
+
+MÉTODO 1: Via APK Direto
+────────────────────────
+
+1. Baixe o arquivo: yami.apk para seu dispositivo Android
+2. Abra as Configurações de Segurança
+3. Habilite "Instalar apps de fontes desconhecidas"
+4. Navegue até o arquivo yami.apk e toque para instalar
+5. Confirme a instalação
+6. O app aparecerá na tela inicial
+
+
+MÉTODO 2: Via USB (Computador → Dispositivo)
+───────────────────────────────────────────
+
+1. Conecte o Android ao computador via USB
+2. Copie yami.apk para a pasta de Downloads do Android
+3. No Android, abra o gerenciador de arquivos
+4. Navegue até Downloads e toque em yami.apk
+5. Confirme a instalação
+
+
+REQUISITOS DO ANDROID
+──────────────────────
+
+✓ Android 8.0 ou superior (API 26+)
+✓ 2GB de RAM mínimo
+✓ 50MB de espaço livre
+✓ Conexão com internet
+✓ Permissões necessárias:
+  - Acesso à internet
+  - Microfone (para voz)
+  - Calendário e Contatos (opcional)
+
+
+═════════════════════════════════════════════════════════════════
+ PRIMEIRO USO
+═════════════════════════════════════════════════════════════════
+
+WINDOWS:
+────────
+1. Execute yami.exe ou run.bat
+2. Aguarde o carregamento (primeira execução é mais lenta)
+3. Configure as chaves de API necessárias:
+   - OpenAI API Key (para IA)
+   - Google Calendar (opcional)
+   - Outras integrações (opcional)
+4. Siga as instruções interativas
+
+
+ANDROID:
+────────
+1. Toque no ícone do YAMI na tela inicial
+2. Configure as permissões solicitadas
+3. Insira as chaves de API necessárias
+4. O app estará pronto para uso
+
+
+═════════════════════════════════════════════════════════════════
+ CONFIGURAÇÃO
+═════════════════════════════════════════════════════════════════
+
+As configurações são salvas em:
+
+WINDOWS:
+  - C:\Users\[seu-usuário]\AppData\Local\YAMI\
+  - ou na pasta do aplicativo portável (recomendado)
+
+ANDROID:
+  - /data/data/com.yami.assistant/
+
+Arquivo de configuração principal: yami.json
+
+
+═════════════════════════════════════════════════════════════════
+ FUNCIONALIDADES PRINCIPAIS
+═════════════════════════════════════════════════════════════════
+
+✓ Assistente de IA por voz e texto
+✓ Integração com calendários
+✓ Acesso a contatos
+✓ Automação de tarefas
+✓ Interface web (opcional)
+✓ API local para desenvolvimentos
+
+
+═════════════════════════════════════════════════════════════════
+ SOLUÇÃO DE PROBLEMAS
+═════════════════════════════════════════════════════════════════
+
+WINDOWS - App não inicia:
+──────────────────────────
+• Verifique se tem permissão de leitura/escrita na pasta
+• Desative antivírus temporariamente (alguns bloqueiam executáveis)
+• Tente executar como administrador
+• Reinstale o Windows Runtime se necessário
+
+WINDOWS - Erro de API:
+──────────────────────
+• Configure a variável OPENAI_API_KEY
+• Ou insira a chave no arquivo yami.json
+• Verifique sua conexão com internet
+
+ANDROID - Instalação bloqueada:
+────────────────────────────────
+• Habilite "Instalar apps de fontes desconhecidas" nas Configurações
+• Remova a versão anterior antes de reinstalar
+• Tente instalar via gerenciador de arquivos
+
+
+═════════════════════════════════════════════════════════════════
+ SUPORTE E DOCUMENTAÇÃO
+═════════════════════════════════════════════════════════════════
+
+📖 Documentação completa:
+   - Consulte os arquivos README.md inclusos
+
+🐛 Reportar problemas:
+   - GitHub: github.com/seu-repo/yami/issues
+
+💬 Comunidade:
+   - Discussões: github.com/seu-repo/yami/discussions
+
+
+═════════════════════════════════════════════════════════════════
+ VERSÃO E DATA
+═════════════════════════════════════════════════════════════════
+
+Versão: 0.1.0-yami.1
+Data de build: 08/06/2026
+Platform: Windows/Android
+
+═════════════════════════════════════════════════════════════════

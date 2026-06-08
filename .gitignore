@@ -39,10 +39,22 @@ env/
 *.sqlite
 *.sqlite3
 .env
+/yami.json
+/yami.json.auto-panel.bak
 config/credentials.json
 data/
 logs/
 *.log
+
+# Local runtime/private state
+auto-panel/chrome-user-data/
+auto-panel/tts/
+credentials/
+devices/
+settings/
+auth/tokens/
+auth/accounts.json
+*.bak
 
 # OS
 Thumbs.db
