@@ -1,0 +1,50 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                      🚀 COMECE AQUI - FÁCIL!                              ║
+║                                                                            ║
+║                  YAMI v0.1.0 - Instalação Automática                      ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+3️⃣  PASSOS SIMPLES
+═════════════════════════════════════════════════════════════════════════════
+
+1. Duplo clique em: setup.bat
+   
+2. Aguarde a instalação (até 1 minuto)
+
+3. Pronto! ✅
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+Depois de instalar, você terá:
+  ✓ YAMI na Área de Trabalho
+  ✓ YAMI no Menu Iniciar
+  ✓ YAMI pronto para usar!
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+Problemas?
+
+  Se aparecer erro de permissão:
+  → Clique direito em setup.bat
+  → Escolha "Executar como Administrador"
+
+  Se não funcionar:
+  → Duplo clique em yami.exe nesta pasta
+  (executa direto, sem instalação)
+
+  Precisa de mais detalhes?
+  → Leia COMO-INSTALAR.txt
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+                    CLIQUE AQUI PARA INSTALAR:
+                         setup.bat
+                    (duplo clique!)
+
+═════════════════════════════════════════════════════════════════════════════
