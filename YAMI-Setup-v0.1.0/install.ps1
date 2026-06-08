@@ -26,7 +26,7 @@ Write-Host "║              Personal AI Assistant Runtime v0.1.0              �
 Write-Host "╚════════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 # Caminhos
-$SourcePath = "C:\Users\vinim\Downloads\yami2.0-master (3)\yami2.0-master\dist-releases"
+$SourcePath = Split-Path -Parent $PSCommandPath
 $DesktopPath = [System.IO.Path]::Combine($env:USERPROFILE, "Desktop")
 $StartMenuPath = [System.IO.Path]::Combine($env:APPDATA, "Microsoft\Windows\Start Menu\Programs\YAMI")
 
