@@ -52,7 +52,9 @@ if (Test-Path "$SourcePath\bin") {
     if (-not (Test-Path "$InstallPath\bin")) {
         New-Item -ItemType Directory -Path "$InstallPath\bin" -Force | Out-Null
     }
-    Copy-Item -LiteralPath "$SourcePath\bin\*" -Destination "$InstallPath\bin\" -Recurse -Force -ErrorAction SilentlyContinue
+    Get-ChildItem -LiteralPath "$SourcePath\bin" | ForEach-Object {
+        Copy-Item -LiteralPath $_.FullName -Destination "$InstallPath\bin\" -Force -ErrorAction SilentlyContinue
+    }
     Write-Host "  OK: bin folder"
 }
 
