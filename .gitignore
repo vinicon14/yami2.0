@@ -41,6 +41,7 @@ env/
 .env
 /yami.json
 /yami.json.auto-panel.bak
+/YAMI-PROJECT-FILES-COMPLETE.zip
 config/credentials.json
 data/
 logs/
