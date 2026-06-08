@@ -1,0 +1,103 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                     YAMI - Pacote de Distribuição v0.1.0                    ║
+║                                                                              ║
+║                   ✓ Estrutura Testada e Funcionando                         ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+📦 ESTRUTURA DE ARQUIVOS
+═════════════════════════════════════════════════════════════════════════════
+
+YAMI-Distribution/
+├── yami.apk                    → App Android (instalar direto no celular)
+├── YAMI-Instalador.zip         → Instalador ZIP (extrair e usar)
+├── yami-executavel/            → EXE completo e pronto para usar
+│   ├── yami.exe               → Executável Windows
+│   ├── run.bat                → Script para iniciar (alternativa)
+│   ├── yami.json              → Arquivo de configuração
+│   ├── requirements.txt        → Dependências Python
+│   ├── README.md              → Documentação técnica
+│   └── bin/                   → Binários necessários
+└── outros/                     → Documentação e informações
+    ├── INSTALL.txt            → Guia de instalação completo
+    ├── README.txt             → Leia-me principal
+    └── CHECKSUM.txt           → Verificação de integridade
+
+
+🚀 COMO USAR
+═════════════════════════════════════════════════════════════════════════════
+
+OPÇÃO 1: Executável Direto (Mais Fácil)
+─────────────────────────────────────────
+1. Abra a pasta "yami-executavel"
+2. Clique 2x em "yami.exe" ou "run.bat"
+3. O aplicativo abrirá automaticamente
+
+✓ TESTADO: O EXE foi testado e iniciou com SUCESSO (código 0)
+
+
+OPÇÃO 2: Instalador (Zip)
+──────────────────────────
+1. Extraia "YAMI-Instalador.zip" em C:\Programas\ (ou local de sua escolha)
+2. Dentro da pasta extraída, execute "yami.exe"
+3. Configure conforme solicitado na primeira execução
+
+
+OPÇÃO 3: Android (APK)
+──────────────────────
+1. Transfira "yami.apk" para seu celular
+2. Abra em um gerenciador de arquivos
+3. Clique para instalar
+4. Confirme qualquer permissão solicitada
+
+
+📋 REQUISITOS MÍNIMOS
+═════════════════════════════════════════════════════════════════════════════
+
+WINDOWS:
+• Windows 10/11 64-bit
+• 2GB RAM
+• 100MB espaço livre
+• Conexão com internet
+
+ANDROID:
+• Android 8.0+
+• 2GB RAM
+• 50MB espaço livre
+• Conexão com internet
+
+
+✅ TESTES REALIZADOS
+═════════════════════════════════════════════════════════════════════════════
+
+[✓] EXE testado com sucesso
+[✓] APK incluído e pronto
+[✓] Instalador ZIP verificado
+[✓] Documentação incluída
+[✓] Estrutura validada
+
+
+❓ PROBLEMAS?
+═════════════════════════════════════════════════════════════════════════════
+
+Se o EXE não abrir:
+• Tente executar como Administrador (clique direito → Executar como admin)
+• Desative antivírus temporariamente se bloquear
+• Verifique se tem 2GB RAM disponível
+
+Se houver erro de arquivo:
+• Verifique os checksums em "outros/CHECKSUM.txt"
+• Consulte "outros/INSTALL.txt" para instruções detalhadas
+
+
+📝 VERSÃO E DATA
+═════════════════════════════════════════════════════════════════════════════
+
+Versão: 0.1.0-yami.1
+Data de Build: 08/06/2026
+Plataforma: Windows 64-bit / Android
+Status: Testado ✓ Funcional ✓
+
+
+═════════════════════════════════════════════════════════════════════════════
+                    Obrigado por usar YAMI!
+═════════════════════════════════════════════════════════════════════════════
