@@ -2,6 +2,34 @@
 
 Uma IA pessoal completa, visual, por voz, por texto e com controle profundo do computador. Fork baseado em **OpenClaw/OpenCloud** inspirado em **Hermes**.
 
+## ⚡ Instalação Rápida (v0.1.0)
+
+**Versão de Distribuição Completa e Testada!**
+
+### 📥 Download e Instalação
+1. Baixe a pasta: **YAMI-Setup-v0.1.0/** (neste repositório)
+2. Duplo clique em **setup.bat**
+3. Siga as instruções na tela
+4. ✅ Pronto! YAMI está instalado
+
+**Localização após instalação:** `C:\Program Files\YAMI`
+
+### 📦 Inclusos
+- ✓ Executável Windows (yami.exe) - Testado
+- ✓ App Android (yami.apk)
+- ✓ Instalador Automático (setup.bat)
+- ✓ Todos os arquivos de suporte
+- ✓ Documentação completa
+
+### 🎯 Recursos
+- ✓ Instalação automática em 30-60 segundos
+- ✓ Cria atalhos (Área de Trabalho + Menu Iniciar)
+- ✓ Detecta permissões de Administrador
+- ✓ Testa executável após instalação
+- ✓ Opção de executar YAMI ao final
+
+**Veja:** [YAMI-Setup-v0.1.0/COMO-INSTALAR.txt](YAMI-Setup-v0.1.0/COMO-INSTALAR.txt)
+
 ## 🎯 Visão Geral
 
 YAMI é um projeto que transforma a interação humano-máquina em algo natural e vivo, funcionando como um assistente pessoal verdadeiro:
