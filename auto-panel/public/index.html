@@ -306,7 +306,150 @@
       gap: 16px;
       padding: 16px clamp(16px, 4vw, 44px);
       pointer-events: none;
-      background: linear-gradient(to bottom, rgba(3, 7, 11, 0.82), rgba(3, 7, 11, 0));
+      background: linear-gradient(to bottom, rgba(3, 7, 11, 0.88), rgba(3, 7, 11, 0));
+    }
+
+    /* ── YAMI brand badge ── */
+    .yami-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+      user-select: none;
+    }
+    .yami-brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(85, 230, 255, 0.55);
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--cyan);
+      text-shadow: 0 0 14px rgba(85, 230, 255, 1);
+      box-shadow: 0 0 22px rgba(85, 230, 255, 0.22), inset 0 0 18px rgba(85, 230, 255, 0.14);
+      position: relative;
+      animation: yamiMarkPulse 4s ease-in-out infinite;
+    }
+    @keyframes yamiMarkPulse {
+      0%, 100% { box-shadow: 0 0 22px rgba(85,230,255,0.22), inset 0 0 18px rgba(85,230,255,0.14); }
+      50%       { box-shadow: 0 0 34px rgba(85,230,255,0.38), inset 0 0 26px rgba(85,230,255,0.2); }
+    }
+    .yami-brand-mark::before {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 1px solid rgba(85, 230, 255, 0.16);
+      pointer-events: none;
+    }
+    .yami-brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+    .yami-brand-name {
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: 1.5px;
+      color: var(--cyan);
+      text-shadow: 0 0 18px rgba(85, 230, 255, 0.65);
+    }
+    .yami-brand-version {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── YAMI name label under avatar ── */
+    .yami-name-label {
+      position: absolute;
+      bottom: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      pointer-events: none;
+      animation: yamiFloat var(--float-cycle, 6200ms) ease-in-out infinite;
+    }
+    .yami-name-label-text {
+      font-size: clamp(13px, 2vmin, 16px);
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: rgba(85, 230, 255, 0.5);
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(85, 230, 255, 0.3);
+    }
+    .yami-name-label-line {
+      width: 32px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(85, 230, 255, 0.4), transparent);
+    }
+
+    /* ── Bottom status bar ── */
+    .yami-statusbar {
+      position: fixed;
+      inset: auto 0 0;
+      z-index: 20;
+      padding: 10px clamp(16px, 4vw, 44px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: linear-gradient(to top, rgba(3,7,11,0.7), transparent);
+      pointer-events: none;
+    }
+    .yami-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+      padding: 4px 10px;
+      background: rgba(9, 22, 31, 0.55);
+      border: 1px solid rgba(116, 229, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .yami-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-dot 2.5s ease-in-out infinite;
+    }
+    .yami-status-dot.offline { background: var(--red); animation: none; }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* ── Ambient particles ── */
+    .yami-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .yami-particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleDrift linear infinite;
+    }
+    @keyframes particleDrift {
+      0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+      15%  { opacity: 1; }
+      85%  { opacity: 0.6; }
+      100% { opacity: 0; transform: translateY(-60vh) scale(1.2); }
     }
 
     .brand {
@@ -2542,8 +2685,20 @@
   <main class="shell">
     <section class="yami-stage" id="voicePanel">
       <div class="stage-topbar">
+        <!-- YAMI brand (esquerda) -->
+        <div class="yami-brand">
+          <div class="yami-brand-mark">Y</div>
+          <div class="yami-brand-text">
+            <span class="yami-brand-name">YAMI</span>
+            <span class="yami-brand-version">v0.1.0</span>
+          </div>
+        </div>
+        <!-- Menu toggle (direita) -->
         <button id="menuToggle" class="menu-toggle" title="Abrir menu" aria-label="Abrir menu" aria-controls="menuDrawer" aria-expanded="false">☰</button>
       </div>
+
+      <!-- Partículas ambiente -->
+      <div class="yami-particles" id="yamiParticles" aria-hidden="true"></div>
 
       <div class="yami-avatar" id="yamiAvatar" data-mood="passive" data-gaze="center" aria-label="Yami em espera">
         <div class="yami-face" id="yamiFace" aria-hidden="true">
@@ -2561,6 +2716,28 @@
         </div>
         <div class="yami-indicator" id="yamiIndicator"></div>
         <div class="yami-shadow" aria-hidden="true"></div>
+      </div>
+
+      <!-- Label do nome abaixo do avatar -->
+      <div class="yami-name-label" aria-hidden="true">
+        <div class="yami-name-label-line"></div>
+        <div class="yami-name-label-text">YAMI</div>
+      </div>
+
+      <!-- Status bar inferior -->
+      <div class="yami-statusbar" id="yamiStatusbar">
+        <div class="yami-status-pill">
+          <div class="yami-status-dot" id="statusDotGateway"></div>
+          <span id="statusTextGateway">Gateway</span>
+        </div>
+        <div class="yami-status-pill">
+          <div class="yami-status-dot" id="statusDotWa"></div>
+          <span id="statusTextWa">WhatsApp</span>
+        </div>
+        <div class="yami-status-pill">
+          <div class="yami-status-dot" id="statusDotVoice" style="background:var(--muted);animation:none;"></div>
+          <span id="statusTextVoice">Voz</span>
+        </div>
       </div>
     </section>
 
@@ -5681,6 +5858,87 @@
       if (document.readyState === "complete") autoArm();
       else window.addEventListener("load", autoArm, { once: true });
     }
+
+    // ── YAMI Personalizations ────────────────────────────────────────────────
+
+    // Ambient particles
+    (function spawnParticles() {
+      const container = document.getElementById('yamiParticles');
+      if (!container) return;
+      const COLORS = [
+        'rgba(85,230,255,',   // cyan
+        'rgba(125,247,170,',  // green
+        'rgba(177,140,255,',  // violet
+        'rgba(255,209,102,'   // amber
+      ];
+      function spawn() {
+        const p = document.createElement('div');
+        p.className = 'yami-particle';
+        const size = Math.random() * 4 + 2;
+        const left = Math.random() * 100;
+        const duration = Math.random() * 12 + 8;
+        const delay = Math.random() * 8;
+        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const opacity = (Math.random() * 0.4 + 0.1).toFixed(2);
+        p.style.cssText = `
+          width:${size}px; height:${size}px;
+          left:${left}%;
+          bottom:${Math.random() * 30}%;
+          background: radial-gradient(circle, ${color}${opacity}), ${color}0));
+          animation-duration:${duration}s;
+          animation-delay:${delay}s;
+          filter: blur(${Math.random() * 1}px);
+        `;
+        container.appendChild(p);
+        setTimeout(() => p.remove(), (duration + delay) * 1000);
+      }
+      // Initial burst
+      for (let i = 0; i < 12; i++) spawn();
+      // Continuous spawn
+      setInterval(spawn, 1800);
+    })();
+
+    // Status bar updater
+    (function initStatusBar() {
+      async function updateStatusBar() {
+        try {
+          const resp = await fetch('/api/state', { cache: 'no-store' });
+          if (!resp.ok) throw new Error('offline');
+          const data = await resp.json();
+
+          // Gateway dot
+          const gwDot = document.getElementById('statusDotGateway');
+          const gwTxt = document.getElementById('statusTextGateway');
+          const gwOk = data?.gateway?.running || data?.gateway?.status === 'online';
+          gwDot.className = 'yami-status-dot' + (gwOk ? '' : ' offline');
+          gwTxt.textContent = gwOk ? 'Gateway ativo' : 'Gateway offline';
+
+          // WhatsApp dot
+          const waDot = document.getElementById('statusDotWa');
+          const waTxt = document.getElementById('statusTextWa');
+          const waOk = data?.whatsapp?.connected || data?.channels?.whatsapp?.connected;
+          waDot.className = 'yami-status-dot' + (waOk ? '' : ' offline');
+          waTxt.textContent = waOk ? 'WhatsApp ativo' : 'WhatsApp offline';
+
+          // Voice dot
+          const voDot = document.getElementById('statusDotVoice');
+          const voTxt = document.getElementById('statusTextVoice');
+          const voOk = data?.voice?.active || data?.voice?.state === 'listening';
+          voDot.style.background = voOk ? 'var(--green)' : 'var(--muted)';
+          voDot.style.animation = voOk ? '' : 'none';
+          voTxt.textContent = voOk ? 'Voz ativa' : 'Voz inativa';
+        } catch {
+          // Server offline – show all as offline
+          ['statusDotGateway','statusDotWa'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.className = 'yami-status-dot offline'; }
+          });
+        }
+      }
+      updateStatusBar();
+      setInterval(updateStatusBar, 5000);
+    })();
+
   </script>
 </body>
 </html>

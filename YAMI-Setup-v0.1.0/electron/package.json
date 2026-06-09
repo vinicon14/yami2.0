@@ -1,60 +1,65 @@
 {
   "name": "yami-desktop",
   "version": "0.1.0",
-  "description": "YAMI - Personal AI Assistant (Desktop App)",
+  "description": "YAMI - Assistente de IA Pessoal (Desktop App)",
   "main": "main.js",
-  "homepage": "./",
   "author": "YAMI Team",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --dev",
-    "build": "electron-builder",
-    "build:win": "electron-builder --win",
-    "build:all": "electron-builder -mwl"
+    "dev": "electron . --inspect",
+    "postinstall": "electron-builder install-app-deps",
+    "build": "electron-builder --win",
+    "build:portable": "electron-builder --win portable",
+    "build:installer": "electron-builder --win nsis"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.1.0",
-    "express": "^4.18.2",
-    "axios": "^1.4.0",
-    "google-auth-library": "^8.8.0"
+    "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
-    "electron": "^latest",
-    "electron-builder": "^24.4.0"
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.0"
   },
   "build": {
     "appId": "com.yami.desktop",
     "productName": "YAMI",
+    "copyright": "Copyright © 2026 YAMI",
+    "directories": {
+      "output": "C:\\Users\\vinim\\AppData\\Local\\Temp\\opencode\\yami-dist"
+    },
     "files": [
       "main.js",
       "preload.js",
       "app/**/*",
-      "node_modules/**/*"
+      "assets/**/*",
+      "node_modules/**/*",
+      "!node_modules/.cache/**/*"
     ],
+    "extraResources": [],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         },
         {
           "target": "portable",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ],
-      "icon": "assets/icon.ico"
+      "icon": "assets/icon.png",
+      "requestedExecutionLevel": "asInvoker",
+      "signingHashAlgorithms": null,
+      "sign": null
     },
     "nsis": {
       "oneClick": false,
+      "perMachine": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "YAMI"
+      "shortcutName": "YAMI",
+      "deleteAppDataOnUninstall": false
     }
   }
 }
