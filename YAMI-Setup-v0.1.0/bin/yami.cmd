@@ -21,7 +21,7 @@ if errorlevel 1 (
 REM Run YAMI with full interactive terminal access
 REM The /D switch ensures stdin/stdout/stderr are properly connected
 cd /d "%YAMI_HOME%"
-node "%YAMI_HOME%\..\..\.yami\runtime\core\yami.mjs" %*
+node "%USERPROFILE%\.yami\runtime\core\yami.mjs" %*
 
 REM Keep terminal open if YAMI exits unexpectedly
 if errorlevel 1 (
