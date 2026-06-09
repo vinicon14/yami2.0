@@ -1,0 +1,217 @@
+╔════════════════════════════════════════════════════════════════╗
+║         YAMI v0.1.0 - WEB DASHBOARD (Control UI) GUIDE         ║
+╚════════════════════════════════════════════════════════════════╝
+
+📍 LOCALIZAÇÃO DA INTERFACE WEB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+URL de Acesso: http://127.0.0.1:18789/
+
+ou
+
+URL Local: http://localhost:18789/
+
+Porta: 18789 (Gateway WebSocket + HTTP Server)
+
+
+🚀 COMO INICIAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Opção 1: Via Launcher Completo (Recomendado)
+  Comando: C:\Program Files\YAMI\bin\yami-full.cmd
+  Resultado: Abre TUI + Gateway + Browser automaticamente
+
+Opção 2: Via PowerShell
+  Execute: node C:\Users\vinim\.yami\runtime\core\yami.mjs gateway
+  Depois abra no navegador: http://127.0.0.1:18789/
+
+Opção 3: Via Dashboard Direto
+  Execute: node C:\Users\vinim\.yami\runtime\core\yami.mjs dashboard
+  Abre automaticamente no navegador padrão
+
+
+🎮 NAVEGAÇÃO NO DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ABAS PRINCIPAIS:
+  
+  1. 💬 CHAT
+     - Converse com o modelo de IA
+     - Talk Mode com voz (se configurado)
+     - Histórico de sessões
+     - Navegação: Clique na aba ou use Tab
+
+  2. 📱 CANAIS
+     - WhatsApp, Telegram, Discord, etc
+     - Mostrar QR code para login
+     - Status de conexão
+     - Navegação: Clique em "Channels"
+
+  3. ⚙️ CONFIGURAÇÕES
+     - Edite yami.json
+     - Configure modelos de IA
+     - Gerencie integrações
+     - Navegação: Clique em "Config"
+
+  4. 🔧 FERRAMENTAS
+     - Cron Jobs
+     - Skills instaladas
+     - Nodes
+     - Navegação: Menu superior
+
+  5. 🔐 APROVAÇÕES
+     - Executar ferramentas
+     - Gerenciar permissões
+     - Navegação: Menu superior
+
+  6. 🩺 DEBUG
+     - Health check
+     - Logs
+     - Status do Gateway
+     - Navegação: Menu de ferramentas
+
+
+🖱️ CONTROLES NA WEB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MOUSE/TOUCHPAD:
+  • Clique em botões e links
+  • Scroll para rolar página
+  • Clique em abas para mudar seções
+
+TECLADO:
+  • Tab           Navega entre elementos
+  • Enter         Ativa botões
+  • Seta ↑/↓      Scroll na página
+  • Ctrl+Enter    Enviar mensagem (no chat)
+  • Esc           Fechar modais/popups
+
+SHORTCUTS:
+  • /             Buscar
+  • Ctrl+K        Paleta de comandos
+
+
+💬 CHAT - USO PRÁTICO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Clique na aba "Chat"
+2. No campo de entrada, digite sua mensagem
+3. Pressione Enter ou clique no botão Enviar
+4. Aguarde a resposta da IA
+5. Continue a conversa normalmente
+
+TALK MODE (Voz):
+  • Se habilitado, clique no ícone 🎤
+  • Fale sua mensagem
+  • IA responde com voz
+
+
+📱 CANAIS - CONECTAR WHATSAPP/TELEGRAM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Abra a aba "Channels"
+2. Selecione o canal desejado
+3. Clique em "Conectar" ou "QR Code"
+4. Escaneie o código QR com seu telefone
+5. Autorize a conexão
+6. Pronto! Agora pode usar pelo WhatsApp/Telegram
+
+
+⚙️ CONFIGURAÇÕES BÁSICAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Clique em "Config"
+2. Escolha modo de edição:
+   • Visual Form (formulário amigável)
+   • JSON Raw (editor de texto)
+3. Modifique as configurações desejadas
+4. Clique em "Save" (Salvar)
+5. Gateway reinicia automaticamente
+
+CONFIGURAÇÕES IMPORTANTES:
+  • Gateway Port (padrão: 18789)
+  • Modelo de IA padrão
+  • Provedores (OpenAI, Anthropic, etc)
+  • Autenticação
+
+
+🔐 SEGURANÇA & AUTENTICAÇÃO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Primeira Conexão:
+  • Pode ser necessário aprovar novo dispositivo
+  • Use comando: descansa (para parar YAMI)
+  • Depois execute: node yami.mjs devices approve <ID>
+
+Localhost:
+  • Conexões locais são auto-aprovadas
+  • Nenhuma autenticação necessária por padrão
+
+Remoto:
+  • Configure token em yami.json
+  • Use Tailscale para acesso seguro
+
+
+❌ TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problema: Página em branco
+Solução:
+  1. Abra Developer Console (F12)
+  2. Verifique se há erros
+  3. Recarregue a página (Ctrl+R)
+  4. Reinicie YAMI (descansa + acorda)
+
+Problema: Não consegue enviar mensagem
+Solução:
+  1. Verifique conexão de internet
+  2. Cheque se modelo de IA está configurado
+  3. Verifique se há créditos/API key
+
+Problema: Gateway não inicia
+Solução:
+  1. Verifique se porta 18789 está disponível
+  2. Mude a porta em yami.json
+  3. Verifique logs para detalhes do erro
+
+Problema: Interface não responde
+Solução:
+  1. Aguarde alguns segundos
+  2. Recarregue página (Ctrl+R)
+  3. Limpe cache (Ctrl+Shift+Delete)
+  4. Feche e reabra a janela
+
+
+📚 RECURSOS ADICIONAIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Documentação: C:\Users\[username]\.yami\runtime\core\docs\web\
+Arquivo Config: C:\Users\[username]\AppData\Local\YAMI\yami.json
+Status do Gateway: http://127.0.0.1:18789/health
+
+
+🎯 FLUXO TÍPICO DE USO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Execute: acorda (ou yami-full.cmd)
+   → TUI abre no terminal
+   → Gateway inicia em background
+   → Browser abre automaticamente
+
+2. No navegador (http://127.0.0.1:18789/):
+   → Chat com a IA
+   → Configure canais
+   → Edite configurações
+
+3. No terminal (TUI):
+   → Use setas para navegar
+   → Envie comandos diretos
+
+4. Quando terminar:
+   → Execute: descansa
+   → Encerra tudo automaticamente
+
+
+╔════════════════════════════════════════════════════════════════╗
+║            Aproveite o YAMI Web Dashboard! 🚀                 ║
+╚════════════════════════════════════════════════════════════════╝

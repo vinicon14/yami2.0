@@ -19,12 +19,24 @@ if errorlevel 1 (
 )
 
 REM Run YAMI with full interactive terminal access
-REM If no arguments provided, start TUI (Terminal User Interface)
+REM If no arguments provided, start full mode (TUI + Gateway + Web Dashboard)
 cd /d "%YAMI_HOME%"
 
 REM Check if arguments were provided
 if "%1"=="" (
-    REM No arguments - start TUI directly
+    REM No arguments - start full mode
+    echo Iniciando YAMI (TUI + Gateway + Web Dashboard)...
+    echo.
+    
+    REM Start Gateway in background
+    start /b cmd /c "node "%USERPROFILE%\.yami\runtime\core\yami.mjs" gateway"
+    timeout /t 3 >nul
+    
+    REM Open Web Dashboard in browser
+    start http://127.0.0.1:18789/
+    timeout /t 2 >nul
+    
+    REM Start TUI in foreground
     node "%USERPROFILE%\.yami\runtime\core\yami.mjs" tui
 ) else (
     REM Arguments provided - pass them through
