@@ -84,7 +84,16 @@ $shortcut.Save()
 Write-Host "  OK: Start Menu shortcut"
 
 Write-Host ""
-Write-Host "Teste de configuracao concluido (YAMI ja esta configurado no sistema)"
+Write-Host "Inicializando YAMI (primeira execucao)..."
+Write-Host ""
+
+# Run YAMI initialization script
+$initScript = "$InstallPath\bin\init-yami.bat"
+if (Test-Path $initScript) {
+    & cmd /c $initScript
+} else {
+    Write-Host "Aviso: Script de inicializacao nao encontrado em $initScript" -ForegroundColor Yellow
+}
 
 Write-Host ""
 Write-Host "===================================================="
@@ -102,7 +111,11 @@ Write-Host "Deseja executar YAMI agora? (S/N)"
 $response = Read-Host
 
 if ($response -eq "S" -or $response -eq "s") {
-    Start-Process -FilePath "$InstallPath\bin\yami.cmd"
+    Write-Host ""
+    Write-Host "Abrindo YAMI..."
+    Write-Host ""
+    Start-Process -FilePath "$InstallPath\bin\yami.cmd" -NoNewWindow
+    Write-Host "YAMI iniciado com sucesso!"
 }
 
 Write-Host ""
