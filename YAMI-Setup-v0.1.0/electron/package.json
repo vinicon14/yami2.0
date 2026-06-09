@@ -1,0 +1,60 @@
+{
+  "name": "yami-desktop",
+  "version": "0.1.0",
+  "description": "YAMI - Personal AI Assistant (Desktop App)",
+  "main": "main.js",
+  "homepage": "./",
+  "author": "YAMI Team",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:all": "electron-builder -mwl"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.1.0",
+    "express": "^4.18.2",
+    "axios": "^1.4.0",
+    "google-auth-library": "^8.8.0"
+  },
+  "devDependencies": {
+    "electron": "^latest",
+    "electron-builder": "^24.4.0"
+  },
+  "build": {
+    "appId": "com.yami.desktop",
+    "productName": "YAMI",
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "YAMI"
+    }
+  }
+}
