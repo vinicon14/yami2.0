@@ -5939,6 +5939,89 @@
       setInterval(updateStatusBar, 5000);
     })();
 
+    // ── Navigation fix: event delegation on document (Electron-safe) ─────────
+    (function fixNavigation() {
+      // Robust menu page switch — works even if early event listeners failed
+      function switchPage(page) {
+        if (!page) return;
+        // Update nav button active states
+        document.querySelectorAll('[data-menu-page]').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.menuPage === page);
+        });
+        // Update page section visibility
+        document.querySelectorAll('[data-page]').forEach(function(section) {
+          var isActive = section.dataset.page === page;
+          section.classList.toggle('active', isActive);
+          if (isActive) { section.scrollTop = 0; }
+        });
+        // Ensure menu drawer is open
+        document.body.classList.add('menu-open');
+        var backdrop = document.getElementById('menuBackdrop');
+        if (backdrop) backdrop.hidden = false;
+        var drawer = document.getElementById('menuDrawer');
+        if (drawer) drawer.setAttribute('aria-hidden', 'false');
+      }
+
+      // Event delegation — catches ALL clicks anywhere in the document
+      document.addEventListener('click', function(e) {
+        var target = e.target;
+        // Walk up to find [data-menu-page] or [data-menu-jump]
+        while (target && target !== document.body) {
+          if (target.dataset && target.dataset.menuPage) {
+            e.stopPropagation();
+            switchPage(target.dataset.menuPage);
+            return;
+          }
+          if (target.dataset && target.dataset.menuJump) {
+            e.stopPropagation();
+            switchPage(target.dataset.menuJump);
+            return;
+          }
+          target = target.parentElement;
+        }
+      }, true); // capture phase — fires before any other handler
+
+      // ─── Menu open/close ────────────────────────────────────────────────────
+      function openMenu() {
+        document.body.classList.add('menu-open');
+        var backdrop = document.getElementById('menuBackdrop');
+        if (backdrop) backdrop.hidden = false;
+        var toggle = document.getElementById('menuToggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+        var drawer = document.getElementById('menuDrawer');
+        if (drawer) drawer.setAttribute('aria-hidden', 'false');
+      }
+      function closeMenu() {
+        document.body.classList.remove('menu-open');
+        var toggle = document.getElementById('menuToggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        var drawer = document.getElementById('menuDrawer');
+        if (drawer) drawer.setAttribute('aria-hidden', 'true');
+        setTimeout(function() {
+          var backdrop = document.getElementById('menuBackdrop');
+          if (backdrop && !document.body.classList.contains('menu-open')) backdrop.hidden = true;
+        }, 200);
+      }
+
+      // Menu toggle button (capture phase)
+      document.addEventListener('click', function(e) {
+        var t = e.target;
+        while (t && t !== document.body) {
+          if (t.id === 'menuToggle') { e.stopPropagation(); openMenu(); return; }
+          if (t.id === 'menuClose')  { e.stopPropagation(); closeMenu(); return; }
+          if (t.id === 'menuBackdrop') { e.stopPropagation(); closeMenu(); return; }
+          t = t.parentElement;
+        }
+      }, true);
+
+      // Keyboard: Escape closes menu
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeMenu();
+      }, true);
+
+      console.log('[YAMI] Navigation fix loaded — event delegation active');
+    })();
+
   </script>
 </body>
 </html>

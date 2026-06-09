@@ -17,6 +17,7 @@
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
+    "@electron/packager": "^20.0.1",
     "electron": "^30.0.0",
     "electron-builder": "^24.13.0"
   },
@@ -25,7 +26,7 @@
     "productName": "YAMI",
     "copyright": "Copyright © 2026 YAMI",
     "directories": {
-      "output": "C:\\Users\\vinim\\AppData\\Local\\Temp\\opencode\\yami-dist"
+      "output": "dist-build"
     },
     "files": [
       "main.js",
@@ -40,14 +41,18 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
-      "icon": "assets/icon.png",
+      "icon": "assets/icon.ico",
       "requestedExecutionLevel": "asInvoker",
       "signingHashAlgorithms": null,
       "sign": null

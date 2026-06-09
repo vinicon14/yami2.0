@@ -57,6 +57,10 @@ auth/tokens/
 auth/accounts.json
 *.bak
 
+# Electron
+YAMI-Setup-v0.1.0/electron/node_modules/
+YAMI-Setup-v0.1.0/electron/dist-build/
+
 # OS
 Thumbs.db
 .DS_Store
