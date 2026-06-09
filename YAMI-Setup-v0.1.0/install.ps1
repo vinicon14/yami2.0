@@ -102,7 +102,7 @@ Write-Host "Deseja executar YAMI agora? (S/N)"
 $response = Read-Host
 
 if ($response -eq "S" -or $response -eq "s") {
-    Start-Process -FilePath "$InstallPath\yami.exe"
+    Start-Process -FilePath "$InstallPath\bin\yami.cmd"
 }
 
 Write-Host ""
