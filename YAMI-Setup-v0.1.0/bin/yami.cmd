@@ -19,9 +19,17 @@ if errorlevel 1 (
 )
 
 REM Run YAMI with full interactive terminal access
-REM The /D switch ensures stdin/stdout/stderr are properly connected
+REM If no arguments provided, start TUI (Terminal User Interface)
 cd /d "%YAMI_HOME%"
-node "%USERPROFILE%\.yami\runtime\core\yami.mjs" %*
+
+REM Check if arguments were provided
+if "%1"=="" (
+    REM No arguments - start TUI directly
+    node "%USERPROFILE%\.yami\runtime\core\yami.mjs" tui
+) else (
+    REM Arguments provided - pass them through
+    node "%USERPROFILE%\.yami\runtime\core\yami.mjs" %*
+)
 
 REM Keep terminal open if YAMI exits unexpectedly
 if errorlevel 1 (

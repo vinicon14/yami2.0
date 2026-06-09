@@ -1,11 +1,39 @@
 @echo off
-setlocal
-for %%I in ("%~dp0..") do set "YAMI_HOME=%%~fI"
+setlocal enabledelayedexpansion
+
+REM YAMI Launcher - Ensures interactive terminal with stdin access
+REM Set environment variables for YAMI
+set "YAMI_HOME=%USERPROFILE%\AppData\Local\YAMI"
 set "YAMI_CONFIG_PATH=%YAMI_HOME%\yami.json"
 set "OPENCLAW_HOME=%YAMI_HOME%"
 set "OPENCLAW_CONFIG_PATH=%YAMI_CONFIG_PATH%"
 set "OPENCLAW_STATE_DIR=%YAMI_HOME%"
-if "%~1"=="--version" goto run_yami
-if not exist "%YAMI_HOME%\runtime\core\node_modules\@modelcontextprotocol\sdk" if exist "%YAMI_HOME%\YAMI-RUNTIME-COMPLETE.zip" powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '%YAMI_HOME%\YAMI-RUNTIME-COMPLETE.zip' -DestinationPath '%YAMI_HOME%' -Force"
-:run_yami
-node "%YAMI_HOME%\runtime\core\yami.mjs" %*
+
+REM Verify Node.js is available
+where /q node
+if errorlevel 1 (
+    echo [ERROR] Node.js nao encontrado no PATH
+    echo Por favor instale Node.js v22.19 ou superior
+    pause
+    exit /b 1
+)
+
+REM Run YAMI with full interactive terminal access
+REM If no arguments provided, start TUI (Terminal User Interface)
+cd /d "%YAMI_HOME%"
+
+REM Check if arguments were provided
+if "%1"=="" (
+    REM No arguments - start TUI directly
+    node "%USERPROFILE%\.yami\runtime\core\yami.mjs" tui
+) else (
+    REM Arguments provided - pass them through
+    node "%USERPROFILE%\.yami\runtime\core\yami.mjs" %*
+)
+
+REM Keep terminal open if YAMI exits unexpectedly
+if errorlevel 1 (
+    echo.
+    echo [ERRO] YAMI saiu com codigo de erro: !errorlevel!
+    pause
+)
